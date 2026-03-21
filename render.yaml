@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: adaptive-blended-assessment
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm ci --prefix frontend && npm run build --prefix frontend && npm ci --prefix backend
+    startCommand: npm start --prefix backend
+    healthCheckPath: /api/health
+    autoDeployTrigger: commit
+    buildFilter:
+      paths:
+        - frontend/**
+        - backend/**
+        - render.yaml
+        - .gitignore
+        - PROJECT_VERIFICATION_CHECKLIST.md
+        - thrsholds.docx
+        - kkk.txt

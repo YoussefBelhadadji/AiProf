@@ -1,0 +1,146 @@
+import { useState } from 'react';
+import { Menu, LayoutDashboard, Users, FileText, FileEdit, Lightbulb, Search, BookOpen, Settings as SettingsIcon } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import clsx from 'clsx';
+import { GlassCard } from '../components/GlassCard';
+import { getSelectedStudyCase, getSelectedTask, getSelectedTaskId, useStudyScopeStore } from '../state/studyScope';
+
+export interface ResearchShellProps {
+  children: React.ReactNode;
+}
+
+function InterpretationPanel() {
+  const cases = useStudyScopeStore((state) => state.cases);
+  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
+  const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
+  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
+  const selectedTask = getSelectedTask(
+    selectedCase,
+    getSelectedTaskId({ selectedCaseId, selectedTaskByCase })
+  );
+
+  return (
+    <div className="w-[400px] shrink-0 border-l border-[var(--border)] bg-[var(--bg-base)] hidden xl:flex flex-col h-full sticky top-[60px] overflow-y-auto">
+      <div className="p-6">
+        <h3 className="text-xs font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-4 pb-2 border-b border-[var(--border)]">
+          Interpretation Panel
+        </h3>
+
+        <div className="flex flex-col gap-6">
+          <section>
+            <div className="flex items-center gap-2 mb-3 text-[var(--lav)] font-medium font-navigation">
+              <Lightbulb size={16} /> Synthesis
+            </div>
+            <GlassCard className="p-4 text-sm leading-relaxed text-[var(--text-sec)]">
+              Current selection: {selectedCase.meta.studentName}. {selectedTask ? `Task focus: ${selectedTask.title}.` : 'Case overview is active.'} Engagement is generally strong, while evidence expansion and academic phrasing remain the main instructional priorities.
+            </GlassCard>
+          </section>
+
+          <section>
+            <div className="flex items-center gap-2 mb-3 text-[var(--teal)] font-medium font-navigation">
+              <Search size={16} /> Key Findings
+            </div>
+            <GlassCard className="p-4 text-sm text-[var(--text-primary)]">
+              <ul className="space-y-3">
+                <li className="flex gap-2 items-start">
+                  <span className="text-[var(--teal)] mt-0.5">*</span>
+                  Imported student cases in session: {cases.length}. Active course: {selectedCase.meta.courseTitle}.
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="text-[var(--teal)] mt-0.5">*</span>
+                  Selected risk level: {selectedCase.riskLevel}. Cluster profile: {selectedCase.clusterName}.
+                </li>
+              </ul>
+            </GlassCard>
+          </section>
+
+          <section>
+            <div className="flex items-center gap-2 mb-3 text-[var(--gold)] font-medium font-navigation">
+              <BookOpen size={16} /> Theory Refs
+            </div>
+            <GlassCard className="p-4 text-xs text-[var(--text-sec)] font-forensic">
+              <p className="mb-2">Hattie (2009) - Visible Learning</p>
+              <p>Zimmerman (2002) - Self-regulation</p>
+            </GlassCard>
+          </section>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export function ResearchShell({ children }: ResearchShellProps) {
+  const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+  return (
+    <div className="flex flex-col h-screen overflow-hidden bg-[var(--bg-deep)]">
+      <header className="h-[60px] shrink-0 z-50 bg-[var(--glass-bg)] backdrop-blur-[16px] border-b border-[var(--border)] px-4 lg:px-6 flex items-center justify-between">
+        <div className="flex items-center gap-6">
+          <button
+            className="text-[var(--text-sec)] hover:text-[var(--text-primary)] transition-colors xl:hidden"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <Menu size={20} />
+          </button>
+          <div className="font-editorial italic text-lg text-[var(--lav)] font-medium">
+            WriteLens
+          </div>
+
+          <nav className="hidden md:flex items-center gap-1 font-navigation text-sm ml-4">
+            <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/dashboard' || location.pathname === '/'} />
+            <NavItem to="/students" icon={Users} label="Students" active={location.pathname.startsWith('/students')} />
+            <NavItem to="/reports" icon={FileText} label="Reports" active={location.pathname.startsWith('/reports')} />
+          </nav>
+        </div>
+
+        <div className="flex items-center gap-4">
+          <button className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation">
+            <FileEdit size={16} />
+            <span className="hidden sm:inline">Notes</span>
+          </button>
+          <div className="w-px h-6 bg-[var(--border)] hidden sm:block"></div>
+
+          <Link to="/settings" className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors">
+            <SettingsIcon size={18} />
+          </Link>
+
+          <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-2">
+            <div className="w-8 h-8 rounded-full bg-[var(--lav-glow)] border border-[var(--lav-border)] flex items-center justify-center text-[var(--lav)] relative font-editorial font-bold text-sm">
+              X
+              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--teal)] border-2 border-[var(--bg-base)]" />
+            </div>
+            <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:inline">Dr. X</span>
+          </div>
+        </div>
+      </header>
+
+      <div className="flex flex-1 overflow-hidden relative">
+        <main className="flex-1 overflow-y-auto w-full">
+          <div className="animate-in fade-in fill-mode-both duration-300 min-h-full">
+            {children}
+          </div>
+        </main>
+
+        <InterpretationPanel />
+      </div>
+    </div>
+  );
+}
+
+function NavItem({ to, icon: Icon, label, active }: { to: string; icon: React.ElementType; label: string; active: boolean }) {
+  return (
+    <Link
+      to={to}
+      className={clsx(
+        'flex items-center gap-2 px-4 py-2 rounded-md transition-all',
+        active
+          ? 'bg-[var(--lav-glow)] text-[var(--lav)]'
+          : 'text-[var(--text-sec)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-raised)]'
+      )}
+    >
+      <Icon size={16} />
+      {label}
+    </Link>
+  );
+}

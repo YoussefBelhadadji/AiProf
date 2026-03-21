@@ -1,0 +1,106 @@
+rules:
+  - rule_id: A1
+    condition:
+      rubric_views: "==0"
+      first_access_delay_minutes: ">30"
+    interpretation: "Weak forethought regulation and low criteria awareness"
+    feedback_type: "criteria_referenced_prompt"
+    onsite_intervention: "rubric_walkthrough_and_model_outline"
+    dimension: "process"
+
+  - rule_id: A2
+    condition:
+      time_on_task: "<15"
+      word_count: "<80"
+    interpretation: "Insufficient planning and underdeveloped task engagement"
+    feedback_type: "elaboration_prompt"
+    onsite_intervention: "guided_planning_and_idea_expansion"
+    dimension: "process"
+
+  - rule_id: B1
+    condition:
+      organization: "<=2"
+      cohesion_index: "<2"
+    interpretation: "Discourse organization problem"
+    feedback_type: "strategic_feedback"
+    onsite_intervention: "paragraph_restructuring_with_model"
+    dimension: "product"
+
+  - rule_id: B2
+    condition:
+      argumentation: "<=2"
+    interpretation: "Weak claim-evidence-reasoning structure"
+    feedback_type: "higher_order_feedback"
+    onsite_intervention: "claim_evidence_explanation_scaffold"
+    dimension: "product"
+
+  - rule_id: B3
+    condition:
+      grammar_accuracy: "<=2"
+      error_density: ">8"
+    interpretation: "Persistent linguistic accuracy problem"
+    feedback_type: "direct_corrective_feedback"
+    onsite_intervention: "mini_lesson_recurrent_errors"
+    dimension: "product"
+
+  - rule_id: B4
+    condition:
+      lexical_resource: "<=2"
+      ttr: "<0.45"
+    interpretation: "Restricted lexical repertoire"
+    feedback_type: "lexical_enrichment_feedback"
+    onsite_intervention: "academic_vocabulary_expansion"
+    dimension: "product"
+
+  - rule_id: C1
+    condition:
+      revision_frequency: "==0"
+    interpretation: "Weak self-regulated revision"
+    feedback_type: "metacognitive_revision_prompt"
+    onsite_intervention: "guided_revision_checklist"
+    dimension: "process"
+
+  - rule_id: C2
+    condition:
+      feedback_views: ">=1"
+      revision_frequency: "==0"
+    interpretation: "Low feedback uptake / weak feedback literacy"
+    feedback_type: "feedforward_feedback"
+    onsite_intervention: "feedback_decoding_session"
+    dimension: "process"
+
+  - rule_id: C3
+    condition:
+      revision_frequency: ">=1"
+      argumentation: "<=2"
+    interpretation: "Surface revision without meaning-level development"
+    feedback_type: "global_revision_feedback"
+    onsite_intervention: "teacher_modelling_global_revision"
+    dimension: "process"
+
+  - rule_id: D1
+    condition:
+      help_seeking_messages: ">=1"
+    interpretation: "Adaptive help-seeking"
+    feedback_type: "dialogic_scaffolding"
+    onsite_intervention: "short_clarification_conference"
+    dimension: "process"
+
+  - rule_id: D2
+    condition:
+      assignment_views: "<2"
+      resource_access_count: "<1"
+      revision_frequency: "==0"
+    interpretation: "Disengagement / low behavioural participation"
+    feedback_type: "motivational_prompt"
+    onsite_intervention: "proactive_teacher_checkin"
+    dimension: "engagement"
+
+  - rule_id: E1
+    condition:
+      assignment_views: ">=4"
+      total_score: "<20"
+    interpretation: "Effortful but struggling writer"
+    feedback_type: "explicit_strategic_instruction"
+    onsite_intervention: "extra_scaffolded_support"
+    dimension: "engagement"

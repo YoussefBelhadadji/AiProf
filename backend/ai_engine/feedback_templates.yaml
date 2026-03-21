@@ -1,0 +1,48 @@
+feedback_templates:
+  criteria_referenced_prompt: >
+    Before revising, read the rubric carefully and compare your paragraph to the criteria.
+    Focus especially on organization, argumentation, and cohesion.
+
+  elaboration_prompt: >
+    Your paragraph is underdeveloped for this task.
+    Add one supporting idea and one explanatory sentence to make the argument clearer.
+
+  strategic_feedback: >
+    Your paragraph has a relevant idea, but its organization and cohesion need improvement.
+    Strengthen the topic sentence, improve transitions, and connect ideas more logically.
+
+  higher_order_feedback: >
+    Your paragraph needs stronger argument development.
+    Add clearer support, a relevant example, and explain how the evidence strengthens your claim.
+
+  direct_corrective_feedback: >
+    Your writing shows repeated grammatical difficulties.
+    Revise the highlighted errors and focus on the same grammar pattern across the paragraph.
+
+  lexical_enrichment_feedback: >
+    Your vocabulary is understandable, but too repetitive or informal for academic writing.
+    Replace basic words with more formal academic alternatives.
+
+  metacognitive_revision_prompt: >
+    Before you revise, identify the weakest part of your paragraph.
+    Decide what one change would improve the paragraph most.
+
+  feedforward_feedback: >
+    You viewed the feedback, but your revision is still limited.
+    Use the comments to make at least one content-level and one language-level improvement.
+
+  global_revision_feedback: >
+    You revised the text, but the main idea still needs stronger development.
+    Go beyond sentence correction and improve explanation, organization, and support.
+
+  dialogic_scaffolding: >
+    Your message shows active engagement.
+    We will discuss your difficulty together and revise one part of the paragraph collaboratively.
+
+  motivational_prompt: >
+    You need to engage more actively with the task materials.
+    Revisit the assignment, the model examples, and the rubric before writing again.
+
+  explicit_strategic_instruction: >
+    You are making effort, but your writing still needs structured support.
+    Focus on argument development, cohesion, and academic phrasing step by step.
