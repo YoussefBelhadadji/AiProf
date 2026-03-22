@@ -32,7 +32,7 @@ function InterpretationPanel() {
               <Lightbulb size={16} /> Quick Summary
             </div>
             <GlassCard className="p-4 text-sm leading-relaxed text-[var(--text-sec)]">
-              Current selection: {selectedCase.meta.studentName}. {selectedTask ? `Selected exercise: ${selectedTask.title}.` : 'Full case overview is active.'} Engagement is generally strong, while evidence expansion and academic phrasing remain the main teaching priorities.
+              Current selection: {selectedCase.meta.studentName}. {selectedTask ? `Selected exercise: ${selectedTask.title}.` : 'Full case overview is active.'} Start with the highlighted scope, then move to the teacher report when you want a printable interpretation.
             </GlassCard>
           </section>
 
@@ -49,6 +49,10 @@ function InterpretationPanel() {
                 <li className="flex gap-2 items-start">
                   <span className="text-[var(--teal)] mt-0.5">*</span>
                   Support priority: {selectedCase.riskLevel}. Learner profile: {selectedCase.clusterName}.
+                </li>
+                <li className="flex gap-2 items-start">
+                  <span className="text-[var(--teal)] mt-0.5">*</span>
+                  Use the top scope bar to confirm the active student, exercise, sections, and indicators before reading any chart.
                 </li>
               </ul>
             </GlassCard>
@@ -76,7 +80,14 @@ export function ResearchShell({ children }: ResearchShellProps) {
   
   const cases = useStudyScopeStore((state) => state.cases);
   const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
+  const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
+  const selectedStationIds = useStudyScopeStore((state) => state.selectedStationIds);
+  const selectedVariableIds = useStudyScopeStore((state) => state.selectedVariableIds);
   const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
+  const selectedTask = getSelectedTask(
+    selectedCase,
+    getSelectedTaskId({ selectedCaseId, selectedTaskByCase })
+  );
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[var(--bg-deep)]">
@@ -102,7 +113,7 @@ export function ResearchShell({ children }: ResearchShellProps) {
         <div className="flex items-center gap-4">
           <button 
             className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation"
-            onClick={() => alert('Research Notes panel coming soon in the next doctoral module integration.')}
+            onClick={() => navigate('/notes')}
           >
             <FileEdit size={16} />
             <span className="hidden sm:inline">Notes</span>
@@ -125,6 +136,33 @@ export function ResearchShell({ children }: ResearchShellProps) {
           </button>
         </div>
       </header>
+
+      <div className="shrink-0 border-b border-[var(--border)] bg-[var(--bg-base)]/90 backdrop-blur-[10px] px-4 lg:px-6 py-3">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
+          <div className="min-w-0">
+            <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Current Teaching Scope</p>
+            <p className="font-body text-sm text-[var(--text-primary)] mt-1">
+              <span className="font-medium">{selectedCase.meta.studentName}</span>
+              <span className="text-[var(--text-muted)]"> · </span>
+              <span>{selectedTask ? selectedTask.title : 'Full case overview'}</span>
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <span className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--teal)] bg-[var(--teal-dim)]">
+              {selectedStationIds.length} sections
+            </span>
+            <span className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)] bg-[var(--lav-glow)]">
+              {selectedVariableIds.length} indicators
+            </span>
+            <button
+              onClick={() => navigate('/reports')}
+              className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] hover:text-[var(--text-primary)] hover:border-[var(--border-bright)] transition-colors"
+            >
+              Open teacher report
+            </button>
+          </div>
+        </div>
+      </div>
 
       <div className="flex flex-1 overflow-hidden relative">
         <main className="flex-1 overflow-y-auto w-full">

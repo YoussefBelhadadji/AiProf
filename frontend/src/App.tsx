@@ -3,6 +3,7 @@ import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard';
 import { Students } from './pages/Students';
 import { Reports } from './pages/Reports';
+import { Notes } from './pages/Notes';
 import { Import } from './pages/Import';
 import { Settings } from './pages/Settings';
 import { Station01 } from './pages/Station01';
@@ -27,6 +28,7 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/students" element={<Students />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/notes" element={<Notes />} />
         <Route path="/import" element={<Import />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/pipeline/1" element={<Station01 />} />

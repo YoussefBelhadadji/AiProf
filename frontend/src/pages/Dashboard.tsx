@@ -64,6 +64,7 @@ export function Dashboard() {
   const cases = useStudyScopeStore((state) => state.cases);
   const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
   const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
+  const selectedStationIds = useStudyScopeStore((state) => state.selectedStationIds);
   const selectedVariableIds = useStudyScopeStore((state) => state.selectedVariableIds);
   const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
   const selectedTask = getSelectedTask(
@@ -92,6 +93,42 @@ export function Dashboard() {
 
         <StudyScopePanel />
 
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[
+            {
+              step: 'Step 1',
+              title: 'Choose the student case',
+              detail: 'Start with the learner you want to review. The whole interface will follow that choice.',
+              accent: 'lav',
+            },
+            {
+              step: 'Step 2',
+              title: 'Limit the reading scope',
+              detail: 'Pick one exercise or stay on the full case. Then keep only the sections you need.',
+              accent: 'teal',
+            },
+            {
+              step: 'Step 3',
+              title: 'Read or print the result',
+              detail: 'Move to the teacher report when you are ready for a final summary or an exportable PDF.',
+              accent: 'gold',
+            },
+          ].map((item) => (
+            <GlassCard key={item.title} className="p-5 bg-[var(--bg-raised)]/40">
+              <div className={clsx(
+                'font-navigation text-[10px] uppercase tracking-widest',
+                item.accent === 'lav' && 'text-[var(--lav)]',
+                item.accent === 'teal' && 'text-[var(--teal)]',
+                item.accent === 'gold' && 'text-[var(--gold)]'
+              )}>
+                {item.step}
+              </div>
+              <h3 className="mt-3 font-navigation text-sm text-[var(--text-primary)]">{item.title}</h3>
+              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">{item.detail}</p>
+            </GlassCard>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <GlassCard accent="lav" glow className="lg:col-span-2 p-6 h-full flex flex-col justify-between">
             <div>
@@ -107,6 +144,14 @@ export function Dashboard() {
                   ? `You are reading the exercise "${selectedTask.title}".`
                   : 'You are reading the full case overview across the imported semester trace.'} The same selection is used across the dashboard, student page, and reports.
               </p>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <span className="rounded-full border border-[var(--border)] bg-[var(--bg-deep)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">
+                  {selectedStationIds.length} active sections
+                </span>
+                <span className="rounded-full border border-[var(--border)] bg-[var(--bg-deep)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--teal)]">
+                  {selectedVariableIds.length} active indicators
+                </span>
+              </div>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 <div>
                   <div className="text-[9px] uppercase tracking-widest text-[var(--text-muted)] font-navigation">Institution</div>
@@ -141,6 +186,12 @@ export function Dashboard() {
               <p className="text-[11px] font-body text-[var(--text-sec)] leading-relaxed">
                 This view follows your current choices: one active student, one active exercise, selected sections, and selected indicators.
               </p>
+              <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] px-4 py-3">
+                <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">What changes when you edit the scope</p>
+                <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">
+                  The selected student, exercise, sections, and indicators are reused in the student registry, the analysis pages, and the final teacher report.
+                </p>
+              </div>
               <Button onClick={() => navigate('/reports')} className="w-full mt-2 py-2 text-xs">Open teacher report <ArrowRight size={14} /></Button>
             </div>
           </GlassCard>

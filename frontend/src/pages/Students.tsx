@@ -55,7 +55,41 @@ export function Students() {
           subtitle="Use the same scope everywhere: student, exercise, analysis sections, and indicators."
         />
 
+        <GlassCard className="p-5 bg-[var(--bg-raised)]/35">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">Step 1</p>
+              <p className="mt-2 font-navigation text-sm text-[var(--text-primary)]">Click any student row</p>
+              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">
+                The selected row becomes the active case for the rest of the platform.
+              </p>
+            </div>
+            <div>
+              <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--teal)]">Step 2</p>
+              <p className="mt-2 font-navigation text-sm text-[var(--text-primary)]">Keep one exercise or the full case</p>
+              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">
+                Use the scope panel above if you want to narrow the reading before opening reports.
+              </p>
+            </div>
+            <div>
+              <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--gold)]">Step 3</p>
+              <p className="mt-2 font-navigation text-sm text-[var(--text-primary)]">Read by tab</p>
+              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">
+                Behaviour, Writing Task, and Communication each answer a different teaching question.
+              </p>
+            </div>
+          </div>
+        </GlassCard>
+
         <GlassCard className="overflow-hidden border-[var(--border)] p-0">
+          <div className="border-b border-[var(--border)] bg-[var(--bg-raised)]/40 px-6 py-3 flex flex-col md:flex-row md:items-center md:justify-between gap-2">
+            <p className="font-body text-xs text-[var(--text-sec)]">
+              Click any row to make it the active student case. The highlighted row is the one currently used by reports and analysis pages.
+            </p>
+            <span className="font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">
+              {cases.length} cases loaded
+            </span>
+          </div>
           <div className="overflow-x-auto w-full">
             <table className="w-full text-left whitespace-nowrap min-w-[920px]">
               <thead>
@@ -143,6 +177,9 @@ export function Students() {
                 <StatusChip key={variable.id} variant="gold">{variable.label}</StatusChip>
               ))}
             </div>
+            <p className="mt-3 font-body text-xs text-[var(--text-sec)]">
+              These indicators also control what is emphasized in the teacher report.
+            </p>
           </GlassCard>
         </div>
 

@@ -10,12 +10,44 @@ import {
   getSelectedTaskId,
   getTaskOptions,
   useStudyScopeStore,
+  type StudyStationId,
+  type StudyVariableId,
 } from '../state/studyScope';
 
 interface StudyScopePanelProps {
   title?: string;
   subtitle?: string;
 }
+
+const QUICK_PRESETS: Array<{
+  id: string;
+  label: string;
+  helper: string;
+  stations: StudyStationId[];
+  variables: StudyVariableId[];
+}> = [
+  {
+    id: 'classroom',
+    label: 'Classroom view',
+    helper: 'Fast reading of behaviour, diagnosis, feedback, and revision.',
+    stations: [2, 3, 9, 10, 12],
+    variables: ['assignment_views', 'feedback_views', 'help_seeking_messages', 'argumentation', 'grammar_accuracy'],
+  },
+  {
+    id: 'writing',
+    label: 'Writing focus',
+    helper: 'Focus on the text, quality indicators, and revision evidence.',
+    stations: [1, 4, 5, 12],
+    variables: ['word_count', 'cohesion', 'argumentation', 'grammar_accuracy', 'ttr'],
+  },
+  {
+    id: 'full',
+    label: 'Full case',
+    helper: 'Use all stations and the main indicators for the complete report.',
+    stations: STUDY_STATIONS.map((station) => station.id),
+    variables: ['assignment_views', 'time_on_task', 'revision_frequency', 'feedback_views', 'help_seeking_messages', 'word_count', 'cohesion', 'argumentation', 'grammar_accuracy', 'ttr'],
+  },
+];
 
 export function StudyScopePanel({
   title = 'Build Your Teaching View',
@@ -31,6 +63,8 @@ export function StudyScopePanel({
   const selectTask = useStudyScopeStore((state) => state.selectTask);
   const toggleVariable = useStudyScopeStore((state) => state.toggleVariable);
   const toggleStation = useStudyScopeStore((state) => state.toggleStation);
+  const setVariableSelection = useStudyScopeStore((state) => state.setVariableSelection);
+  const setStationSelection = useStudyScopeStore((state) => state.setStationSelection);
   const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
   const taskOptions = getTaskOptions(selectedCase);
   const selectedTaskId = getSelectedTaskId({ selectedCaseId, selectedTaskByCase });
@@ -50,6 +84,34 @@ export function StudyScopePanel({
         <Button variant="secondary" onClick={() => navigate('/import')}>
           <Upload size={16} /> Import student workbooks
         </Button>
+      </div>
+
+      <div className="space-y-3">
+        <div className="flex items-center justify-between gap-4">
+          <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">
+            Quick Presets
+          </p>
+          <p className="font-body text-xs text-[var(--text-muted)]">Use one of these ready-made combinations when you want a faster setup.</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+          {QUICK_PRESETS.map((preset) => (
+            <button
+              key={preset.id}
+              type="button"
+              onClick={() => {
+                setStationSelection(preset.stations);
+                setVariableSelection(preset.variables);
+              }}
+              className="rounded-xl border border-[var(--border)] bg-[var(--bg-deep)] p-4 text-left hover:border-[var(--border-bright)] hover:bg-[var(--bg-card)] transition-colors"
+            >
+              <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">{preset.label}</p>
+              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">{preset.helper}</p>
+              <p className="mt-3 font-forensic text-[10px] text-[var(--text-muted)]">
+                {preset.stations.length} stations · {preset.variables.length} indicators
+              </p>
+            </button>
+          ))}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
