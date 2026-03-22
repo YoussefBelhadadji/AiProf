@@ -4,7 +4,16 @@ import { PipelineLayout, StationHeader, StationFooter } from '../layouts/Pipelin
 import { GlassCard } from '../components/GlassCard';
 import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
 
-const variables = ['TTR', 'Cohesion', 'Lexical', 'Grammar', 'Arg', 'Score', 'Revision', 'Time'];
+const variables = [
+  { shortLabel: 'TTR', label: 'Lexical Variety' },
+  { shortLabel: 'Cohesion', label: 'Cohesion' },
+  { shortLabel: 'Lexical', label: 'Academic Lexis' },
+  { shortLabel: 'Grammar', label: 'Grammar Accuracy' },
+  { shortLabel: 'Arg', label: 'Argument Quality' },
+  { shortLabel: 'Score', label: 'Writing Score' },
+  { shortLabel: 'Revision', label: 'Revision Frequency' },
+  { shortLabel: 'Time', label: 'Time on Task' },
+];
 
 const evidenceMatrix = [
   [1.0, 0.62, 0.71, 0.55, 0.48, 0.52, 0.36, 0.28],
@@ -38,10 +47,38 @@ const plot3Data = [
   { x: 180, y: 199, id: 'Final revision' },
 ];
 
-const getColorForCorrelation = (value: number) => {
-  if (value === 1) return 'var(--bg-high)';
-  const intensity = Math.min(Math.abs(value) * 1.15, 1);
-  return value > 0 ? `rgba(196, 181, 253, ${intensity})` : `rgba(125, 162, 255, ${intensity})`;
+const getColorForAlignment = (value: number) => {
+  if (value === 1) return 'rgba(24, 32, 52, 0.95)';
+
+  if (value >= 0.75) {
+    return 'rgba(196, 181, 253, 0.92)';
+  }
+
+  if (value >= 0.55) {
+    return 'rgba(124, 214, 197, 0.82)';
+  }
+
+  return 'rgba(148, 163, 184, 0.48)';
+};
+
+const getTextColorForAlignment = (value: number) => {
+  if (value === 1 || value < 0.55) {
+    return 'var(--text-primary)';
+  }
+
+  return 'var(--bg-deep)';
+};
+
+const getStrengthBand = (value: number) => {
+  if (value >= 0.75) {
+    return 'strong';
+  }
+
+  if (value >= 0.55) {
+    return 'moderate';
+  }
+
+  return 'limited';
 };
 
 export function Station05() {
@@ -70,13 +107,21 @@ export function Station05() {
 
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 mb-8">
           <GlassCard elevation="high" className="xl:col-span-3 p-6 md:p-8 overflow-x-auto" pedagogicalLabel="The matrix visualises how process signals align with outcome signals inside one verified case.">
-            <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-6">Case Signal Alignment</h3>
-            <div className="min-w-[500px]">
+            <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Case Signal Alignment</h3>
+            <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mb-6">
+              This is an evidence-alignment matrix for one verified case. The cell values are expert-coded link strengths drawn from the workbook trail, not population correlations.
+            </p>
+
+            <div className="min-w-[620px]">
               <div className="flex">
-                <div className="w-24 shrink-0"></div>
+                <div className="w-32 shrink-0"></div>
                 {variables.map((variable) => (
-                  <div key={`header-${variable}`} className="flex-1 text-center font-navigation text-[10px] uppercase tracking-wider text-[var(--text-sec)] truncate px-1 -rotate-45 origin-bottom-left pb-4 translate-x-4">
-                    {variable}
+                  <div
+                    key={`header-${variable.shortLabel}`}
+                    className="flex-1 text-center font-navigation text-[10px] uppercase tracking-wider text-[var(--text-sec)] px-1 pb-6"
+                    title={variable.label}
+                  >
+                    {variable.shortLabel}
                   </div>
                 ))}
               </div>
@@ -84,8 +129,8 @@ export function Station05() {
               <div className="flex flex-col gap-1 mt-4">
                 {evidenceMatrix.map((row, rowIndex) => (
                   <div key={`row-${rowIndex}`} className="flex gap-1 items-center">
-                    <div className="w-24 shrink-0 font-navigation text-xs text-[var(--text-sec)] text-right pr-4 truncate">
-                      {variables[rowIndex]}
+                    <div className="w-32 shrink-0 font-navigation text-xs text-[var(--text-sec)] text-right pr-4 leading-snug" title={variables[rowIndex].label}>
+                      {variables[rowIndex].label}
                     </div>
                     {row.map((value, colIndex) => {
                       const isSelected = selectedCell?.row === rowIndex && selectedCell?.col === colIndex;
@@ -94,11 +139,14 @@ export function Station05() {
                           key={`cell-${rowIndex}-${colIndex}`}
                           onClick={() => handleCellClick(rowIndex, colIndex, value)}
                           className={`flex-1 aspect-square rounded flex items-center justify-center font-forensic text-[10px] transition-transform cursor-pointer
-                            ${rowIndex === colIndex ? 'text-[var(--text-muted)] cursor-default' : 'hover:scale-105 text-[var(--bg-deep)] hover:shadow-lg hover:z-10'}
+                            ${rowIndex === colIndex ? 'cursor-default' : 'hover:scale-105 hover:shadow-lg hover:z-10'}
                             ${isSelected ? 'ring-2 ring-[var(--lav)] scale-105 z-10' : ''}
                           `}
-                          style={{ backgroundColor: getColorForCorrelation(value) }}
-                          title={`${variables[rowIndex]} x ${variables[colIndex]}: ${value.toFixed(2)}`}
+                          style={{
+                            backgroundColor: getColorForAlignment(value),
+                            color: rowIndex === colIndex ? 'var(--text-muted)' : getTextColorForAlignment(value),
+                          }}
+                          title={`${variables[rowIndex].label} x ${variables[colIndex].label}: ${value.toFixed(2)}`}
                         >
                           {value.toFixed(2).replace('1.00', '1.0')}
                         </div>
@@ -116,26 +164,37 @@ export function Station05() {
                   <button onClick={() => setSelectedCell(null)} className="text-[var(--text-muted)] hover:text-[var(--text-primary)]">x</button>
                 </div>
                 <div className="font-body text-sm text-[var(--text-primary)]">
-                  <span className="font-navigation text-[var(--text-sec)]">Relationship:</span> {variables[selectedCell.row]} vs {variables[selectedCell.col]}
+                  <span className="font-navigation text-[var(--text-sec)]">Relationship:</span> {variables[selectedCell.row].label} vs {variables[selectedCell.col].label}
                   <div className="mt-2 text-xs">
                     <span className="font-forensic text-[var(--lav)] font-bold text-lg mr-2">strength = {selectedCell.val.toFixed(2)}</span>
-                    <span className="text-[var(--text-sec)] border-l border-[var(--border)] pl-2">Workbook-coded evidence link</span>
+                    <span className="text-[var(--text-sec)] border-l border-[var(--border)] pl-2">
+                      {getStrengthBand(selectedCell.val)} workbook-coded alignment
+                    </span>
                   </div>
                   <p className="mt-3 text-[var(--text-sec)] leading-relaxed italic">
-                    &quot;Within this case, {variables[selectedCell.row]} aligns {selectedCell.val > 0.7 ? 'strongly' : 'moderately'} with {variables[selectedCell.col]}. The interpretation comes from dated revisions, feedback traces, and writing changes rather than population statistics.&quot;
+                    &quot;Within this case, {variables[selectedCell.row].label} aligns {selectedCell.val >= 0.75 ? 'strongly' : selectedCell.val >= 0.55 ? 'moderately' : 'in a limited way'} with {variables[selectedCell.col].label}. The interpretation comes from dated revisions, feedback traces, and writing changes rather than population statistics.&quot;
                   </p>
                 </div>
               </GlassCard>
             )}
 
-            <div className="flex justify-between items-center mt-8 pt-6 border-t border-[var(--border)] text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)]">
-              <div className="flex items-center gap-2"><div className="w-3 h-3 bg-[var(--teal)] rounded-sm"></div> weaker link</div>
-              <div>mid link</div>
-              <div className="flex items-center gap-2">stronger link <div className="w-3 h-3 bg-[var(--lav)] rounded-sm"></div></div>
+            <div className="flex flex-wrap gap-4 items-center mt-8 pt-6 border-t border-[var(--border)] text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)]">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-sm bg-[rgba(148,163,184,0.48)] border border-[var(--border)]"></div>
+                limited alignment
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-sm bg-[rgba(124,214,197,0.82)]"></div>
+                moderate alignment
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-sm bg-[rgba(196,181,253,0.92)]"></div>
+                strong alignment
+              </div>
             </div>
 
             <div className="mt-4 text-[11px] font-body text-[var(--text-muted)] italic">
-              Link strengths are expert-coded from the workbook evidence trail for one student, not population-level correlations.
+              Diagonal cells mark the same construct matched with itself. Off-diagonal cells represent interpreted alignment across behavioural, writing, and outcome signals.
             </div>
           </GlassCard>
 
