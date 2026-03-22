@@ -19,6 +19,30 @@ function formatFeatureName(name: string) {
     .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
+function getModelReadiness(cohortSize: number, featureCount: number) {
+  if (cohortSize >= 12 && featureCount >= 5) {
+    return {
+      label: 'Stronger fit',
+      note: 'The imported cohort is large enough to treat the Random Forest output as a serious support signal, provided the teacher still checks the writing evidence.',
+      accent: 'var(--teal)',
+    };
+  }
+
+  if (cohortSize >= 5 && featureCount >= 3) {
+    return {
+      label: 'Usable with caution',
+      note: 'The model can still guide attention, but its predictions should be read carefully because the cohort remains relatively small.',
+      accent: 'var(--gold)',
+    };
+  }
+
+  return {
+    label: 'Weak fit',
+    note: 'The model should not be overinterpreted. A sparse cohort can make prediction unstable even when a verified output exists.',
+    accent: 'var(--red)',
+  };
+}
+
 export function Station07() {
   const cases = useStudyScopeStore((state) => state.cases);
   const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
@@ -37,6 +61,13 @@ export function Station07() {
       color: colors[index] ?? 'var(--text-muted)',
     };
   });
+  const readiness = getModelReadiness(cohortSize, featureData.length);
+  const topFeature = featureData[0]?.name ?? 'No dominant feature';
+  const predictiveTakeaway = topFeature.toLowerCase().includes('time')
+    ? 'Time-on-task appears highly influential here. The teacher should therefore check whether time reflects productive effort, repeated consultation, or confusion before turning it into a classroom decision.'
+    : topFeature.toLowerCase().includes('attempt') || topFeature.toLowerCase().includes('revision')
+      ? 'Attempts or revision signals appear influential here. That supports using the model to inspect persistence, but not to assume that more attempts always mean better learning.'
+      : 'The strongest feature is not automatically the most important pedagogical priority. Feature importance still has to be interpreted in the context of the text, rubric evidence, and revision trace.';
 
   const scatterData = student && typeof student.predicted_score === 'number'
     ? [
@@ -118,6 +149,20 @@ export function Station07() {
           </GlassCard>
         </div>
 
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <GlassCard className="p-5">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Trust Conditions</div>
+            <div className="font-forensic text-lg" style={{ color: readiness.accent }}>{readiness.label}</div>
+            <p className="font-body text-sm text-[var(--text-sec)] mt-2 leading-relaxed">{readiness.note}</p>
+          </GlassCard>
+          <GlassCard className="p-5">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Reliability Note</div>
+            <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+              No single model wins in every educational task. Performance changes with cohort size, grade distribution, and how clearly time, attempts, and outcomes relate inside the dataset.
+            </p>
+          </GlassCard>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
           <GlassCard elevation="high" className="p-6 md:p-8 min-h-[380px] md:min-h-[450px]" pedagogicalLabel="Random Forest feature importance identifies the strongest variables in the selected learner's cohort-backed score estimate.">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Predictive Feature Importance</h3>
@@ -167,6 +212,9 @@ export function Station07() {
           <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
             Random Forest answers a predictive question: which variables in the imported cohort are most associated with writing performance or improvement? The model output is retained here as advanced analytic support, while the teacher remains responsible for interpreting whether the predicted pattern should change feedback, diagnosis, or instruction.
+          </p>
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mt-3">
+            {predictiveTakeaway}
           </p>
         </GlassCard>
 

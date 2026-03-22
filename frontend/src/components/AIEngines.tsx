@@ -75,6 +75,28 @@ export function AIEngines() {
         </div>
       </GlassCard>
 
+      <GlassCard className="p-6 md:p-8">
+        <h2 className="font-editorial text-2xl text-[var(--text-primary)] mb-4">Model Reliability Notes</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <GlassCard className="p-5 bg-[var(--bg-raised)]">
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--lav)] mb-3">Model Use</h3>
+            <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
+              <li>No single algorithm should be presented as universally best for every educational task.</li>
+              <li>Random Forest is often strong, but its usefulness depends on data pattern clarity, cohort size, and outcome distribution.</li>
+              <li>Time on task may influence predictions more strongly than attempts in some datasets.</li>
+            </ul>
+          </GlassCard>
+          <GlassCard className="p-5 bg-[var(--bg-raised)]">
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--gold)] mb-3">System Implication</h3>
+            <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
+              <li>The app should always show model context, fit conditions, and limits beside advanced analytics.</li>
+              <li>Pedagogical action should focus on redesign, scaffolds, hints, and teacher judgment, not on model output alone.</li>
+              <li>Confidence in analytics should rise only when the imported data are sufficiently rich and patterned.</li>
+            </ul>
+          </GlassCard>
+        </div>
+      </GlassCard>
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         <GlassCard className="lg:col-span-2 p-6 md:p-8">
           <h2 className="font-editorial text-2xl text-[var(--text-primary)] mb-6">Pipeline Matrix</h2>

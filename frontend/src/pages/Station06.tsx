@@ -31,6 +31,30 @@ interface ClusterCardProps {
   strategy: string;
 }
 
+function getClusterReadiness(cohortSize: number, representedClusters: number) {
+  if (cohortSize >= 12 && representedClusters >= 3) {
+    return {
+      label: 'Comparative reading is stronger',
+      note: 'The cohort contains enough cases and profile spread to make cluster placement more informative for teacher comparison.',
+      accent: 'var(--teal)',
+    };
+  }
+
+  if (cohortSize >= 4 && representedClusters >= 2) {
+    return {
+      label: 'Comparative reading is limited',
+      note: 'The cluster view can still orient teacher attention, but profile labels should be handled cautiously because the cohort is still small.',
+      accent: 'var(--gold)',
+    };
+  }
+
+  return {
+    label: 'Comparative reading is weak',
+    note: 'Low cohort variety can make learner groupings unstable. Use this station only as a visual hint, not as a stable typology.',
+    accent: 'var(--red)',
+  };
+}
+
 const getClusterColor = (cluster: ClusterName) => {
   switch (cluster) {
     case 'Engaged-Developing':
@@ -106,6 +130,8 @@ export function Station06() {
   );
 
   const activeCluster = student ? getClusterNameFromLabel(student.cluster_label) : null;
+  const representedClusters = Object.values(clusterCounts).filter((count) => count > 0).length;
+  const readiness = getClusterReadiness(cohortSize, representedClusters);
 
   return (
     <PipelineLayout
@@ -153,6 +179,20 @@ export function Station06() {
             <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Teacher Use</div>
             <div className="font-forensic text-lg text-[var(--gold)]">Profile Reading</div>
             <div className="font-body text-xs text-[var(--text-sec)] mt-1">Use cluster position for comparison, then interpret its pedagogical meaning from real case evidence.</div>
+          </GlassCard>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+          <GlassCard className="p-5">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Cluster Trust Conditions</div>
+            <div className="font-forensic text-lg" style={{ color: readiness.accent }}>{readiness.label}</div>
+            <p className="font-body text-sm text-[var(--text-sec)] mt-2 leading-relaxed">{readiness.note}</p>
+          </GlassCard>
+          <GlassCard className="p-5">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Comparative Reading Note</div>
+            <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+              Dataset structure matters more than algorithm prestige alone. If the exercise data do not show a clear pattern, clustering can become visually impressive but pedagogically weak.
+            </p>
           </GlassCard>
         </div>
 
@@ -237,6 +277,9 @@ export function Station06() {
           <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
             Clustering answers a comparative question: which learners in the imported cohort show similar behavioural and writing profiles? It does not replace teacher judgment. The educational meaning of each profile still depends on the selected learner&apos;s rubric, writing samples, feedback uptake, and revision trace.
+          </p>
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mt-3">
+            Higher-level teacher actions should follow from these profile signals only after they are checked against the writing sample, rubric evidence, and revision history. In this build, cluster labels are therefore prompts for comparison, not final classifications of the learner.
           </p>
         </GlassCard>
 
