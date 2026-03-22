@@ -1,88 +1,140 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { PipelineLayout, StationHeader, StationFooter } from '../layouts/PipelineLayout';
 import { GlassCard } from '../components/GlassCard';
 import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
+import { getSelectedStudyCase, useStudyScopeStore } from '../state/studyScope';
 
-const variables = [
-  { shortLabel: 'TTR', label: 'Lexical Variety' },
-  { shortLabel: 'Cohesion', label: 'Cohesion' },
-  { shortLabel: 'Lexical', label: 'Academic Lexis' },
-  { shortLabel: 'Grammar', label: 'Grammar Accuracy' },
-  { shortLabel: 'Arg', label: 'Argument Quality' },
-  { shortLabel: 'Score', label: 'Writing Score' },
-  { shortLabel: 'Revision', label: 'Revision Frequency' },
-  { shortLabel: 'Time', label: 'Time on Task' },
-];
+interface SignalVariable {
+  shortLabel: string;
+  label: string;
+  normalized: number;
+  sourceNote: string;
+}
 
-const evidenceMatrix = [
-  [1.0, 0.62, 0.71, 0.55, 0.48, 0.52, 0.36, 0.28],
-  [0.62, 1.0, 0.58, 0.66, 0.74, 0.78, 0.63, 0.44],
-  [0.71, 0.58, 1.0, 0.6, 0.54, 0.64, 0.32, 0.26],
-  [0.55, 0.66, 0.6, 1.0, 0.69, 0.73, 0.57, 0.35],
-  [0.48, 0.74, 0.54, 0.69, 1.0, 0.81, 0.67, 0.42],
-  [0.52, 0.78, 0.64, 0.73, 0.81, 1.0, 0.76, 0.46],
-  [0.36, 0.63, 0.32, 0.57, 0.67, 0.76, 1.0, 0.59],
-  [0.28, 0.44, 0.26, 0.35, 0.42, 0.46, 0.59, 1.0],
-];
+interface PlotPoint {
+  x: number;
+  y: number;
+  id: string;
+}
 
-const plot1Data = [
-  { x: 1, y: 2.1, id: 'Intro draft' },
-  { x: 2, y: 2.8, id: 'Body paragraph 1' },
-  { x: 3, y: 3.3, id: 'Body paragraph 2' },
-  { x: 4, y: 3.7, id: 'Final revision' },
-];
+interface MatrixCellSelection {
+  row: number;
+  col: number;
+  val: number;
+}
 
-const plot2Data = [
-  { x: 1, y: 2.1, id: 'Initial feedback' },
-  { x: 2, y: 2.9, id: 'Viewed and revised intro' },
-  { x: 3, y: 3.4, id: 'Body paragraph response' },
-  { x: 4, y: 3.7, id: 'Final follow-up' },
-];
-
-const plot3Data = [
-  { x: 90, y: 112, id: 'Intro draft' },
-  { x: 130, y: 186, id: 'Body paragraph 1' },
-  { x: 160, y: 200, id: 'Body paragraph 2' },
-  { x: 180, y: 199, id: 'Final revision' },
-];
+const clamp = (value: number, min = 0, max = 1) => Math.max(min, Math.min(max, value));
 
 const getColorForAlignment = (value: number) => {
   if (value === 1) return 'rgba(24, 32, 52, 0.95)';
-
-  if (value >= 0.75) {
-    return 'rgba(196, 181, 253, 0.92)';
-  }
-
-  if (value >= 0.55) {
-    return 'rgba(124, 214, 197, 0.82)';
-  }
-
+  if (value >= 0.75) return 'rgba(196, 181, 253, 0.92)';
+  if (value >= 0.55) return 'rgba(124, 214, 197, 0.82)';
   return 'rgba(148, 163, 184, 0.48)';
 };
 
 const getTextColorForAlignment = (value: number) => {
-  if (value === 1 || value < 0.55) {
-    return 'var(--text-primary)';
-  }
-
+  if (value === 1 || value < 0.55) return 'var(--text-primary)';
   return 'var(--bg-deep)';
 };
 
 const getStrengthBand = (value: number) => {
-  if (value >= 0.75) {
-    return 'strong';
-  }
-
-  if (value >= 0.55) {
-    return 'moderate';
-  }
-
+  if (value >= 0.75) return 'strong';
+  if (value >= 0.55) return 'moderate';
   return 'limited';
 };
 
+function buildAlignmentMatrix(variables: SignalVariable[]) {
+  return variables.map((rowVariable, rowIndex) =>
+    variables.map((columnVariable, colIndex) => {
+      if (rowIndex === colIndex) {
+        return 1;
+      }
+
+      const proximity = 1 - Math.abs(rowVariable.normalized - columnVariable.normalized);
+      return Number((0.2 + clamp(proximity) * 0.8).toFixed(2));
+    })
+  );
+}
+
+function buildRevisionScorePlot(scoreJourney: Array<{ name: string; score: number }>): PlotPoint[] {
+  return scoreJourney.map((checkpoint, index) => ({
+    x: index + 1,
+    y: checkpoint.score,
+    id: checkpoint.name,
+  }));
+}
+
+function buildFeedbackPlot(feedbackEvents: number, scoreJourney: Array<{ name: string; score: number }>): PlotPoint[] {
+  const steps = Math.max(scoreJourney.length, 1);
+
+  return scoreJourney.map((checkpoint, index) => ({
+    x: Number((((index + 1) / steps) * Math.max(feedbackEvents, 1)).toFixed(1)),
+    y: checkpoint.score,
+    id: checkpoint.name,
+  }));
+}
+
+function buildTimeWordCountPlot(wordCounts: number[], estimatedMinutes: number): PlotPoint[] {
+  const usableWordCounts = wordCounts.length > 0 ? wordCounts : [0];
+  const stepMinutes = estimatedMinutes > 0 ? estimatedMinutes / usableWordCounts.length : 0;
+
+  return usableWordCounts.map((wordCount, index) => ({
+    x: Number((stepMinutes * (index + 1)).toFixed(0)),
+    y: wordCount,
+    id: `Checkpoint ${index + 1}`,
+  }));
+}
+
 export function Station05() {
-  const [selectedCell, setSelectedCell] = useState<{ row: number; col: number; val: number } | null>(null);
+  const [selectedCell, setSelectedCell] = useState<MatrixCellSelection | null>(null);
+  const cases = useStudyScopeStore((state) => state.cases);
+  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
+  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
+
+  const student = selectedCase?.student;
+  const comparisonMetrics = selectedCase?.writing.comparison.metrics ?? [];
+  const feedbackEvents = selectedCase?.student.feedback_views ?? 0;
+  const estimatedMinutes = selectedCase?.activity.estimatedActiveMinutes ?? 0;
+  const wordCounts = selectedCase?.writing.artifacts.map((artifact) => artifact.wordCount) ?? [];
+  const commentary = selectedCase?.writing.comparison.commentary ?? [];
+
+  const variables = useMemo<SignalVariable[]>(() => {
+    if (!student) {
+      return [];
+    }
+
+    return [
+      { shortLabel: 'TTR', label: 'Lexical Variety', normalized: clamp(student.ttr), sourceNote: `Scaled TTR ${student.ttr.toFixed(2)}` },
+      { shortLabel: 'Cohesion', label: 'Cohesion', normalized: clamp(student.cohesion / 5), sourceNote: `Cohesion ${student.cohesion.toFixed(1)} / 5` },
+      { shortLabel: 'Lexical', label: 'Academic Lexis', normalized: clamp(student.lexical_resource / 5), sourceNote: `Lexical resource ${student.lexical_resource.toFixed(1)} / 5` },
+      { shortLabel: 'Grammar', label: 'Grammar Accuracy', normalized: clamp(student.grammar_accuracy / 5), sourceNote: `Grammar accuracy ${student.grammar_accuracy.toFixed(1)} / 5` },
+      { shortLabel: 'Arg', label: 'Argument Quality', normalized: clamp(student.argumentation / 5), sourceNote: `Argumentation ${student.argumentation.toFixed(1)} / 5` },
+      { shortLabel: 'Score', label: 'Writing Score', normalized: clamp(student.total_score / 25), sourceNote: `Observed score ${student.total_score.toFixed(1)} / 25` },
+      { shortLabel: 'Revision', label: 'Revision Frequency', normalized: clamp(student.revision_frequency / 6), sourceNote: `${student.revision_frequency} tracked revision moves` },
+      { shortLabel: 'Time', label: 'Time on Task', normalized: clamp((selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task) / 240), sourceNote: `${selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task} estimated minutes` },
+    ];
+  }, [selectedCase?.activity.estimatedActiveMinutes, student]);
+
+  const evidenceMatrix = useMemo(() => buildAlignmentMatrix(variables), [variables]);
+  const revisionScorePlot = useMemo(() => buildRevisionScorePlot(selectedCase?.scoreJourney ?? []), [selectedCase?.scoreJourney]);
+  const feedbackPlot = useMemo(() => buildFeedbackPlot(feedbackEvents, selectedCase?.scoreJourney ?? []), [feedbackEvents, selectedCase?.scoreJourney]);
+  const timeWordCountPlot = useMemo(() => buildTimeWordCountPlot(wordCounts, estimatedMinutes), [wordCounts, estimatedMinutes]);
+
+  const strongestPair = useMemo<MatrixCellSelection | null>(() => {
+    let current: MatrixCellSelection | null = null;
+
+    evidenceMatrix.forEach((row, rowIndex) => {
+      row.forEach((value, colIndex) => {
+        if (rowIndex === colIndex) return;
+        if (!current || value > current.val) {
+          current = { row: rowIndex, col: colIndex, val: value };
+        }
+      });
+    });
+
+    return current;
+  }, [evidenceMatrix]);
 
   const handleCellClick = (row: number, col: number, val: number) => {
     if (row === col) return;
@@ -91,25 +143,36 @@ export function Station05() {
 
   return (
     <PipelineLayout
+      verifiedEnabled={Boolean(selectedCase && student)}
+      unavailableTitle="Verified Evidence Matrix Unavailable"
+      unavailableMessage="Import and select a workbook-backed case first. This station builds an evidence map from that selected learner trace."
       rightPanel={
-        <PedagogicalInsightBadge
-          urgency="positive"
-          label="Evidence Link Matrix"
-          observation="Feedback use, revision frequency, and later score recovery form the strongest link set in this case."
-          implication="The writing gains are best explained by iterative uptake of instructor feedback, not by raw time alone."
-          action="Keep the case on short feedback cycles and continue tying comments to one concrete structural target."
-          citation="Mislevy (1994) - Evidence-Centered Design in Assessment"
-        />
+        strongestPair && variables.length > 0 ? (
+          <PedagogicalInsightBadge
+            urgency="positive"
+            label="Evidence Link Matrix"
+            observation={`${variables[strongestPair.row].label} and ${variables[strongestPair.col].label} form the strongest alignment pair in this selected case.`}
+            implication="This matrix does not report population correlation. It maps how closely the case signals move together after normalization from workbook evidence."
+            action="Use the strongest pair as a teacher-reading prompt, then confirm it against the text comparison, feedback trace, and revision sequence."
+            citation="Mislevy (1994) - Evidence-Centered Design in Assessment"
+          />
+        ) : undefined
       }
     >
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-32">
-        <StationHeader id={5} title="Evidence Alignment Matrix" />
+        <StationHeader id={5} title="Evidence Alignment Matrix" subtitle="Layer 6: Case-Signal Alignment (Evidence Mapping)" />
+
+        <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+            This station preserves the advanced matrix view, but the values are now built from normalized workbook-derived signals in the selected case. They should be read as within-case evidence alignment, not as cohort correlation coefficients.
+          </p>
+        </GlassCard>
 
         <div className="grid grid-cols-1 xl:grid-cols-5 gap-8 mb-8">
-          <GlassCard elevation="high" className="xl:col-span-3 p-6 md:p-8 overflow-x-auto" pedagogicalLabel="The matrix visualises how process signals align with outcome signals inside one verified case.">
+          <GlassCard elevation="high" className="xl:col-span-3 p-6 md:p-8 overflow-x-auto" pedagogicalLabel="The matrix visualises how behavioural, writing, and outcome signals align inside the selected verified case.">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Case Signal Alignment</h3>
             <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mb-6">
-              This is an evidence-alignment matrix for one verified case. The cell values are expert-coded link strengths drawn from the workbook trail, not population correlations.
+              Each cell is a normalized proximity score built from the selected student's workbook metrics. It helps the teacher inspect which process and product signals move together inside one learner trace.
             </p>
 
             <div className="min-w-[620px]">
@@ -129,7 +192,7 @@ export function Station05() {
               <div className="flex flex-col gap-1 mt-4">
                 {evidenceMatrix.map((row, rowIndex) => (
                   <div key={`row-${rowIndex}`} className="flex gap-1 items-center">
-                    <div className="w-32 shrink-0 font-navigation text-xs text-[var(--text-sec)] text-right pr-4 leading-snug" title={variables[rowIndex].label}>
+                    <div className="w-32 shrink-0 font-navigation text-xs text-[var(--text-sec)] text-right pr-4 leading-snug" title={variables[rowIndex].sourceNote}>
                       {variables[rowIndex].label}
                     </div>
                     {row.map((value, colIndex) => {
@@ -168,11 +231,11 @@ export function Station05() {
                   <div className="mt-2 text-xs">
                     <span className="font-forensic text-[var(--lav)] font-bold text-lg mr-2">strength = {selectedCell.val.toFixed(2)}</span>
                     <span className="text-[var(--text-sec)] border-l border-[var(--border)] pl-2">
-                      {getStrengthBand(selectedCell.val)} workbook-coded alignment
+                      {getStrengthBand(selectedCell.val)} within-case alignment
                     </span>
                   </div>
                   <p className="mt-3 text-[var(--text-sec)] leading-relaxed italic">
-                    &quot;Within this case, {variables[selectedCell.row].label} aligns {selectedCell.val >= 0.75 ? 'strongly' : selectedCell.val >= 0.55 ? 'moderately' : 'in a limited way'} with {variables[selectedCell.col].label}. The interpretation comes from dated revisions, feedback traces, and writing changes rather than population statistics.&quot;
+                    {variables[selectedCell.row].sourceNote}. {variables[selectedCell.col].sourceNote}. This cell helps the teacher inspect whether these two signals move closely enough to justify a pedagogical reading.
                   </p>
                 </div>
               </GlassCard>
@@ -194,51 +257,77 @@ export function Station05() {
             </div>
 
             <div className="mt-4 text-[11px] font-body text-[var(--text-muted)] italic">
-              Diagonal cells mark the same construct matched with itself. Off-diagonal cells represent interpreted alignment across behavioural, writing, and outcome signals.
+              Diagonal cells mark the same construct matched with itself. Off-diagonal cells show normalized alignment across process, writing, and score signals from the selected workbook case.
             </div>
           </GlassCard>
 
           <div className="xl:col-span-2 space-y-6">
             <GlassCard className="p-4 h-[200px]">
-              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Revision Count vs Score</h4>
+              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Revision Steps vs Score Journey</h4>
               <ResponsiveContainer width="100%" height="85%" minWidth={0} minHeight={140}>
                 <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                  <XAxis type="number" dataKey="x" name="Revision" hide />
+                  <XAxis type="number" dataKey="x" name="Revision Step" hide />
                   <YAxis type="number" dataKey="y" name="Score" domain={[1, 5]} hide />
                   <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border)' }} />
-                  <Scatter name="Checkpoints" data={plot1Data} fill="var(--teal)" />
+                  <Scatter name="Checkpoints" data={revisionScorePlot} fill="var(--teal)" />
                 </ScatterChart>
               </ResponsiveContainer>
             </GlassCard>
 
             <GlassCard className="p-4 h-[200px]">
-              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Feedback Touchpoints vs Score</h4>
+              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Feedback Touchpoints vs Score Journey</h4>
               <ResponsiveContainer width="100%" height="85%" minWidth={0} minHeight={140}>
                 <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                  <XAxis type="number" dataKey="x" name="Views" hide />
-                  <YAxis type="number" dataKey="y" name="Gain" hide />
+                  <XAxis type="number" dataKey="x" name="Feedback Events" hide />
+                  <YAxis type="number" dataKey="y" name="Score" domain={[1, 5]} hide />
                   <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border)' }} />
-                  <Scatter name="Checkpoints" data={plot2Data} fill="var(--teal)" />
+                  <Scatter name="Checkpoints" data={feedbackPlot} fill="var(--teal)" />
                 </ScatterChart>
               </ResponsiveContainer>
             </GlassCard>
 
             <GlassCard className="p-4 h-[200px]">
-              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Time on Task vs Word Count</h4>
+              <h4 className="text-[10px] font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-2">Time on Task vs Writing Volume</h4>
               <ResponsiveContainer width="100%" height="85%" minWidth={0} minHeight={140}>
                 <ScatterChart margin={{ top: 10, right: 10, bottom: 20, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
-                  <XAxis type="number" dataKey="x" name="Time" hide />
-                  <YAxis type="number" dataKey="y" name="Words" hide />
+                  <XAxis type="number" dataKey="x" name="Estimated Minutes" hide />
+                  <YAxis type="number" dataKey="y" name="Word Count" hide />
                   <Tooltip cursor={{ strokeDasharray: '3 3' }} contentStyle={{ backgroundColor: 'var(--bg-deep)', border: '1px solid var(--border)' }} />
-                  <Scatter name="Checkpoints" data={plot3Data} fill="var(--lav)" />
+                  <Scatter name="Checkpoints" data={timeWordCountPlot} fill="var(--lav)" />
                 </ScatterChart>
               </ResponsiveContainer>
             </GlassCard>
           </div>
         </div>
+
+        {comparisonMetrics.length > 0 || commentary.length > 0 ? (
+          <GlassCard className="p-6 md:p-8 mb-8">
+            <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-4">Comparison Anchors Used In This Matrix</h3>
+            {comparisonMetrics.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                {comparisonMetrics.slice(0, 4).map((metric) => (
+                  <div key={metric.label} className="rounded-2xl border border-[var(--border)] bg-[var(--bg-base)] p-4">
+                    <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-2">{metric.label}</div>
+                    <div className="font-body text-sm text-[var(--text-primary)]">{metric.before} → {metric.after}</div>
+                    <div className="font-forensic text-sm text-[var(--lav)] mt-1">Delta {metric.delta}</div>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+            {commentary.length > 0 ? (
+              <div className="space-y-2">
+                {commentary.slice(0, 3).map((item) => (
+                  <p key={item} className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+                    {item}
+                  </p>
+                ))}
+              </div>
+            ) : null}
+          </GlassCard>
+        ) : null}
 
         <StationFooter prevPath="/pipeline/4" nextPath="/pipeline/6" />
       </div>

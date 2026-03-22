@@ -67,6 +67,7 @@ export function Station06() {
   const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
   const clusteringAvailable = Boolean(selectedCase?.analytics?.clustering.available);
   const student = selectedCase?.student;
+  const cohortSize = selectedCase?.analytics?.cohort_size ?? 0;
 
   const centroids = selectedCase?.metrics?.cluster_centroids ?? [];
   const scatterData: ScatterPoint[] = student && clusteringAvailable
@@ -121,8 +122,8 @@ export function Station06() {
             urgency="monitor"
             label="Cluster Diagnostics"
             observation={`${student?.name} aligns with the ${activeCluster} profile in the verified imported cohort.`}
-            implication="The clustering output groups the learner with similar engagement and writing traces, but the pedagogical meaning still needs teacher interpretation."
-            action="Use this profile as a comparative signal, then confirm the teaching response from the workbook evidence and rubric."
+            implication="The clustering output places the learner near similar engagement and writing traces in the cohort, but the cluster label is still only an analytic grouping until the teacher interprets it pedagogically."
+            action="Use the cohort profile as a comparative signal, then confirm any teaching response from the workbook evidence, rubric, and revision history."
             citation="Gasevic et al. (2015) - Learning Analytics and Educational Data Mining"
           />
         ) : undefined
@@ -133,11 +134,29 @@ export function Station06() {
 
         <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            This screen uses verified clustering output from the imported workbook cohort. It opens only when the backend has enough cases to calculate K-Means clusters without fallback values.
+            This screen uses verified K-Means output from the imported workbook cohort. It opens only when the backend has enough unique learners to calculate clusters without fallback values, and the profile labels remain teacher-interpreted rather than automatically pedagogical.
           </p>
         </GlassCard>
 
-        <GlassCard elevation="high" className="p-6 md:p-8 mb-8 h-[500px] w-full relative" pedagogicalLabel="K-means centroids position the case against four reference profiles spanning engagement and performance.">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Status</div>
+            <div className="font-forensic text-lg text-[var(--teal)]">Verified K-Means</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Cluster output appears only when the imported cases are sufficient for verified cohort profiling.</div>
+          </GlassCard>
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Imported Cohort</div>
+            <div className="font-forensic text-lg text-[var(--lav)]">{cohortSize} cases</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">The selected learner is plotted against live cohort centroids rather than against static demo points.</div>
+          </GlassCard>
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Teacher Use</div>
+            <div className="font-forensic text-lg text-[var(--gold)]">Profile Reading</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Use cluster position for comparison, then interpret its pedagogical meaning from real case evidence.</div>
+          </GlassCard>
+        </div>
+
+        <GlassCard elevation="high" className="p-6 md:p-8 mb-8 h-[500px] w-full relative" pedagogicalLabel="K-means centroids position the case against cohort-derived engagement and performance profiles.">
           <div className="absolute top-8 left-8">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)]">Behavioral Profile Positioning</h3>
             <p className="font-body text-[var(--text-sec)] text-sm mb-6">Subject: {student?.name} (ID: {student?.student_id})</p>
@@ -213,6 +232,13 @@ export function Station06() {
             strategy="Trigger immediate support plans with close follow-up cycles."
           />
         </div>
+
+        <GlassCard className="p-6">
+          <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+            Clustering answers a comparative question: which learners in the imported cohort show similar behavioural and writing profiles? It does not replace teacher judgment. The educational meaning of each profile still depends on the selected learner&apos;s rubric, writing samples, feedback uptake, and revision trace.
+          </p>
+        </GlassCard>
 
         <StationFooter prevPath="/pipeline/5" nextPath="/pipeline/7" />
       </div>

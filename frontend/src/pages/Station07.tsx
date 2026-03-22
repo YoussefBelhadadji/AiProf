@@ -1,10 +1,8 @@
-import { useState } from 'react';
 import { PipelineLayout, StationHeader, StationFooter } from '../layouts/PipelineLayout';
 import { GlassCard } from '../components/GlassCard';
 import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
-import { Button } from '../components/Atoms';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip as RechartsTooltip, ResponsiveContainer, Cell, ScatterChart, Scatter, ReferenceLine } from 'recharts';
-import { RefreshCw, CheckCircle2, TrendingUp } from 'lucide-react';
+import { CheckCircle2, TrendingUp } from 'lucide-react';
 import { getSelectedStudyCase, useStudyScopeStore } from '../state/studyScope';
 
 interface FeatureBar {
@@ -22,13 +20,13 @@ function formatFeatureName(name: string) {
 }
 
 export function Station07() {
-  const [isCalculating, setIsCalculating] = useState(false);
   const cases = useStudyScopeStore((state) => state.cases);
   const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
   const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
   const predictionAvailable = Boolean(selectedCase?.analytics?.prediction.available);
   const metrics = selectedCase?.metrics?.rf_metrics;
   const student = selectedCase?.student;
+  const cohortSize = selectedCase?.analytics?.cohort_size ?? 0;
 
   const importance = selectedCase?.metrics?.rf_importance ?? [];
   const featureData: FeatureBar[] = importance.slice(0, 5).map((feature, index) => {
@@ -50,11 +48,6 @@ export function Station07() {
         },
       ]
     : [];
-
-  const handleRecalculate = () => {
-    setIsCalculating(true);
-    setTimeout(() => setIsCalculating(false), 2000);
-  };
 
   return (
     <PipelineLayout
@@ -83,7 +76,7 @@ export function Station07() {
 
         <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            This screen uses verified Random Forest output computed from the imported workbook cohort. It opens only when the backend has enough verified cases to train and evaluate the model without fallback values.
+            This screen uses verified Random Forest output computed from the imported workbook cohort. It opens only when the backend has enough verified cases to train and evaluate the model without fallback values, and the results are presented as decision support rather than automatic teaching judgment.
           </p>
         </GlassCard>
 
@@ -101,23 +94,32 @@ export function Station07() {
               <div className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] flex items-center justify-center text-[var(--lav)]"><CheckCircle2 size={20} /></div>
               <div>
                 <p className="font-forensic text-[var(--lav)] text-lg">R2: {metrics?.r2.toFixed(2)}</p>
-                <p className="font-body text-[10px] text-[var(--text-sec)]">Instance Variance Explained</p>
+                <p className="font-body text-[10px] text-[var(--text-sec)]">Variance explained in cohort evaluation</p>
               </div>
             </div>
           </div>
+        </div>
 
-          <Button
-            variant="secondary"
-            onClick={handleRecalculate}
-            disabled={isCalculating}
-            className="w-48 justify-center"
-          >
-            {isCalculating ? <RefreshCw className="animate-spin" size={16} /> : 'Validate Prediction'}
-          </Button>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Family</div>
+            <div className="font-forensic text-lg text-[var(--teal)]">Random Forest</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Used here to estimate writing performance from behaviour and text signals in the imported cohort.</div>
+          </GlassCard>
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Training Base</div>
+            <div className="font-forensic text-lg text-[var(--lav)]">{cohortSize} cases</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Prediction is shown only when the imported cohort is large enough for verified training and evaluation.</div>
+          </GlassCard>
+          <GlassCard className="p-4">
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Teacher Use</div>
+            <div className="font-forensic text-lg text-[var(--gold)]">Decision Support</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Feature importance highlights what the model noticed, but the teacher still decides what matters pedagogically.</div>
+          </GlassCard>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <GlassCard elevation="high" className="p-6 md:p-8 h-[450px]" pedagogicalLabel="Random Forest feature importance identifies the strongest individual predictors for Asmaa's learning path.">
+          <GlassCard elevation="high" className="p-6 md:p-8 h-[450px]" pedagogicalLabel="Random Forest feature importance identifies the strongest variables in the selected learner's cohort-backed score estimate.">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Predictive Feature Importance</h3>
             <p className="font-body text-[var(--text-sec)] text-xs mb-6">Variables most influential in the selected learner's score estimate within the imported cohort.</p>
 
@@ -136,7 +138,7 @@ export function Station07() {
             </ResponsiveContainer>
           </GlassCard>
 
-          <GlassCard elevation="high" className="p-6 md:p-8 h-[450px]" pedagogicalLabel="The single point represents Asmaa's current alignment between predicted potential and actual achievement.">
+          <GlassCard elevation="high" className="p-6 md:p-8 h-[450px]" pedagogicalLabel="The single point represents the selected learner's current alignment between predicted and observed achievement.">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Prediction vs Actual (Case Study)</h3>
             <p className="font-body text-[var(--text-sec)] text-xs mb-6">Mapping the selected student's predicted and observed result on the same 25-point scale.</p>
 
@@ -160,6 +162,13 @@ export function Station07() {
             </div>
           </GlassCard>
         </div>
+
+        <GlassCard className="p-6">
+          <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+            Random Forest answers a predictive question: which variables in the imported cohort are most associated with writing performance or improvement? The model output is retained here as advanced analytic support, while the teacher remains responsible for interpreting whether the predicted pattern should change feedback, diagnosis, or instruction.
+          </p>
+        </GlassCard>
 
         <StationFooter prevPath="/pipeline/6" nextPath="/pipeline/8" />
       </div>
