@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { ResearchShell } from '../layouts/ResearchShell';
 import { GlassCard } from '../components/GlassCard';
 import { StatusChip, Button } from '../components/Atoms';
-import { FileText, Download, TrendingUp, AlertCircle, LayoutGrid, Filter } from 'lucide-react';
+import { FileText, Download, TrendingUp, AlertCircle, LayoutGrid, Filter, Printer } from 'lucide-react';
 import { AIEngines } from '../components/AIEngines';
 import { StudyScopePanel } from '../components/StudyScopePanel';
 import {
@@ -30,9 +30,228 @@ const variableNotes: Record<StudyVariableId, string> = {
   private_messages: 'Teacher-student messages and the threshold interpretation layer.',
 };
 
+const REPORT_DOCUMENT_CSS = `
+  body {
+    margin: 0;
+    background: #edf1f7;
+    color: #162033;
+    font-family: Georgia, "Times New Roman", serif;
+  }
+  .report-shell {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 40px 28px 64px;
+  }
+  .report-page {
+    background: #ffffff;
+    border-radius: 28px;
+    border: 1px solid rgba(27, 39, 76, 0.12);
+    box-shadow: 0 20px 70px rgba(9, 15, 35, 0.12);
+    overflow: hidden;
+  }
+  .report-cover {
+    background: linear-gradient(135deg, #152346 0%, #1d3c7d 52%, #f1e1c4 100%);
+    color: #f9fbff;
+    padding: 44px 46px 36px;
+  }
+  .report-kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font: 600 11px/1.4 Arial, sans-serif;
+    opacity: 0.88;
+  }
+  .report-title {
+    font-size: 42px;
+    line-height: 1.05;
+    margin: 18px 0 12px;
+    font-style: italic;
+  }
+  .report-subtitle {
+    font: 15px/1.8 Arial, sans-serif;
+    max-width: 760px;
+    opacity: 0.95;
+  }
+  .report-meta-grid,
+  .report-stat-grid,
+  .report-dual-grid {
+    display: grid;
+    gap: 18px;
+  }
+  .report-meta-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin-top: 28px;
+  }
+  .report-stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+  .report-dual-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+  .report-meta-card,
+  .report-card {
+    background: #ffffff;
+    border: 1px solid rgba(22, 32, 51, 0.1);
+    border-radius: 20px;
+    padding: 18px 20px;
+  }
+  .report-meta-card {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: rgba(255, 255, 255, 0.18);
+  }
+  .report-meta-label,
+  .report-card-label {
+    font: 600 11px/1.4 Arial, sans-serif;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #6b7691;
+  }
+  .report-meta-value {
+    margin-top: 8px;
+    font-size: 18px;
+    line-height: 1.35;
+    color: #ffffff;
+  }
+  .report-card-value {
+    margin-top: 10px;
+    font-size: 26px;
+    line-height: 1.1;
+    color: #162033;
+  }
+  .report-card-note {
+    margin-top: 10px;
+    color: #4d5770;
+    font: 13px/1.7 Arial, sans-serif;
+  }
+  .report-body {
+    padding: 34px 38px 42px;
+  }
+  .report-section {
+    margin-top: 22px;
+  }
+  .report-section:first-child {
+    margin-top: 0;
+  }
+  .report-section-title {
+    font-size: 24px;
+    margin: 0 0 14px;
+    color: #14203b;
+    font-style: italic;
+  }
+  .report-text,
+  .report-list,
+  .report-table {
+    font: 14px/1.75 Arial, sans-serif;
+    color: #33405e;
+  }
+  .report-list {
+    margin: 0;
+    padding-left: 18px;
+  }
+  .report-table-wrap {
+    border: 1px solid rgba(22, 32, 51, 0.1);
+    border-radius: 18px;
+    overflow: hidden;
+  }
+  .report-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  .report-table th,
+  .report-table td {
+    padding: 14px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid rgba(22, 32, 51, 0.08);
+  }
+  .report-table th {
+    background: #eef3fb;
+    text-align: left;
+    color: #213054;
+    font: 700 11px/1.4 Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .report-table tr:last-child td {
+    border-bottom: none;
+  }
+  .report-value {
+    white-space: nowrap;
+    color: #18233f;
+    font-family: "Courier New", monospace;
+  }
+  .report-timeline {
+    display: grid;
+    gap: 14px;
+  }
+  .report-timeline-item {
+    border-left: 3px solid #2b5cab;
+    padding-left: 16px;
+  }
+  .report-timeline-date {
+    font: 700 11px/1.4 Arial, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: #2b5cab;
+  }
+  .report-timeline-title {
+    margin: 4px 0 2px;
+    color: #18233f;
+    font-size: 16px;
+  }
+  .report-pill-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .report-pill {
+    border-radius: 999px;
+    padding: 8px 12px;
+    background: #eef3fb;
+    color: #213054;
+    font: 600 12px/1.4 Arial, sans-serif;
+  }
+  .report-footer {
+    margin-top: 30px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(22, 32, 51, 0.12);
+    color: #5b6784;
+    font: 12px/1.8 Arial, sans-serif;
+  }
+  @media print {
+    body {
+      background: #ffffff;
+    }
+    .report-shell {
+      max-width: none;
+      padding: 0;
+    }
+    .report-page {
+      box-shadow: none;
+      border: none;
+      border-radius: 0;
+    }
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+  }
+`;
+
+function toSentenceCase(value: string) {
+  return value.charAt(0).toUpperCase() + value.slice(1);
+}
+
+function escapeHtml(value: string) {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 export function Reports() {
   const [activeTab, setActiveTab] = useState('Overview');
-  const tabs = ['Overview', 'AI Architecture', 'Export'];
+  const tabs = ['Overview', 'AI Architecture', 'Final Report'];
   const cases = useStudyScopeStore((state) => state.cases);
   const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
   const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
@@ -53,21 +272,65 @@ export function Reports() {
       }));
   }, [selectedCase, selectedVariableIds]);
 
+  const executiveSummary = useMemo(() => {
+    const taskLabel = selectedTask ? selectedTask.title : 'the full workbook-backed case';
+    return `${selectedCase.meta.studentName} is currently classified as ${selectedCase.clusterName} with a ${selectedCase.riskLevel} risk status. Across ${taskLabel}, the clearest strengths are sustained engagement, repeated feedback uptake, and visible revision effort. The main remaining instructional need is ${selectedCase.meta.dominantNeed}.`;
+  }, [selectedCase, selectedTask]);
+
+  const downloadHtmlReport = () => {
+    const reportNode = document.getElementById('final-report');
+
+    if (!reportNode) {
+      return;
+    }
+
+    const html = `<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Final Research Report - ${escapeHtml(selectedCase.meta.studentName)}</title>
+    <style>${REPORT_DOCUMENT_CSS}</style>
+  </head>
+  <body>
+    <div class="report-shell">
+      ${reportNode.outerHTML}
+    </div>
+  </body>
+</html>`;
+
+    const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    const safeName = selectedCase.meta.studentName.toLowerCase().replace(/\s+/g, '-');
+
+    link.href = url;
+    link.download = `final-report-${safeName}.html`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
+
+  const printReport = () => {
+    window.print();
+  };
+
   return (
     <ResearchShell>
       <div className="max-w-7xl mx-auto p-6 md:p-8 space-y-8 pb-32">
         <header className="mb-2">
           <h1 className="font-editorial italic text-3xl font-medium text-[var(--text-primary)]">
-            Filtered Research Reports
+            Final Research Reports
           </h1>
           <p className="font-body text-[var(--text-sec)] text-sm mt-1">
-            Export-ready outputs for the currently selected student, task, and variables.
+            A polished HTML report for academic review, printing, and PDF export.
           </p>
         </header>
 
         <StudyScopePanel
           title="Report Scope"
-          subtitle="These controls determine which student, which exercise, and which indicators appear in the report tables below."
+          subtitle="These controls determine which student, which exercise, and which indicators appear in the final report."
         />
 
         <div className="flex gap-6 border-b border-[var(--border)] overflow-x-auto">
@@ -92,17 +355,17 @@ export function Reports() {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
                 <div>
                   <div className="flex items-center gap-4 mb-2">
-                    <h2 className="font-editorial text-2xl text-[var(--text-primary)]">Scope-aware report</h2>
+                    <h2 className="font-editorial text-2xl text-[var(--text-primary)]">Final report package</h2>
                     <StatusChip variant="teal" className="text-[10px]">READY</StatusChip>
                   </div>
                   <p className="font-body text-[var(--text-sec)] text-sm max-w-3xl">
                     Student: {selectedCase.meta.studentName}. Task: {selectedTask ? selectedTask.title : 'Full case overview'}. Variables: {selectedVariableIds.length} active.
                   </p>
                 </div>
-                <div className="flex justify-end gap-3 w-full md:w-auto mt-4 md:mt-0">
-                  <Button variant="ghost"><LayoutGrid size={16} /> Preview dossier</Button>
-                  <Button variant="secondary"><FileText size={16} /> Generate PDF</Button>
-                  <Button><Download size={16} /> Export scoped notes</Button>
+                <div className="flex justify-end gap-3 w-full md:w-auto mt-4 md:mt-0 flex-wrap">
+                  <Button variant="ghost" onClick={() => setActiveTab('Final Report')}><LayoutGrid size={16} /> Open final dossier</Button>
+                  <Button variant="secondary" onClick={printReport}><Printer size={16} /> Save as PDF</Button>
+                  <Button onClick={downloadHtmlReport}><Download size={16} /> Download HTML</Button>
                 </div>
               </div>
             </GlassCard>
@@ -134,57 +397,10 @@ export function Reports() {
               </GlassCard>
             </div>
 
-            <div className="space-y-4">
-              <div className="flex items-center gap-2 mb-2">
-                <TrendingUp size={18} className="text-[var(--lav)]" />
-                <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)]">Variable table</h3>
-              </div>
-              <p className="font-body text-[var(--text-sec)] text-sm mb-4">
-                Only the variables currently active in the study scope appear here.
-              </p>
-
-              <div className="bg-[var(--bg-card)] border border-[var(--border)] rounded-lg overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left font-body text-sm">
-                    <thead>
-                      <tr className="border-b border-[var(--border)] bg-[var(--bg-raised)] text-[var(--text-sec)] font-navigation text-xs uppercase tracking-wider">
-                        <th className="px-6 py-3 font-medium">Indicator</th>
-                        <th className="px-4 py-3 font-medium text-right">Value</th>
-                        <th className="px-6 py-3 font-medium">Interpretation</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[var(--border)] text-[var(--text-primary)]">
-                      {reportRows.map((row) => (
-                        <tr key={row.label} className="hover:bg-[var(--bg-raised)]">
-                          <td className="px-6 py-3">{row.label}</td>
-                          <td className="px-4 py-3 text-right font-forensic">{row.value}</td>
-                          <td className="px-6 py-3 text-[var(--text-sec)]">{row.note}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-[var(--bg-high)] rounded-xl border border-[var(--border-bright)] p-8 mt-12 relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-[var(--teal)] to-transparent opacity-10 blur-3xl rounded-bl-full" />
-              <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-                <div>
-                  <h2 className="font-editorial text-2xl text-[var(--text-primary)] mb-2 flex items-center gap-3">
-                    <AlertCircle className="text-[var(--gold)]" /> Report interpretation cue
-                  </h2>
-                  <p className="font-body text-[var(--text-sec)] text-sm max-w-xl">
-                    Dominant need: {selectedCase.meta.dominantNeed}. This summary remains aligned with the same student and exercise selected above.
-                  </p>
-                </div>
-                <div className="w-full md:w-auto mt-4 md:mt-0">
-                  <Button className="w-full md:w-auto" variant="primary">
-                    <Download size={18} /> Download filtered summary
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <GlassCard className="p-6 md:p-8">
+              <h3 className="font-editorial text-2xl text-[var(--text-primary)] mb-3">Executive preview</h3>
+              <p className="font-body text-[var(--text-sec)] leading-7">{executiveSummary}</p>
+            </GlassCard>
           </div>
         )}
 
@@ -192,17 +408,258 @@ export function Reports() {
           <AIEngines />
         )}
 
-        {activeTab === 'Export' && (
-          <GlassCard className="p-6 md:p-8">
-            <h2 className="font-editorial text-2xl text-[var(--text-primary)] mb-4">Export package</h2>
-            <p className="font-body text-[var(--text-sec)] text-sm mb-6">
-              Includes the current student selection, the chosen exercise, active variables, and the scoped report table.
-            </p>
-            <div className="flex gap-3 flex-wrap">
-              <Button><Download size={16} /> Export scoped markdown</Button>
-              <Button variant="secondary"><FileText size={16} /> Export PDF memo</Button>
+        {activeTab === 'Final Report' && (
+          <div className="space-y-6">
+            <GlassCard className="p-5 flex flex-wrap gap-3 items-center justify-between print-hidden">
+              <div>
+                <h2 className="font-editorial text-2xl text-[var(--text-primary)]">Printable Academic Report</h2>
+                <p className="font-body text-sm text-[var(--text-sec)] mt-1">
+                  Designed for formal review by the instructor and direct export to PDF.
+                </p>
+              </div>
+              <div className="flex gap-3 flex-wrap">
+                <Button variant="secondary" onClick={printReport}><Printer size={16} /> Print / Save PDF</Button>
+                <Button onClick={downloadHtmlReport}><FileText size={16} /> Download HTML</Button>
+              </div>
+            </GlassCard>
+
+            <div className="report-shell">
+              <article id="final-report" className="report-page">
+                <header className="report-cover">
+                  <div className="report-kicker">Adaptive Blended Assessment Research Dossier</div>
+                  <h1 className="report-title">Final Analytical Report for Instructor Review</h1>
+                  <p className="report-subtitle">
+                    A structured synthesis of the verified workbook evidence, writing development indicators, feedback uptake, and instructional implications for the selected student case.
+                  </p>
+
+                  <div className="report-meta-grid">
+                    <div className="report-meta-card">
+                      <div className="report-meta-label">Student</div>
+                      <div className="report-meta-value">{selectedCase.meta.studentName}</div>
+                    </div>
+                    <div className="report-meta-card">
+                      <div className="report-meta-label">Course</div>
+                      <div className="report-meta-value">{selectedCase.meta.courseTitle}</div>
+                    </div>
+                    <div className="report-meta-card">
+                      <div className="report-meta-label">Instructor</div>
+                      <div className="report-meta-value">{selectedCase.meta.instructor}</div>
+                    </div>
+                    <div className="report-meta-card">
+                      <div className="report-meta-label">Report Date</div>
+                      <div className="report-meta-value">{selectedCase.meta.reportGenerated}</div>
+                    </div>
+                  </div>
+                </header>
+
+                <div className="report-body">
+                  <section className="report-section">
+                    <h2 className="report-section-title">Executive Summary</h2>
+                    <p className="report-text">
+                      {executiveSummary}
+                    </p>
+                  </section>
+
+                  <section className="report-section">
+                    <div className="report-stat-grid">
+                      <div className="report-card">
+                        <div className="report-card-label">Risk Status</div>
+                        <div className="report-card-value">{toSentenceCase(selectedCase.riskLevel)}</div>
+                        <div className="report-card-note">The current profile remains under monitoring because engagement is stronger than argument support.</div>
+                      </div>
+                      <div className="report-card">
+                        <div className="report-card-label">Cluster Profile</div>
+                        <div className="report-card-value">{selectedCase.clusterName}</div>
+                        <div className="report-card-note">This profile reflects a learner who revises, seeks clarification, and responds to feedback windows.</div>
+                      </div>
+                      <div className="report-card">
+                        <div className="report-card-label">Assignments Submitted</div>
+                        <div className="report-card-value">{selectedCase.meta.totalAssignmentsSubmitted}</div>
+                        <div className="report-card-note">Coverage across the observed semester trace documented in the workbook export.</div>
+                      </div>
+                      <div className="report-card">
+                        <div className="report-card-label">Activity Log Entries</div>
+                        <div className="report-card-value">{selectedCase.meta.activityLogEntries}</div>
+                        <div className="report-card-note">The report draws on timestamped Moodle interaction evidence and writing artefacts.</div>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="report-section report-dual-grid">
+                    <div className="report-card">
+                      <div className="report-card-label">Case Profile</div>
+                      <div className="report-card-note">
+                        <strong>Task scope:</strong> {selectedTask ? `${selectedTask.title} (${selectedTask.date})` : `Full case overview (${selectedCase.meta.periodCovered})`}
+                      </div>
+                      <div className="report-card-note">
+                        <strong>Dominant instructional need:</strong> {selectedCase.meta.dominantNeed}
+                      </div>
+                      <div className="report-card-note">
+                        <strong>Triggered rules:</strong> {selectedCase.workspace.ruleTriggered}
+                      </div>
+                      <div className="report-card-note">
+                        <strong>Personalized feedback orientation:</strong> {selectedCase.student.feedback_types.replace(/;/g, ', ')}
+                      </div>
+                      <div className="report-card-note">
+                        <strong>Planned intervention logic:</strong> {selectedCase.student.onsite_interventions.replace(/;/g, ', ')}
+                      </div>
+                    </div>
+
+                    <div className="report-card">
+                      <div className="report-card-label">Instructor Signal</div>
+                      <div className="report-card-note">
+                        {selectedCase.student.personalized_feedback}
+                      </div>
+                      {selectedCase.communication.instructorComments[0] && (
+                        <div className="report-card-note">
+                          <strong>Most explicit teacher note:</strong> {selectedCase.communication.instructorComments[0].note ?? selectedCase.communication.instructorComments[0].comment}
+                        </div>
+                      )}
+                    </div>
+                  </section>
+
+                  <section className="report-section">
+                    <h2 className="report-section-title">Scoped Analytical Table</h2>
+                    <div className="report-table-wrap">
+                      <table className="report-table">
+                        <thead>
+                          <tr>
+                            <th>Indicator</th>
+                            <th>Value</th>
+                            <th>Interpretation</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {reportRows.map((row) => (
+                            <tr key={row.label}>
+                              <td>{row.label}</td>
+                              <td className="report-value">{row.value}</td>
+                              <td>{row.note}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </section>
+
+                  <section className="report-section report-dual-grid">
+                    <div className="report-card">
+                      <h2 className="report-section-title">Evidence Timeline</h2>
+                      <div className="report-timeline">
+                        {selectedCase.activity.trace.slice(0, 6).map((entry) => (
+                          <div key={`${entry.timestamp}-${entry.event}`} className="report-timeline-item">
+                            <div className="report-timeline-date">{entry.timestamp}</div>
+                            <h3 className="report-timeline-title">{entry.event}</h3>
+                            <div className="report-text">{entry.context}</div>
+                            <div className="report-text">{entry.detail}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="report-card">
+                      <h2 className="report-section-title">Revision Highlights</h2>
+                      <div className="report-timeline">
+                        {selectedCase.activity.highlightedSessions.map((session) => (
+                          <div key={`${session.start}-${session.end}`} className="report-timeline-item">
+                            <div className="report-timeline-date">{session.minutes} minutes · {session.events} events</div>
+                            <h3 className="report-timeline-title">{session.start}</h3>
+                            <div className="report-text">{session.focus}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="report-section report-dual-grid">
+                    <div className="report-card">
+                      <h2 className="report-section-title">Writing Development Evidence</h2>
+                      <div className="report-table-wrap">
+                        <table className="report-table">
+                          <thead>
+                            <tr>
+                              <th>Metric</th>
+                              <th>Before</th>
+                              <th>After</th>
+                              <th>Delta</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {selectedCase.writing.comparison.metrics.map((metric) => (
+                              <tr key={metric.label}>
+                                <td>{metric.label}</td>
+                                <td className="report-value">{metric.before}</td>
+                                <td className="report-value">{metric.after}</td>
+                                <td className="report-value">{metric.delta}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                    <div className="report-card">
+                      <h2 className="report-section-title">Interpretive Notes</h2>
+                      <ul className="report-list">
+                        {selectedCase.writing.comparison.commentary.map((item) => (
+                          <li key={item}>{item}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </section>
+
+                  <section className="report-section report-dual-grid">
+                    <div className="report-card">
+                      <h2 className="report-section-title">Help-Seeking and Threshold Evidence</h2>
+                      <div className="report-card-note">
+                        {selectedCase.thresholds.privateMessages.compositeThreshold}
+                      </div>
+                      <div className="report-timeline">
+                        {selectedCase.thresholds.privateMessages.thresholds.map((threshold) => (
+                          <div key={threshold.id} className="report-timeline-item">
+                            <div className="report-timeline-date">{threshold.matched} matched instance(s)</div>
+                            <h3 className="report-timeline-title">{threshold.label}</h3>
+                            <div className="report-text"><strong>Rule:</strong> {threshold.threshold}</div>
+                            <div className="report-text"><strong>Evidence:</strong> {threshold.evidence}</div>
+                            <div className="report-text"><strong>Interpretation:</strong> {threshold.interpretation}</div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="report-card">
+                      <h2 className="report-section-title">Recommended Pedagogical Actions</h2>
+                      <div className="report-pill-row">
+                        <span className="report-pill">Preserve short feedback cycles</span>
+                        <span className="report-pill">Expand claim-evidence reasoning</span>
+                        <span className="report-pill">Target academic phrasing</span>
+                        <span className="report-pill">Use rubric before submission</span>
+                      </div>
+                      <ul className="report-list" style={{ marginTop: '16px' }}>
+                        <li>Ask for one extra explanatory sentence after each example so evidence is interpreted, not only inserted.</li>
+                        <li>Require one model-based vocabulary upgrade per revision to improve academic tone without overloading the student.</li>
+                        <li>Keep teacher comments narrow and actionable, with one structural target and one language target per round.</li>
+                        <li>Use the existing help-seeking tendency productively by linking each question to a concrete revision task.</li>
+                      </ul>
+                    </div>
+                  </section>
+
+                  <section className="report-section">
+                    <div className="report-card">
+                      <h2 className="report-section-title">Concluding Judgment</h2>
+                      <p className="report-text">
+                        The evidence does not point to a disengaged learner. It points to a developing writer who repeatedly returns to feedback, submits revisions, and asks for clarification when she cannot progress alone. The strongest next step is not more general encouragement, but tighter support for argument expansion, evidence explanation, and more formal academic phrasing.
+                      </p>
+                    </div>
+                  </section>
+
+                  <footer className="report-footer">
+                    Prepared from the verified workbook case for {selectedCase.meta.studentName}. This HTML report is formatted for direct browser printing and PDF export.
+                  </footer>
+                </div>
+              </article>
             </div>
-          </GlassCard>
+          </div>
         )}
       </div>
     </ResearchShell>
