@@ -18,8 +18,8 @@ interface StudyScopePanelProps {
 }
 
 export function StudyScopePanel({
-  title = 'Teacher Study Scope',
-  subtitle = 'Choose the student, the exercise, and the variables you want to inspect before reading the analytics.',
+  title = 'Build Your Teaching View',
+  subtitle = 'Follow these steps to choose the student, the exercise, the stations, and the indicators you want to read.',
 }: StudyScopePanelProps) {
   const navigate = useNavigate();
   const cases = useStudyScopeStore((state) => state.cases);
@@ -42,7 +42,7 @@ export function StudyScopePanel({
         <div>
           <div className="flex items-center gap-2 text-[var(--lav)] font-navigation text-xs uppercase tracking-widest">
             <SlidersHorizontal size={14} />
-            Study Controls
+            Guided Selection
           </div>
           <h2 className="font-editorial text-2xl text-[var(--text-primary)] mt-2">{title}</h2>
           <p className="font-body text-sm text-[var(--text-sec)] mt-2 max-w-3xl">{subtitle}</p>
@@ -55,6 +55,7 @@ export function StudyScopePanel({
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <label className="space-y-2">
           <span className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-2">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[var(--border)] text-[9px]">1</span>
             <UserRoundSearch size={13} />
             Student
           </span>
@@ -70,12 +71,13 @@ export function StudyScopePanel({
             ))}
           </select>
           <p className="font-body text-xs text-[var(--text-muted)]">
-            Imported cases: {cases.length}. Current workbook: {selectedCase.workbookName}
+            Choose the student case first. Imported cases: {cases.length}. Current workbook: {selectedCase.workbookName}
           </p>
         </label>
 
         <label className="space-y-2">
           <span className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-2">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[var(--border)] text-[9px]">2</span>
             <BookMarked size={13} />
             Exercise
           </span>
@@ -93,13 +95,13 @@ export function StudyScopePanel({
           <p className="font-body text-xs text-[var(--text-muted)]">
             {selectedTask
               ? `${selectedTask.status} - ${selectedTask.wordCount} words - ${selectedTask.date}`
-              : `Overview mode across ${selectedCase.meta.periodCovered}`}
+              : `If you do not choose one exercise, the system keeps the full case overview across ${selectedCase.meta.periodCovered}`}
           </p>
         </label>
 
         <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] p-4 flex flex-col justify-between">
           <div>
-            <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Current Scope</p>
+            <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Current Teaching View</p>
             <p className="font-navigation text-sm text-[var(--text-primary)] mt-3">{selectedCase.meta.studentName}</p>
             <p className="font-body text-xs text-[var(--text-sec)] mt-1">
               {selectedTask ? selectedTask.title : 'Full case overview'}
@@ -119,10 +121,11 @@ export function StudyScopePanel({
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-4">
           <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-2">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[var(--border)] text-[9px]">3</span>
             <Waypoints size={13} />
-            Stations to include
+            Analysis Sections
           </p>
-          <p className="font-body text-xs text-[var(--text-muted)]">Choose one station or a group of stations for the current analytical scope.</p>
+          <p className="font-body text-xs text-[var(--text-muted)]">Choose one section or a group of sections to include in the current reading and report.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {STUDY_STATIONS.map((station) => {
@@ -150,8 +153,11 @@ export function StudyScopePanel({
 
       <div className="space-y-3">
         <div className="flex items-center justify-between gap-4">
-          <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Variables to study</p>
-          <p className="font-body text-xs text-[var(--text-muted)]">Click to include or exclude a variable from the current view.</p>
+          <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)] flex items-center gap-2">
+            <span className="inline-flex h-5 w-5 items-center justify-center rounded-full border border-[var(--border)] text-[9px]">4</span>
+            Indicators to show
+          </p>
+          <p className="font-body text-xs text-[var(--text-muted)]">Turn indicators on or off depending on what you want the teacher report to emphasize.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           {STUDY_VARIABLES.map((variable) => {

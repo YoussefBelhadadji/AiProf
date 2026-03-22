@@ -44,15 +44,15 @@ export function Students() {
     <ResearchShell>
       <div className="max-w-7xl mx-auto p-6 md:p-8 space-y-8 pb-32">
         <div>
-          <h1 className="font-editorial italic text-3xl text-[var(--text-primary)]">Teacher Student Registry</h1>
+          <h1 className="font-editorial italic text-3xl text-[var(--text-primary)]">Student Cases</h1>
           <p className="text-[var(--text-sec)] text-sm font-body mt-1">
-            Choose a student from the imported registry, then read the selected task and variables inside one consistent scope.
+            Select a student case here. The selected exercise, sections, and indicators will stay the same across the rest of the interface.
           </p>
         </div>
 
         <StudyScopePanel
-          title="Student and Exercise Selector"
-          subtitle="This control panel keeps the same active student, active exercise, and active variables while you move between the registry, reports, and dashboard."
+          title="Choose Student, Exercise, and Focus"
+          subtitle="Use the same scope everywhere: student, exercise, analysis sections, and indicators."
         />
 
         <GlassCard className="overflow-hidden border-[var(--border)] p-0">
@@ -62,11 +62,11 @@ export function Students() {
                 <tr className="border-b border-[var(--border)] bg-[var(--bg-raised)]/50 text-[var(--text-sec)] font-navigation text-[9px] uppercase tracking-widest font-bold">
                   <th className="px-6 py-4">Student</th>
                   <th className="px-6 py-4">Course</th>
-                  <th className="px-6 py-4">Cluster</th>
-                  <th className="px-6 py-4">Risk</th>
-                  <th className="px-6 py-4">Tasks</th>
-                  <th className="px-6 py-4">Feedback</th>
-                  <th className="px-6 py-4">Help-Seeking</th>
+                  <th className="px-6 py-4">Profile</th>
+                  <th className="px-6 py-4">Support Priority</th>
+                  <th className="px-6 py-4">Exercises</th>
+                  <th className="px-6 py-4">Feedback Views</th>
+                  <th className="px-6 py-4">Help Requests</th>
                   <th className="px-6 py-4">Active</th>
                 </tr>
               </thead>
@@ -113,7 +113,7 @@ export function Students() {
           <GlassCard className="p-5">
             <div className="flex items-center gap-2 text-[var(--lav)] mb-3">
               <BarChart3 size={16} />
-              <span className="font-navigation text-[10px] uppercase tracking-widest">Active student</span>
+              <span className="font-navigation text-[10px] uppercase tracking-widest">Selected student</span>
             </div>
             <p className="font-editorial text-xl text-[var(--text-primary)]">{selectedCase.meta.studentName}</p>
             <p className="font-body text-xs text-[var(--text-sec)] mt-2">{selectedCase.meta.courseTitle}</p>
@@ -122,7 +122,7 @@ export function Students() {
           <GlassCard className="p-5">
             <div className="flex items-center gap-2 text-[var(--teal)] mb-3">
               <BookOpenText size={16} />
-              <span className="font-navigation text-[10px] uppercase tracking-widest">Exercise focus</span>
+              <span className="font-navigation text-[10px] uppercase tracking-widest">Selected exercise</span>
             </div>
             <p className="font-editorial text-xl text-[var(--text-primary)]">
               {selectedTask ? selectedTask.title : 'Full case overview'}
@@ -135,7 +135,7 @@ export function Students() {
           <GlassCard className="p-5">
             <div className="flex items-center gap-2 text-[var(--gold)] mb-3">
               <Brain size={16} />
-              <span className="font-navigation text-[10px] uppercase tracking-widest">Variable scope</span>
+              <span className="font-navigation text-[10px] uppercase tracking-widest">Selected indicators</span>
             </div>
             <p className="font-editorial text-xl text-[var(--text-primary)]">{activeVariables.length} active variables</p>
             <div className="mt-3 flex flex-wrap gap-2">
@@ -170,7 +170,7 @@ export function Students() {
         {activeTab === 'behaviour' && (
           <div className="grid grid-cols-1 xl:grid-cols-[1.05fr_0.95fr] gap-6">
             <GlassCard className="p-6">
-              <h3 className="font-navigation text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border)] pb-2 mb-5">Moodle behaviour indicators</h3>
+              <h3 className="font-navigation text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border)] pb-2 mb-5">Behaviour indicators</h3>
               <div className="grid grid-cols-1 gap-5">
                 {(Object.entries(selectedCase.workspace.moodle) as Array<[string, number]>).map(([key, value]) => (
                   <div key={key}>
@@ -187,7 +187,7 @@ export function Students() {
             </GlassCard>
 
             <GlassCard className="p-6">
-              <h3 className="font-navigation text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border)] pb-2 mb-5">Variables currently active</h3>
+              <h3 className="font-navigation text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] border-b border-[var(--border)] pb-2 mb-5">Indicators currently shown</h3>
               <div className="space-y-4">
                 {activeVariables.map((variable) => (
                   <div key={variable.id} className="rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] p-4">

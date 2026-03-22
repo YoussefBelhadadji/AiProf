@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Menu, LayoutDashboard, Users, FileText, FileEdit, Lightbulb, Search, BookOpen, Settings as SettingsIcon } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { GlassCard } from '../components/GlassCard';
 import { getSelectedStudyCase, getSelectedTask, getSelectedTaskId, useStudyScopeStore } from '../state/studyScope';
@@ -23,22 +23,22 @@ function InterpretationPanel() {
     <div className="w-[400px] shrink-0 border-l border-[var(--border)] bg-[var(--bg-base)] hidden xl:flex flex-col h-full sticky top-[60px] overflow-y-auto">
       <div className="p-6">
         <h3 className="text-xs font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-4 pb-2 border-b border-[var(--border)]">
-          Interpretation Panel
+          Teaching Meaning
         </h3>
 
         <div className="flex flex-col gap-6">
           <section>
             <div className="flex items-center gap-2 mb-3 text-[var(--lav)] font-medium font-navigation">
-              <Lightbulb size={16} /> Synthesis
+              <Lightbulb size={16} /> Quick Summary
             </div>
             <GlassCard className="p-4 text-sm leading-relaxed text-[var(--text-sec)]">
-              Current selection: {selectedCase.meta.studentName}. {selectedTask ? `Task focus: ${selectedTask.title}.` : 'Case overview is active.'} Engagement is generally strong, while evidence expansion and academic phrasing remain the main instructional priorities.
+              Current selection: {selectedCase.meta.studentName}. {selectedTask ? `Selected exercise: ${selectedTask.title}.` : 'Full case overview is active.'} Engagement is generally strong, while evidence expansion and academic phrasing remain the main teaching priorities.
             </GlassCard>
           </section>
 
           <section>
             <div className="flex items-center gap-2 mb-3 text-[var(--teal)] font-medium font-navigation">
-              <Search size={16} /> Key Findings
+              <Search size={16} /> What To Notice
             </div>
             <GlassCard className="p-4 text-sm text-[var(--text-primary)]">
               <ul className="space-y-3">
@@ -48,7 +48,7 @@ function InterpretationPanel() {
                 </li>
                 <li className="flex gap-2 items-start">
                   <span className="text-[var(--teal)] mt-0.5">*</span>
-                  Selected risk level: {selectedCase.riskLevel}. Cluster profile: {selectedCase.clusterName}.
+                  Support priority: {selectedCase.riskLevel}. Learner profile: {selectedCase.clusterName}.
                 </li>
               </ul>
             </GlassCard>
@@ -56,7 +56,7 @@ function InterpretationPanel() {
 
           <section>
             <div className="flex items-center gap-2 mb-3 text-[var(--gold)] font-medium font-navigation">
-              <BookOpen size={16} /> Theory Refs
+              <BookOpen size={16} /> Research Lens
             </div>
             <GlassCard className="p-4 text-xs text-[var(--text-sec)] font-forensic">
               <p className="mb-2">Hattie (2009) - Visible Learning</p>
@@ -71,7 +71,12 @@ function InterpretationPanel() {
 
 export function ResearchShell({ children }: ResearchShellProps) {
   const location = useLocation();
+  const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  const cases = useStudyScopeStore((state) => state.cases);
+  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
+  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
 
   return (
     <div className="flex flex-col h-screen overflow-hidden bg-[var(--bg-deep)]">
@@ -88,30 +93,36 @@ export function ResearchShell({ children }: ResearchShellProps) {
           </div>
 
           <nav className="hidden md:flex items-center gap-1 font-navigation text-sm ml-4">
-            <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/dashboard' || location.pathname === '/'} />
-            <NavItem to="/students" icon={Users} label="Students" active={location.pathname.startsWith('/students')} />
-            <NavItem to="/reports" icon={FileText} label="Reports" active={location.pathname.startsWith('/reports')} />
+            <NavItem to="/dashboard" icon={LayoutDashboard} label="Overview" active={location.pathname === '/dashboard' || location.pathname === '/'} />
+            <NavItem to="/students" icon={Users} label="Student Cases" active={location.pathname.startsWith('/students')} />
+            <NavItem to="/reports" icon={FileText} label="Teacher Report" active={location.pathname.startsWith('/reports')} />
           </nav>
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation">
+          <button 
+            className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation"
+            onClick={() => alert('Research Notes panel coming soon in the next doctoral module integration.')}
+          >
             <FileEdit size={16} />
             <span className="hidden sm:inline">Notes</span>
           </button>
           <div className="w-px h-6 bg-[var(--border)] hidden sm:block"></div>
 
-          <Link to="/settings" className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors">
+          <Link to="/settings" className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors" title="Settings">
             <SettingsIcon size={18} />
           </Link>
 
-          <div className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-2">
+          <button 
+            onClick={() => navigate('/settings')}
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-2 bg-transparent border-none p-0"
+          >
             <div className="w-8 h-8 rounded-full bg-[var(--lav-glow)] border border-[var(--lav-border)] flex items-center justify-center text-[var(--lav)] relative font-editorial font-bold text-sm">
-              X
+              {selectedCase.meta.instructor.charAt(0)}
               <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--teal)] border-2 border-[var(--bg-base)]" />
             </div>
-            <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:inline">Dr. X</span>
-          </div>
+            <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:inline">{selectedCase.meta.instructor}</span>
+          </button>
         </div>
       </header>
 

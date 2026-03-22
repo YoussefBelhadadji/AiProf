@@ -78,10 +78,10 @@ export function Dashboard() {
         <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
           <div>
             <h1 className="font-editorial italic text-4xl font-medium text-[var(--text-primary)]">
-              Teacher-Guided Analytical Workspace
+              Teacher Overview
             </h1>
             <p className="text-[var(--text-sec)] font-body mt-1">
-              Select a student, a task, and the variables to study before opening the full analysis.
+              Start by choosing the student and the exercise below. The dashboard, the reports, and the student page will all follow the same selection.
             </p>
           </div>
           <div className="flex gap-3">
@@ -104,8 +104,8 @@ export function Dashboard() {
               </h2>
               <p className="font-body text-sm text-[var(--text-sec)] max-w-3xl">
                 {selectedTask
-                  ? `The current view is filtered to the exercise "${selectedTask.title}".`
-                  : 'The current view is at case-overview level across the imported semester trace.'} Selected variables drive what appears in the dashboard, students page, and reports.
+                  ? `You are reading the exercise "${selectedTask.title}".`
+                  : 'You are reading the full case overview across the imported semester trace.'} The same selection is used across the dashboard, student page, and reports.
               </p>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
                 <div>
@@ -129,7 +129,7 @@ export function Dashboard() {
           </GlassCard>
 
           <GlassCard className="p-6 h-full bg-[var(--bg-raised)]/50 border-dashed border-[var(--border-bright)]">
-            <h3 className="font-navigation text-xs uppercase tracking-widest text-[var(--text-sec)] mb-4">Teacher Scope Summary</h3>
+            <h3 className="font-navigation text-xs uppercase tracking-widest text-[var(--text-sec)] mb-4">Current Teaching Scope</h3>
             <div className="space-y-4">
               <div className="flex justify-between items-end mb-1">
                 <span className="text-sm font-editorial italic text-[var(--text-primary)]">Imported student cases</span>
@@ -139,9 +139,9 @@ export function Dashboard() {
                 <div className="h-full bg-[var(--lav)] shadow-[0_0_10px_var(--lav)]" style={{ width: `${Math.min(100, cases.length * 20)}%` }} />
               </div>
               <p className="text-[11px] font-body text-[var(--text-sec)] leading-relaxed">
-                The interface is now organized for teacher choice: one active student, one active task, and a filtered set of variables that shape the current reading.
+                This view follows your current choices: one active student, one active exercise, selected sections, and selected indicators.
               </p>
-              <Button onClick={() => navigate('/reports')} className="w-full mt-2 py-2 text-xs">Open filtered reports <ArrowRight size={14} /></Button>
+              <Button onClick={() => navigate('/reports')} className="w-full mt-2 py-2 text-xs">Open teacher report <ArrowRight size={14} /></Button>
             </div>
           </GlassCard>
         </div>
@@ -150,7 +150,7 @@ export function Dashboard() {
           <div className="flex justify-between items-center mb-8">
             <h3 className="font-navigation text-sm font-bold text-[var(--text-primary)] flex items-center gap-2 uppercase tracking-widest">
               <Sparkles size={16} className="text-[var(--lav)]" />
-              Variable-Focused Reading
+              Key Indicators
             </h3>
             <span className="text-[var(--text-muted)] font-forensic text-[10px]">
               {selectedVariableIds.length} variables active
@@ -179,7 +179,7 @@ export function Dashboard() {
           <div className="flex justify-between items-center mb-8">
             <h3 className="font-navigation text-sm font-bold text-[var(--text-primary)] flex items-center gap-2 uppercase tracking-widest">
               <Sparkles size={16} className="text-[var(--lav)]" />
-              Adaptive Assessment Architecture
+              Analysis Map
             </h3>
             <span className="text-[var(--text-muted)] font-forensic text-[10px]">
               Active student: {selectedCase.meta.studentName}
@@ -220,7 +220,7 @@ export function Dashboard() {
             <GlassCard accent="teal" className="flex-1 p-6 md:p-8 flex flex-col">
               <h2 className="font-navigation text-sm uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2 font-bold">
                 <BarChart3 size={16} className="text-[var(--teal)]" />
-                Writing Progress Checkpoints
+                Writing Progress
               </h2>
               <div className="h-[280px] w-full">
                 <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={240}>
@@ -260,7 +260,7 @@ export function Dashboard() {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-[var(--lav-glow)] rounded-lg text-[var(--lav)]"><FileSpreadsheet size={18} /></div>
-                    <span className="font-navigation text-sm font-medium">Open Student Registry</span>
+                    <span className="font-navigation text-sm font-medium">Choose another student</span>
                   </div>
                   <ArrowRight size={16} className="text-[var(--text-muted)] group-hover:text-[var(--lav)] transition-colors" />
                 </div>
@@ -269,7 +269,7 @@ export function Dashboard() {
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-3">
                     <div className="p-2 bg-[var(--teal-dim)] rounded-lg text-[var(--teal)]"><Upload size={18} /></div>
-                    <span className="font-navigation text-sm font-medium">Import More Students</span>
+                    <span className="font-navigation text-sm font-medium">Import more workbooks</span>
                   </div>
                   <ArrowRight size={16} className="text-[var(--text-muted)] group-hover:text-[var(--teal)] transition-colors" />
                 </div>
@@ -305,7 +305,7 @@ export function Dashboard() {
             </div>
             <div className="p-6 border-t border-[var(--border)]">
               <Button onClick={() => navigate('/pipeline/1')} className="w-full h-12 flex justify-center gap-3 text-sm">
-                Open Analysis Pipeline <ArrowRight size={18} />
+                Open full analysis <ArrowRight size={18} />
               </Button>
             </div>
           </GlassCard>
