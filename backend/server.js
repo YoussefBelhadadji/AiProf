@@ -5,13 +5,33 @@ const fs = require('fs');
 const path = require('path');
 const { parseWorkbook } = require('./workbookParser');
 const { buildAnalyticsSummary } = require('./liveAnalytics');
-const { exec } = require('child_process');
+const { execFile, spawnSync } = require('child_process');
 
 const app = express();
 const upload = multer({ storage: multer.memoryStorage() });
+const REQUIRED_PIPELINE_FILES = ['moodle_logs.csv', 'rubric_scores.csv', 'essays.csv', 'messages.csv'];
 
 app.use(cors());
 app.use(express.json());
+
+function resolvePythonCommand() {
+  const configured = process.env.PYTHON_BIN?.trim();
+  const candidates = configured
+    ? [configured]
+    : process.platform === 'win32'
+      ? ['python', 'py']
+      : ['python3', 'python'];
+
+  for (const candidate of candidates) {
+    const probeArgs = candidate === 'py' ? ['-3', '--version'] : ['--version'];
+    const result = spawnSync(candidate, probeArgs, { encoding: 'utf8' });
+    if (!result.error && result.status === 0) {
+      return candidate;
+    }
+  }
+
+  return null;
+}
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'WriteLens Backend Operations Active.' });
@@ -51,50 +71,92 @@ app.post('/api/run-pipeline', upload.any(), (req, res) => {
     return res.status(400).json({ error: 'No files uploaded' });
   }
 
+  const uploadedByName = new Map(files.map((file) => [String(file.originalname).toLowerCase(), file]));
+  const missingFiles = REQUIRED_PIPELINE_FILES.filter((filename) => !uploadedByName.has(filename));
+
+  if (missingFiles.length > 0) {
+    return res.status(400).json({
+      error: 'Missing required pipeline files.',
+      required_files: REQUIRED_PIPELINE_FILES,
+      missing_files: missingFiles,
+    });
+  }
+
   const pipelineDir = path.resolve(__dirname, '../adaptive_writing_system');
   const dataDir = path.join(pipelineDir, 'data');
   const outputsDir = path.join(pipelineDir, 'outputs');
+  const pythonCommand = resolvePythonCommand();
+
+  if (!pythonCommand) {
+    return res.status(500).json({
+      error: 'Python runtime is unavailable for the adaptive pipeline.',
+      required_files: REQUIRED_PIPELINE_FILES,
+    });
+  }
 
   try {
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
     }
+    if (!fs.existsSync(outputsDir)) {
+      fs.mkdirSync(outputsDir, { recursive: true });
+    }
   } catch(err) {
     return res.status(500).json({ error: `Failed to create data dir: ${err.message}` });
   }
 
-  // Save the files to the data directory using their original names (e.g. moodle_logs.csv)
   try {
-    files.forEach(file => {
-      const filePath = path.join(dataDir, file.originalname);
-      fs.writeFileSync(filePath, file.buffer);
+    REQUIRED_PIPELINE_FILES.forEach((filename) => {
+      const uploaded = uploadedByName.get(filename);
+      const filePath = path.join(dataDir, filename);
+      fs.writeFileSync(filePath, uploaded.buffer);
+    });
+    const feedbackOutput = path.join(outputsDir, '08_feedback.csv');
+    if (fs.existsSync(feedbackOutput)) {
+      fs.unlinkSync(feedbackOutput);
+    }
+    const intermediateOutputs = [
+      '01_merged.csv',
+      '02_features.csv',
+      '03_thresholds.csv',
+      '04_clustered.csv',
+      '05_rf.csv',
+      '05_rf_importance.csv',
+      '06_bayes.csv',
+      '07_rules.csv',
+    ];
+    intermediateOutputs.forEach((filename) => {
+      const fullPath = path.join(outputsDir, filename);
+      if (fs.existsSync(fullPath)) {
+        fs.unlinkSync(fullPath);
+      }
     });
   } catch (err) {
     return res.status(500).json({ error: `Failed to save files: ${err.message}` });
   }
 
-  // Execute the python pipeline
-  exec('python app/run_pipeline.py', { cwd: pipelineDir }, (error, stdout, stderr) => {
+  const commandArgs = pythonCommand === 'py' ? ['-3', 'app/run_pipeline.py'] : ['app/run_pipeline.py'];
+  execFile(pythonCommand, commandArgs, { cwd: pipelineDir, timeout: 120000 }, (error, stdout, stderr) => {
     if (error) {
        console.error(`Pipeline execution error: ${error.message}`);
-       // Pipeline failed, maybe python is not installed or script failed
-       return res.status(500).json({ error: 'Python pipeline failed', details: stderr || error.message });
+       return res.status(500).json({
+         error: 'Python pipeline failed',
+         details: stderr || error.message,
+         python_command: pythonCommand,
+       });
     }
 
-    // Read the output
     const feedbackOutput = path.join(outputsDir, '08_feedback.csv');
     if (!fs.existsSync(feedbackOutput)) {
        return res.status(500).json({ error: 'Pipeline did not produce expected output csv.' });
     }
 
-    // Parse CSV to JSON (simple parsing)
     const content = fs.readFileSync(feedbackOutput, 'utf8');
     const lines = content.split('\n').filter(line => line.trim() !== '');
     if (lines.length < 1) {
        return res.json({ result: [] });
     }
     
-    // Simplistic CSV parser (not robust for commas inside quotes, but good enough for this data if there are quotes we need a library like csv-parse, but let's just send the raw string or parse it simply. Since feedback texts might contain commas, we should properly parse it or send text.)
     res.json({ result_csv: content, stdout });
   });
 });

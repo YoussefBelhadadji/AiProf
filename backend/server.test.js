@@ -53,3 +53,26 @@ test('upload endpoint accepts multiple workbook files', async () => {
     await new Promise((resolve) => server.close(resolve));
   }
 });
+
+test('pipeline endpoint rejects requests missing the required csv set', async () => {
+  const server = app.listen(0);
+
+  try {
+    const { port } = server.address();
+    const formData = new FormData();
+    formData.append('files', new Blob(['student_id,task_id,draft_no\nS1,T1,1\n']), 'moodle_logs.csv');
+
+    const response = await fetch(`http://127.0.0.1:${port}/api/run-pipeline`, {
+      method: 'POST',
+      body: formData,
+    });
+    const body = await response.json();
+
+    assert.equal(response.status, 400);
+    assert.equal(body.error, 'Missing required pipeline files.');
+    assert.deepEqual(body.required_files, ['moodle_logs.csv', 'rubric_scores.csv', 'essays.csv', 'messages.csv']);
+    assert.deepEqual(body.missing_files, ['rubric_scores.csv', 'essays.csv', 'messages.csv']);
+  } finally {
+    await new Promise((resolve) => server.close(resolve));
+  }
+});

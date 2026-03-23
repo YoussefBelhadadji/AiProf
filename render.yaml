@@ -4,12 +4,13 @@ services:
     runtime: node
     plan: free
     region: frankfurt
-    buildCommand: npm ci --prefix frontend && npm run build --prefix frontend && npm ci --prefix backend
+    buildCommand: python3 -m pip install -r adaptive_writing_system/requirements.txt && npm ci --prefix frontend && npm run build --prefix frontend && npm ci --prefix backend
     startCommand: npm start --prefix backend
     healthCheckPath: /api/health
     autoDeployTrigger: commit
     buildFilter:
       paths:
+        - adaptive_writing_system/**
         - frontend/**
         - backend/**
         - render.yaml

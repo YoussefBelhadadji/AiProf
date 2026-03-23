@@ -134,6 +134,20 @@ async function main() {
     assert.equal(uploadBody.analytics.clustering.available, false);
     assert.equal(uploadBody.analytics.prediction.available, false);
     assert.equal(uploadBody.cases[0].data[0].predicted_score, null);
+
+    const pipelineFormData = new FormData();
+    pipelineFormData.append('files', new Blob(['student_id,task_id,draft_no\nS1,T1,1\n']), 'moodle_logs.csv');
+
+    const pipelineResponse = await fetch(`http://127.0.0.1:${port}/api/run-pipeline`, {
+      method: 'POST',
+      body: pipelineFormData,
+    });
+    const pipelineBody = await pipelineResponse.json();
+
+    assert.equal(pipelineResponse.status, 400);
+    assert.equal(pipelineBody.error, 'Missing required pipeline files.');
+    assert.deepEqual(pipelineBody.required_files, ['moodle_logs.csv', 'rubric_scores.csv', 'essays.csv', 'messages.csv']);
+    assert.deepEqual(pipelineBody.missing_files, ['rubric_scores.csv', 'essays.csv', 'messages.csv']);
   } finally {
     await new Promise((resolve) => server.close(resolve));
   }
