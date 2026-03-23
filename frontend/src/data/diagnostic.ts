@@ -2,6 +2,21 @@ import { clamp } from '../utils/utils';
 
 export type ClusterName = string;
 
+export interface RuleMatch {
+  rule_id: string;
+  category: string;
+  priority: number;
+  raw_data_condition: string;
+  ai_learner_state_output: string;
+  pedagogical_interpretation: string;
+  adaptive_feedback_type: string;
+  feedback_message_focus: string;
+  theoretical_justification: string;
+  feedback_templates: string[];
+  feedback_messages: string[];
+  onsite_interventions: string[];
+}
+
 export interface StudentRecord {
   student_id: string;
   name: string;
@@ -50,6 +65,8 @@ export interface StudentRecord {
   ai_linguistic_state?: string;
   ai_lexical_state?: string;
   ai_help_state?: string;
+  profile_rule_id?: string;
+  rule_matches?: RuleMatch[];
 }
 
 export interface FeatureImportance {
@@ -269,7 +286,7 @@ export const primaryStudent: StudentRecord = {
   predicted_score: 24.2,
   learner_profile: 'Feedback-responsive developing writer',
   cluster_profile: 'Engaged or strategic writer',
-  clustering_output: 'Feedback-responsive developing writer',
+  clustering_output: 'Engaged or strategic writer',
   predicted_improvement: 'Moderate-High',
   random_forest_output: 'Moderate to high improvement predicted if higher-order support continues',
   bayesian_output: 'Feedback uptake = Medium-High; Argument competence = Medium',
@@ -286,6 +303,63 @@ export const primaryStudent: StudentRecord = {
   ai_linguistic_state: 'Medium',
   ai_lexical_state: 'Medium',
   ai_help_state: 'Adaptive',
+  profile_rule_id: 'feedback_responsive_developing',
+  rule_matches: [
+    {
+      rule_id: 'C4',
+      category: 'Revision',
+      priority: 130,
+      raw_data_condition: 'feedback viewed repeatedly + revision follows but argument remains developing',
+      ai_learner_state_output: 'Feedback uptake risk = High',
+      pedagogical_interpretation:
+        'The learner uses feedback, but still needs help decoding comments at a deeper level.',
+      adaptive_feedback_type: 'Feedback-decoding scaffold',
+      feedback_message_focus:
+        'Reconnect teacher comments to explicit meaning-level changes in the next revision.',
+      theoretical_justification: 'Carless and Boud (2018); Hattie and Timperley (2007)',
+      feedback_templates: ['feedback_decoding'],
+      feedback_messages: [
+        'You viewed the feedback, but your draft does not yet show enough change. Re-read the comments and apply at least one improvement to your ideas and one to your language.',
+      ],
+      onsite_interventions: ['feedback_to_revision_mapping'],
+    },
+    {
+      rule_id: 'C5',
+      category: 'Revision',
+      priority: 120,
+      raw_data_condition: 'feedback viewed and at least partial revision visible',
+      ai_learner_state_output: 'Feedback uptake risk = Medium',
+      pedagogical_interpretation:
+        'Feedback is being used, but the learner still needs support turning comments into stronger next-draft habits.',
+      adaptive_feedback_type: 'Guided feedforward',
+      feedback_message_focus:
+        'Use the comment trail to deepen reasoning or stabilize form-level improvement in the next revision cycle.',
+      theoretical_justification: 'Hattie and Timperley (2007); Carless and Boud (2018)',
+      feedback_templates: ['feedforward_guidance'],
+      feedback_messages: [
+        'You improved some parts of the paragraph. Now use the feedback to deepen your explanation and improve the structure of your ideas.',
+      ],
+      onsite_interventions: ['next_draft_transfer_prompt'],
+    },
+    {
+      rule_id: 'B2',
+      category: 'Writing',
+      priority: 100,
+      raw_data_condition: 'argumentation moderate + idea present but underdeveloped',
+      ai_learner_state_output: 'Argumentation weakness = Medium',
+      pedagogical_interpretation:
+        'Reasoning is present but still lacks depth, explanation, and full support.',
+      adaptive_feedback_type: 'Strategic + metacognitive writing feedback',
+      feedback_message_focus:
+        'Expand the reasoning after the example so the argument becomes fully persuasive.',
+      theoretical_justification: 'Flower and Hayes (1981); Hyland (2019)',
+      feedback_templates: ['argument_expansion'],
+      feedback_messages: [
+        'Your main idea is relevant, but it needs deeper explanation. After giving your example, explain why it proves your point.',
+      ],
+      onsite_interventions: ['guided_argument_development'],
+    },
+  ],
   personalized_feedback:
     'You viewed the feedback, but your draft does not yet show enough change. Re-read the comments and apply at least one improvement to your ideas and one to your language. You improved some parts of the paragraph. Now use the feedback to deepen your explanation and improve the structure of your ideas. Your main idea is relevant, but it needs deeper explanation. After giving your example, explain why it proves your point.',
 };

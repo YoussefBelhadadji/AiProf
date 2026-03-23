@@ -67,6 +67,11 @@ async function main() {
   assert.equal(student.triggered_rule_ids, 'C4; C5; B2');
   assert.equal(student.feedback_templates_selected, 'feedback_decoding; feedforward_guidance; argument_expansion');
   assert.equal(student.cluster_label, 3);
+  assert.equal(student.clustering_output, 'Engaged or strategic writer');
+  assert.ok(Array.isArray(student.rule_matches));
+  assert.equal(student.rule_matches.length, 3);
+  assert.equal(student.rule_matches[0].rule_id, 'C4');
+  assert.match(student.rule_matches[0].raw_data_condition, /feedback viewed repeatedly/i);
 
   const disengagedCase = evaluateAdaptiveDecision({
     assignment_views: 1,
@@ -89,6 +94,7 @@ async function main() {
     first_access_delay_minutes: 45,
   });
   assert.equal(disengagedCase.learner_profile, 'Disengaged / low-participation learner');
+  assert.equal(disengagedCase.triggered_rule_ids, 'A1; A2; C1; D1; D5');
   assert.equal(
     disengagedCase.feedback_templates_selected,
     'planning_scaffold; elaboration_prompt; revision_prompt; motivational_reengagement; metacognitive_prompt'
@@ -111,6 +117,13 @@ async function main() {
     assert.equal(response.statusCode, 200);
     assert.equal(response.body.status, 'ok');
     assert.match(response.body.message, /WriteLens Backend/);
+
+    const rulebookResponse = await requestJson(`http://127.0.0.1:${port}/api/rulebook`);
+    assert.equal(rulebookResponse.statusCode, 200);
+    assert.equal(rulebookResponse.body.metadata.title, 'Unified Strong Rule Table');
+    assert.ok(Array.isArray(rulebookResponse.body.strong_rule_table));
+    assert.ok(rulebookResponse.body.strong_rule_table.length >= 20);
+    assert.equal(rulebookResponse.body.strong_rule_table[0].rule_id, 'A1');
 
     const formData = new FormData();
     const workbookBuffer = fs.readFileSync(workbookPath);

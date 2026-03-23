@@ -1,23 +1,63 @@
+import { useEffect, useState } from 'react';
 import { GlassCard } from './GlassCard';
 import { StatusChip } from './Atoms';
+import { fetchRulebook, type RulebookResponse } from '../services/rulebookApi';
 
 export function AIEngines() {
+  const [rulebook, setRulebook] = useState<RulebookResponse | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+    let isMounted = true;
+
+    async function load() {
+      setIsLoading(true);
+      setErrorMessage('');
+
+      try {
+        const response = await fetchRulebook();
+        if (isMounted) {
+          setRulebook(response);
+        }
+      } catch (error) {
+        if (isMounted) {
+          setErrorMessage(error instanceof Error ? error.message : 'Failed to load the canonical rulebook.');
+        }
+      } finally {
+        if (isMounted) {
+          setIsLoading(false);
+        }
+      }
+    }
+
+    void load();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const ruleRows = rulebook?.strong_rule_table ?? [];
+  const enabledRuleCount = ruleRows.filter((row) => row.enabled).length;
+  const disabledRuleCount = ruleRows.length - enabledRuleCount;
+
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <GlassCard className="p-6 md:p-8">
         <h2 className="font-editorial text-2xl text-[var(--teal)] mb-6">Adaptive Assessment Architecture</h2>
         <div className="mb-6 rounded-lg border border-[var(--gold)]/25 bg-[var(--gold-dim)] px-4 py-3 font-body text-sm text-[var(--text-sec)]">
-          This screen documents the study methodology. In the current app build, workbook extraction is live, NLP and stylometric indicators are workbook-derived, clustering and prediction can operate in case-level mode or cohort-backed mode, and Bayesian synthesis is visible whenever the imported case includes competence-state output.
+          This screen documents the study methodology. AI functions as a diagnostic and decision-support layer: it analyzes behavioural, textual, and performance evidence to cluster learner patterns, estimate likely writing development, infer competence states, and surface candidate feedback actions for teacher review. It does not replace the instructor, rubric, or pedagogical framework.
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
           <GlassCard className="p-5 bg-[var(--bg-raised)] border-dashed border-[var(--border-bright)]">
             <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--lav)] mb-3">AI Assistant Tool Role</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
-              <li>Calculate descriptive patterns from verified Moodle workbook evidence.</li>
-              <li>Store rubric rows, extract NLP and text indicators, and organise process and product traces.</li>
-              <li>Surface learner grouping and predictive signals in case-level mode first, then upgrade to cohort-backed modelling when enough imported cases are available.</li>
-              <li>Suggest diagnostic signals and feedback triggers for teacher review.</li>
+              <li>Analyse workbook-derived behavioural, textual, and rubric evidence.</li>
+              <li>Generate learner-profile, prediction, and competence-state outputs.</li>
+              <li>Feed those outputs into rule-based pedagogical interpretation and feedback planning.</li>
+              <li>Keep the teacher in control of scoring, validation, and final feedback.</li>
             </ul>
           </GlassCard>
           <GlassCard className="p-5 bg-[var(--bg-raised)] border-dashed border-[var(--border-bright)]">
@@ -60,19 +100,98 @@ export function AIEngines() {
       </GlassCard>
 
       <GlassCard accent="red" className="p-6 md:p-8">
-        <h2 className="font-editorial text-2xl text-[var(--red)] mb-4">Rule-Based Pedagogical Interpretation</h2>
-        <p className="font-body text-sm text-[var(--text-sec)] mb-6">
-          Threshold families translate workbook indicators into teacher-review signals. They do not replace the teacher&apos;s pedagogical decision.
-        </p>
-
-        <div className="bg-[var(--bg-deep)] border border-[var(--border)] rounded-md p-4 font-forensic text-xs text-[var(--lav)] overflow-x-auto">
-          <code>
-            IF (revision_frequency = 0) THEN trigger(REVISION_SUPPORT)<br />
-            IF (feedback_viewed AND no_revision) THEN trigger(FEEDBACK_UPTAKE_REVIEW)<br />
-            IF (cohesion {'<'} threshold AND argumentation {'<'} threshold) THEN trigger(DISCOURSE_SUPPORT)<br />
-            IF (help_seeking {'>'} threshold) THEN trigger(DIALOGIC_SUPPORT)
-          </code>
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
+          <div>
+            <h2 className="font-editorial text-2xl text-[var(--red)]">Canonical Strong Rule Table</h2>
+            <p className="font-body text-sm text-[var(--text-sec)] mt-3">
+              Raw data indicators and AI learner-state outputs jointly drive the adaptive feedback decision. Thresholded evidence establishes what was observed, AI diagnosis interprets what the learner likely needs, and the rule layer maps that need onto transparent pedagogical action.
+            </p>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            <StatusChip variant="teal">{enabledRuleCount} runtime rules</StatusChip>
+            <StatusChip variant="gold">{disabledRuleCount} documented extensions</StatusChip>
+          </div>
         </div>
+
+        {rulebook?.metadata?.preface && (
+          <div className="mb-6 rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] px-4 py-3 font-body text-sm text-[var(--text-sec)]">
+            {rulebook.metadata.preface}
+          </div>
+        )}
+
+        {isLoading ? (
+          <GlassCard className="p-5 bg-[var(--bg-raised)]">
+            <p className="font-body text-sm text-[var(--text-sec)]">
+              Loading the canonical rulebook from the backend service.
+            </p>
+          </GlassCard>
+        ) : errorMessage ? (
+          <GlassCard className="p-5 bg-[var(--bg-raised)] border border-[var(--gold)]/25">
+            <p className="font-body text-sm text-[var(--gold)]">{errorMessage}</p>
+            <p className="font-body text-xs text-[var(--text-sec)] mt-2">
+              The methodology screen stays available, but the live strong rule table cannot be rendered until the backend responds to `/api/rulebook`.
+            </p>
+          </GlassCard>
+        ) : ruleRows.length === 0 ? (
+          <GlassCard className="p-5 bg-[var(--bg-raised)]">
+            <p className="font-body text-sm text-[var(--text-sec)]">
+              No canonical rule rows were returned by the backend.
+            </p>
+          </GlassCard>
+        ) : (
+          <div className="overflow-x-auto rounded-2xl border border-[var(--border)]">
+            <table className="w-full min-w-[1120px] text-left font-body text-sm">
+              <thead className="bg-[var(--bg-deep)] text-[var(--text-muted)] uppercase text-[10px] tracking-widest">
+                <tr>
+                  <th className="px-4 py-4">Rule</th>
+                  <th className="px-4 py-4">Condition</th>
+                  <th className="px-4 py-4">AI Output</th>
+                  <th className="px-4 py-4">Interpretation</th>
+                  <th className="px-4 py-4">Feedback Type</th>
+                  <th className="px-4 py-4">Message Focus</th>
+                  <th className="px-4 py-4">Intervention</th>
+                  <th className="px-4 py-4">Theory</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[var(--border)] bg-[var(--bg-raised)]/40">
+                {ruleRows.map((row) => (
+                  <tr key={row.rule_id} className="align-top">
+                    <td className="px-4 py-4">
+                      <div className="flex flex-col gap-2">
+                        <span className="font-forensic text-xs text-[var(--text-primary)]">{row.rule_id}</span>
+                        <StatusChip variant={row.enabled ? 'teal' : 'gold'}>
+                          {row.enabled ? 'Live' : 'Documented'}
+                        </StatusChip>
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-[var(--text-sec)]">{row.raw_data_condition}</td>
+                    <td className="px-4 py-4 text-[var(--text-primary)]">{row.ai_learner_state_output}</td>
+                    <td className="px-4 py-4 text-[var(--text-sec)]">{row.pedagogical_interpretation}</td>
+                    <td className="px-4 py-4 text-[var(--text-sec)]">{row.adaptive_feedback_type}</td>
+                    <td className="px-4 py-4">
+                      <div className="space-y-3">
+                        <p className="text-[var(--text-sec)]">{row.feedback_message_focus}</p>
+                        {row.feedback_templates.length > 0 && (
+                          <div className="flex flex-wrap gap-2">
+                            {row.feedback_templates.map((template) => (
+                              <StatusChip key={`${row.rule_id}-${template}`} variant="lav">
+                                {template.replace(/_/g, ' ')}
+                              </StatusChip>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-4 py-4 text-[var(--text-sec)]">
+                      {row.onsite_interventions.length > 0 ? row.onsite_interventions.join('; ') : 'Teacher review required.'}
+                    </td>
+                    <td className="px-4 py-4 text-[var(--text-sec)]">{row.theoretical_justification}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </GlassCard>
 
       <GlassCard className="p-6 md:p-8">

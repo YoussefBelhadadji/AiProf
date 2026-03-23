@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { clamp } from '../utils/utils';
 import { ScatterChart, Scatter, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid } from 'recharts';
 import { PipelineLayout, StationHeader, StationFooter } from '../layouts/PipelineLayout';
@@ -87,6 +87,27 @@ function buildTimeWordCountPlot(wordCounts: number[], estimatedMinutes: number):
   }));
 }
 
+function buildStrongestPair(evidenceMatrix: number[][]): MatrixCellSelection | null {
+  let current: MatrixCellSelection | null = null;
+
+  for (let rowIndex = 0; rowIndex < evidenceMatrix.length; rowIndex += 1) {
+    const row = evidenceMatrix[rowIndex];
+
+    for (let colIndex = 0; colIndex < row.length; colIndex += 1) {
+      if (rowIndex === colIndex) {
+        continue;
+      }
+
+      const value = row[colIndex];
+      if (!current || value > current.val) {
+        current = { row: rowIndex, col: colIndex, val: value };
+      }
+    }
+  }
+
+  return current;
+}
+
 export function Station05() {
   const [selectedCell, setSelectedCell] = useState<MatrixCellSelection | null>(null);
   const cases = useStudyScopeStore((state) => state.cases);
@@ -100,42 +121,25 @@ export function Station05() {
   const wordCounts = selectedCase?.writing.artifacts.map((artifact) => artifact.wordCount) ?? [];
   const commentary = selectedCase?.writing.comparison.commentary ?? [];
 
-  const variables = useMemo<SignalVariable[]>(() => {
-    if (!student) {
-      return [];
-    }
+  const variables: SignalVariable[] = !student
+    ? []
+    : [
+        { shortLabel: 'TTR', label: 'Lexical Variety', normalized: clamp(student.ttr), sourceNote: `Scaled TTR ${student.ttr.toFixed(2)}` },
+        { shortLabel: 'Cohesion', label: 'Cohesion', normalized: clamp(student.cohesion / 5), sourceNote: `Cohesion ${student.cohesion.toFixed(1)} / 5` },
+        { shortLabel: 'Lexical', label: 'Academic Lexis', normalized: clamp(student.lexical_resource / 5), sourceNote: `Lexical resource ${student.lexical_resource.toFixed(1)} / 5` },
+        { shortLabel: 'Grammar', label: 'Grammar Accuracy', normalized: clamp(student.grammar_accuracy / 5), sourceNote: `Grammar accuracy ${student.grammar_accuracy.toFixed(1)} / 5` },
+        { shortLabel: 'Arg', label: 'Argument Quality', normalized: clamp(student.argumentation / 5), sourceNote: `Argumentation ${student.argumentation.toFixed(1)} / 5` },
+        { shortLabel: 'Score', label: 'Writing Score', normalized: clamp(student.total_score / 25), sourceNote: `Observed score ${student.total_score.toFixed(1)} / 25` },
+        { shortLabel: 'Revision', label: 'Revision Frequency', normalized: clamp(student.revision_frequency / 6), sourceNote: `${student.revision_frequency} tracked revision moves` },
+        { shortLabel: 'Time', label: 'Time on Task', normalized: clamp((selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task) / 240), sourceNote: `${selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task} estimated minutes` },
+      ];
 
-    return [
-      { shortLabel: 'TTR', label: 'Lexical Variety', normalized: clamp(student.ttr), sourceNote: `Scaled TTR ${student.ttr.toFixed(2)}` },
-      { shortLabel: 'Cohesion', label: 'Cohesion', normalized: clamp(student.cohesion / 5), sourceNote: `Cohesion ${student.cohesion.toFixed(1)} / 5` },
-      { shortLabel: 'Lexical', label: 'Academic Lexis', normalized: clamp(student.lexical_resource / 5), sourceNote: `Lexical resource ${student.lexical_resource.toFixed(1)} / 5` },
-      { shortLabel: 'Grammar', label: 'Grammar Accuracy', normalized: clamp(student.grammar_accuracy / 5), sourceNote: `Grammar accuracy ${student.grammar_accuracy.toFixed(1)} / 5` },
-      { shortLabel: 'Arg', label: 'Argument Quality', normalized: clamp(student.argumentation / 5), sourceNote: `Argumentation ${student.argumentation.toFixed(1)} / 5` },
-      { shortLabel: 'Score', label: 'Writing Score', normalized: clamp(student.total_score / 25), sourceNote: `Observed score ${student.total_score.toFixed(1)} / 25` },
-      { shortLabel: 'Revision', label: 'Revision Frequency', normalized: clamp(student.revision_frequency / 6), sourceNote: `${student.revision_frequency} tracked revision moves` },
-      { shortLabel: 'Time', label: 'Time on Task', normalized: clamp((selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task) / 240), sourceNote: `${selectedCase?.activity.estimatedActiveMinutes ?? student.time_on_task} estimated minutes` },
-    ];
-  }, [selectedCase?.activity.estimatedActiveMinutes, student]);
+  const evidenceMatrix = buildAlignmentMatrix(variables);
+  const revisionScorePlot = buildRevisionScorePlot(selectedCase?.scoreJourney ?? []);
+  const feedbackPlot = buildFeedbackPlot(feedbackEvents, selectedCase?.scoreJourney ?? []);
+  const timeWordCountPlot = buildTimeWordCountPlot(wordCounts, estimatedMinutes);
 
-  const evidenceMatrix = useMemo(() => buildAlignmentMatrix(variables), [variables]);
-  const revisionScorePlot = useMemo(() => buildRevisionScorePlot(selectedCase?.scoreJourney ?? []), [selectedCase?.scoreJourney]);
-  const feedbackPlot = useMemo(() => buildFeedbackPlot(feedbackEvents, selectedCase?.scoreJourney ?? []), [feedbackEvents, selectedCase?.scoreJourney]);
-  const timeWordCountPlot = useMemo(() => buildTimeWordCountPlot(wordCounts, estimatedMinutes), [wordCounts, estimatedMinutes]);
-
-  const strongestPair = useMemo<MatrixCellSelection | null>(() => {
-    let current: MatrixCellSelection | null = null;
-
-    evidenceMatrix.forEach((row, rowIndex) => {
-      row.forEach((value, colIndex) => {
-        if (rowIndex === colIndex) return;
-        if (!current || value > current.val) {
-          current = { row: rowIndex, col: colIndex, val: value };
-        }
-      });
-    });
-
-    return current;
-  }, [evidenceMatrix]);
+  const strongestPair = buildStrongestPair(evidenceMatrix);
 
   const handleCellClick = (row: number, col: number, val: number) => {
     if (row === col) return;

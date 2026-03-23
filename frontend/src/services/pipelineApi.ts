@@ -19,7 +19,15 @@ export async function runPipeline(files: File[]): Promise<PipelineResponse> {
 
   if (!response.ok) {
     const errorPayload = await response.json().catch(() => ({ error: 'Pipeline execution failed.' }));
-    throw new Error(errorPayload.error ?? 'Pipeline execution failed.');
+    const missingFiles = Array.isArray(errorPayload.missing_files) ? errorPayload.missing_files.join(', ') : '';
+    const details = typeof errorPayload.details === 'string' ? errorPayload.details : '';
+    const message =
+      missingFiles
+        ? `${errorPayload.error ?? 'Pipeline execution failed.'} Missing: ${missingFiles}.`
+        : details
+          ? `${errorPayload.error ?? 'Pipeline execution failed.'} ${details}`
+          : errorPayload.error ?? 'Pipeline execution failed.';
+    throw new Error(message);
   }
 
   return response.json();

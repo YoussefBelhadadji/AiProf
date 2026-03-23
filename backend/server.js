@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const { parseWorkbook } = require('./workbookParser');
 const { buildAnalyticsSummary } = require('./liveAnalytics');
+const { buildStrongRuleRows, loadRulebook } = require('./rulebook');
 const { execFile, spawnSync } = require('child_process');
 
 const app = express();
@@ -35,6 +36,15 @@ function resolvePythonCommand() {
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', message: 'WriteLens Backend Operations Active.' });
+});
+
+app.get('/api/rulebook', (req, res) => {
+  const rulebook = loadRulebook();
+  res.json({
+    metadata: rulebook.metadata,
+    profile_rules: rulebook.profile_rules,
+    strong_rule_table: buildStrongRuleRows(),
+  });
 });
 
 app.post('/api/upload-dataset', upload.any(), (req, res) => {

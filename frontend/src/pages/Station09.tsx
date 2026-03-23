@@ -3,10 +3,10 @@ import { PipelineLayout, StationHeader, StationFooter } from '../layouts/Pipelin
 import { GlassCard } from '../components/GlassCard';
 import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
 import { StatusChip } from '../components/Atoms';
-import { getEngagementScore } from '../data/diagnostic';
+import { getEngagementScore, type RuleMatch } from '../data/diagnostic';
 import { getSelectedStudyCase, useStudyScopeStore, type TeacherStudyCase } from '../state/studyScope';
 
-type DiagnosticGroup = 'Planning' | 'Writing' | 'Revision' | 'Engagement';
+type DiagnosticGroup = string;
 
 interface DiagnosticRule {
   id: string;
@@ -14,7 +14,14 @@ interface DiagnosticRule {
   interpretation: string;
   intervention: string;
   templates: string[];
+  rawDataCondition: string;
+  aiOutput: string;
+  feedbackType: string;
+  feedbackFocus: string;
+  theoreticalJustification: string;
 }
+
+const CATEGORY_ORDER = ['Planning', 'Writing', 'Revision', 'Engagement', 'Prediction', 'Inference'];
 
 function parseDelimited(value?: string) {
   return String(value ?? '')
@@ -27,14 +34,31 @@ function getGroupFromRule(ruleId: string): DiagnosticGroup {
   if (ruleId.startsWith('A')) return 'Planning';
   if (ruleId.startsWith('B')) return 'Writing';
   if (ruleId.startsWith('C')) return 'Revision';
-  return 'Engagement';
+  if (ruleId.startsWith('D')) return 'Engagement';
+  if (ruleId.startsWith('E')) return 'Prediction';
+  return 'Inference';
 }
 
 function formatTemplateLabel(value: string) {
   return value.replace(/_/g, ' ');
 }
 
-function buildDiagnosticRules(studyCase: TeacherStudyCase): DiagnosticRule[] {
+function mapRuleMatch(match: RuleMatch): DiagnosticRule {
+  return {
+    id: match.rule_id,
+    group: match.category || getGroupFromRule(match.rule_id),
+    interpretation: match.pedagogical_interpretation,
+    intervention: match.onsite_interventions.join('; ') || 'Teacher review required.',
+    templates: match.feedback_templates,
+    rawDataCondition: match.raw_data_condition,
+    aiOutput: match.ai_learner_state_output,
+    feedbackType: match.adaptive_feedback_type,
+    feedbackFocus: match.feedback_message_focus,
+    theoreticalJustification: match.theoretical_justification,
+  };
+}
+
+function buildFallbackDiagnosticRules(studyCase: TeacherStudyCase): DiagnosticRule[] {
   const ruleIds = parseDelimited(studyCase.student.triggered_rule_ids);
   const interpretations = parseDelimited(studyCase.student.interpretations);
   const interventions = parseDelimited(studyCase.student.onsite_interventions);
@@ -48,7 +72,20 @@ function buildDiagnosticRules(studyCase: TeacherStudyCase): DiagnosticRule[] {
     interpretation: interpretations[index] ?? 'No interpretation returned for this rule.',
     intervention: interventions[index] ?? 'Teacher review required.',
     templates,
+    rawDataCondition: 'No structured raw-data summary was returned for this rule.',
+    aiOutput: 'No structured AI learner-state output was returned for this rule.',
+    feedbackType: 'Teacher review signal',
+    feedbackFocus: studyCase.student.final_feedback_focus ?? 'Confirm the main instructional target before feedback is released.',
+    theoreticalJustification: 'Method basis not supplied in this case export.',
   }));
+}
+
+function buildDiagnosticRules(studyCase: TeacherStudyCase): DiagnosticRule[] {
+  if (Array.isArray(studyCase.student.rule_matches) && studyCase.student.rule_matches.length > 0) {
+    return studyCase.student.rule_matches.map(mapRuleMatch);
+  }
+
+  return buildFallbackDiagnosticRules(studyCase);
 }
 
 export function Station09() {
@@ -63,7 +100,7 @@ export function Station09() {
   );
   const availableTabs = useMemo<DiagnosticGroup[]>(() => {
     const groups = new Set(diagnosticRules.map((rule) => rule.group));
-    return (['Planning', 'Writing', 'Revision', 'Engagement'] as const).filter((group) => groups.has(group));
+    return CATEGORY_ORDER.filter((group) => groups.has(group));
   }, [diagnosticRules]);
   const effectiveTab = availableTabs.includes(activeTab) ? activeTab : availableTabs[0] ?? 'Planning';
   const filteredRules = diagnosticRules.filter((rule) => rule.group === effectiveTab);
@@ -106,8 +143,8 @@ export function Station09() {
           <PedagogicalInsightBadge
             urgency="monitor"
             label="Teacher Review Note"
-            observation={`The current case for ${selectedCase.meta.studentName} matches ${totalIndicators} rule-level decision signals in the live adaptive layer.`}
-            implication="These matched rules organise evidence, template selection, and revision priorities for teacher review rather than replacing instructor judgment."
+            observation={`The current case for ${selectedCase.meta.studentName} matches ${totalIndicators} executable rule signals in the canonical adaptive layer.`}
+            implication="These matched rules organize evidence, template selection, and revision priorities for teacher review rather than replacing instructor judgment."
             action={selectedCase.student.teacher_validation_prompt ?? 'Confirm the priority focus before releasing student-facing feedback.'}
             citation="Mislevy (1994) - Evidence-Centered Design in Assessment"
           />
@@ -119,7 +156,7 @@ export function Station09() {
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-6 gap-4">
           <div className="flex gap-4 border-b border-[var(--border)] overflow-x-auto w-full md:w-auto">
-            {(['Planning', 'Writing', 'Revision', 'Engagement'] as const).map((tab) => (
+            {CATEGORY_ORDER.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
@@ -143,11 +180,11 @@ export function Station09() {
         <GlassCard
           elevation="high"
           className="p-6 md:p-8 mb-8"
-          pedagogicalLabel="This panel summarises workbook-derived rule matches for teacher review."
+          pedagogicalLabel="This panel summarizes canonical rule matches for teacher review."
         >
           <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Diagnostic Summary Panel</h3>
           <p className="font-body text-sm text-[var(--text-sec)] mb-6">
-            These indicators organise evidence from the live decision layer. They support interpretation and planning, but the teacher still validates the final diagnosis.
+            These rule matches organize thresholded evidence and AI learner states into transparent pedagogical decisions. They support interpretation and planning, but the teacher still validates the final diagnosis and feedback.
           </p>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {summaryBars.map((item) => (
@@ -176,7 +213,7 @@ export function Station09() {
             </p>
           </GlassCard>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+          <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-8">
             {filteredRules.map((rule) => (
               <RuleCard key={rule.id} rule={rule} />
             ))}
@@ -200,18 +237,13 @@ function RuleCard({ rule }: { rule: DiagnosticRule }) {
       </div>
 
       <div className="space-y-4 mb-6">
-        <div className="p-3 bg-[var(--bg-deep)] rounded border border-[var(--border)] border-l-2 border-l-[var(--lav-dim)]">
-          <span className="font-navigation text-[10px] uppercase tracking-wide text-[var(--text-muted)] block mb-2">
-            Interpretation
-          </span>
-          <p className="font-body text-sm text-[var(--text-primary)]">{rule.interpretation}</p>
-        </div>
-        <div className="p-3 bg-[var(--bg-deep)] rounded border border-[var(--border)] border-l-2 border-l-[var(--teal-dim)]">
-          <span className="font-navigation text-[10px] uppercase tracking-wide text-[var(--text-muted)] block mb-2">
-            Teacher Move
-          </span>
-          <p className="font-body text-sm text-[var(--text-primary)]">{rule.intervention}</p>
-        </div>
+        <DetailBlock title="Raw Data Condition" accent="var(--gold-dim)" text={rule.rawDataCondition} />
+        <DetailBlock title="AI Learner State" accent="var(--lav-dim)" text={rule.aiOutput} />
+        <DetailBlock title="Pedagogical Interpretation" accent="var(--teal-dim)" text={rule.interpretation} />
+        <DetailBlock title="Adaptive Feedback Type" accent="var(--red-dim)" text={rule.feedbackType} />
+        <DetailBlock title="Feedback Message Focus" accent="var(--gold-dim)" text={rule.feedbackFocus} />
+        <DetailBlock title="Onsite Intervention" accent="var(--teal-dim)" text={rule.intervention} />
+        <DetailBlock title="Method Basis" accent="var(--lav-dim)" text={rule.theoreticalJustification} />
       </div>
 
       <div className="pt-4 border-t border-[var(--border)]">
@@ -219,13 +251,28 @@ function RuleCard({ rule }: { rule: DiagnosticRule }) {
           Selected Templates
         </span>
         <div className="flex flex-wrap gap-2">
-          {rule.templates.map((template) => (
-            <StatusChip key={`${rule.id}-${template}`} variant="lav">
-              {formatTemplateLabel(template)}
-            </StatusChip>
-          ))}
+          {rule.templates.length > 0 ? (
+            rule.templates.map((template) => (
+              <StatusChip key={`${rule.id}-${template}`} variant="lav">
+                {formatTemplateLabel(template)}
+              </StatusChip>
+            ))
+          ) : (
+            <StatusChip variant="gold">Teacher review required</StatusChip>
+          )}
         </div>
       </div>
     </GlassCard>
+  );
+}
+
+function DetailBlock({ title, accent, text }: { title: string; accent: string; text: string }) {
+  return (
+    <div className="p-3 bg-[var(--bg-deep)] rounded border border-[var(--border)] border-l-2" style={{ borderLeftColor: accent }}>
+      <span className="font-navigation text-[10px] uppercase tracking-wide text-[var(--text-muted)] block mb-2">
+        {title}
+      </span>
+      <p className="font-body text-sm text-[var(--text-primary)]">{text}</p>
+    </div>
   );
 }

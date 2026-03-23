@@ -14,6 +14,8 @@ services:
         - frontend/**
         - backend/**
         - render.yaml
+        - .node-version
+        - .python-version
         - .gitignore
         - PROJECT_VERIFICATION_CHECKLIST.md
         - thrsholds.docx

@@ -106,22 +106,11 @@ export function Reports() {
     : null;
   const visibleStationIds = selectedStationIds;
 
-  if (!selectedCase) {
-    return (
-      <ResearchShell>
-        <div className="max-w-5xl mx-auto p-6 md:p-8 pb-32">
-          <GlassCard accent="lav" glow className="p-8 md:p-10">
-            <h1 className="font-editorial italic text-4xl text-[var(--text-primary)]">Verified Reports</h1>
-            <p className="mt-3 font-body text-sm text-[var(--text-sec)] max-w-3xl">
-              No verified workbook is loaded. Import a workbook first to generate a report based only on extracted evidence.
-            </p>
-          </GlassCard>
-        </div>
-      </ResearchShell>
-    );
-  }
-
   const reportRows = useMemo(() => {
+    if (!selectedCase) {
+      return [];
+    }
+
     return STUDY_VARIABLES
       .filter((variable) => selectedVariableIds.includes(variable.id))
       .map((variable) => ({
@@ -132,6 +121,10 @@ export function Reports() {
   }, [selectedCase, selectedVariableIds]);
 
   const executiveSummary = useMemo(() => {
+    if (!selectedCase) {
+      return '';
+    }
+
     const taskLabel = selectedTask ? selectedTask.title : 'the full workbook-backed case';
     const stationCount = visibleStationIds.length;
     return `This report compiles verified workbook evidence for ${selectedCase.meta.studentName} across ${taskLabel}. It covers ${stationCount} selected station${stationCount > 1 ? 's' : ''}, ${selectedCase.writing.artifacts.length} writing sample${selectedCase.writing.artifacts.length !== 1 ? 's' : ''}, ${selectedCase.meta.activityLogEntries} activity log entries, and ${selectedCase.meta.chatMessages} teacher-student messages. The system organises evidence and calculated indicators; the instructor remains responsible for the final pedagogical interpretation, scoring judgment, and feedback delivery.`;
@@ -142,6 +135,10 @@ export function Reports() {
     [visibleStationIds]
   );
   const stationAvailability = useMemo(() => {
+    if (!selectedCase) {
+      return new Map<number, { available: boolean; note?: string }>();
+    }
+
     const clusteringCaseLevel = typeof selectedCase.student.cluster_label === 'number' && selectedCase.student.cluster_label >= 0;
     const predictionCaseLevel =
       typeof selectedCase.student.predicted_score === 'number' ||
@@ -178,6 +175,21 @@ export function Reports() {
   }, [selectedCase]);
 
   const includeSection = (stationIds: number[]) => stationIds.some((stationId) => visibleStationIds.includes(stationId as typeof visibleStationIds[number]));
+
+  if (!selectedCase) {
+    return (
+      <ResearchShell>
+        <div className="max-w-5xl mx-auto p-6 md:p-8 pb-32">
+          <GlassCard accent="lav" glow className="p-8 md:p-10">
+            <h1 className="font-editorial italic text-4xl text-[var(--text-primary)]">Verified Reports</h1>
+            <p className="mt-3 font-body text-sm text-[var(--text-sec)] max-w-3xl">
+              No verified workbook is loaded. Import a workbook first to generate a report based only on extracted evidence.
+            </p>
+          </GlassCard>
+        </div>
+      </ResearchShell>
+    );
+  }
 
   const downloadHtmlReport = () => {
     const reportNode = document.getElementById('final-report');
@@ -374,7 +386,7 @@ export function Reports() {
                       </div>
                       <div className="report-card" style={{ marginTop: '18px' }}>
                         <div className="report-card-label">Method Use In This Report</div>
-                        <div className="report-card-note"><strong>System role:</strong> extract workbook evidence, calculate indicators, and surface model outputs only when verified.</div>
+                        <div className="report-card-note"><strong>System role:</strong> extract workbook evidence, calculate indicators, and, when the imported data support it, generate learner-profile, prediction, and competence-state signals for teacher review.</div>
                         <div className="report-card-note"><strong>Instructor role:</strong> interpret the evidence, validate writing quality, and decide the actual feedback and classroom intervention.</div>
                       </div>
                     </section>

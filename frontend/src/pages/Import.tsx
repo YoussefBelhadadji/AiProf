@@ -192,7 +192,7 @@ export function Import() {
                       Review the detected students before adding them to the study workspace.
                     </p>
                     <p className="font-body text-xs text-[var(--text-muted)] mt-2">
-                      Current import analytics are computed from the imported workbook cohort inside the backend service. If the cohort is too small, advanced models stay unavailable rather than returning fallback numbers. These analytics support teacher interpretation; they do not replace teacher scoring or feedback decisions.
+                      Current import analytics are computed from the imported workbook cohort inside the backend service. In this study, AI acts as a diagnostic and decision-support layer: it groups learner patterns, estimates likely writing development, infers competence states, and surfaces feedback signals for teacher review. It does not replace teacher scoring, interpretation, or intervention decisions.
                     </p>
                     {uniqueLearnerCount <= 1 && parsedCases.length > 0 && (
                       <p className="font-body text-xs text-[var(--text-sec)] mt-2">

@@ -44,6 +44,10 @@ test('parseWorkbook extracts deterministic case metadata from the workbook file'
   assert.equal(student.triggered_rule_ids, 'C4; C5; B2');
   assert.equal(student.feedback_templates_selected, 'feedback_decoding; feedforward_guidance; argument_expansion');
   assert.equal(student.cluster_label, 3);
+  assert.equal(student.clustering_output, 'Engaged or strategic writer');
+  assert.ok(Array.isArray(student.rule_matches));
+  assert.equal(student.rule_matches[0].rule_id, 'C4');
+  assert.match(student.rule_matches[0].pedagogical_interpretation, /help decoding comments/i);
 });
 
 test('parseWorkbook accepts a raw workbook buffer', () => {
