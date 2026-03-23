@@ -104,3 +104,12 @@ rules:
     feedback_type: "explicit_strategic_instruction"
     onsite_intervention: "extra_scaffolded_support"
     dimension: "engagement"
+
+  - rule_id: B5
+    condition:
+      style: "<=2"
+      avg_sentence_length: ">30"
+    interpretation: "Informal register and overly complex syntax reducing academic style quality"
+    feedback_type: "academic_style_feedback"
+    onsite_intervention: "register_and_sentence_variety_workshop"
+    dimension: "product"

@@ -43,3 +43,9 @@ thresholds:
     none: [0, 0]
     procedural: [1, 1]
     adaptive: [2, 100]
+
+  # Gap 5 fix: sentence length added as text feature
+  avg_sentence_length:
+    concise: [0, 20]
+    moderate: [21, 30]
+    complex: [31, 1000]

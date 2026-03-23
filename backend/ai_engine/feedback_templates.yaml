@@ -106,3 +106,9 @@ feedback_templates:
   metacognitive_training: >
     Try to manage your writing process more actively:
     plan before writing, check your progress while drafting, and evaluate your paragraph after revising.
+
+  academic_style_feedback: >
+    Your paragraph uses informal language and/or very long, complex sentences that reduce academic clarity.
+    Replace informal expressions with academic equivalents (e.g., "a lot of" → "a significant number of"),
+    and aim for varied sentence length — mix short direct statements with longer explanations.
+    Academic writing should be formal, precise, and easy to follow.

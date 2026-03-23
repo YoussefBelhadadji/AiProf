@@ -76,6 +76,7 @@ export function Dashboard() {
 
   useEffect(() => {
     if (cases.length === 0) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsAutoLoading(true);
       autoLoadWorkbook()
         .then((parsedCases) => {

@@ -47,7 +47,7 @@ app.get('/api/rulebook', (req, res) => {
   });
 });
 
-app.post('/api/upload-dataset', upload.any(), (req, res) => {
+app.post('/api/upload-dataset', upload.array('files'), (req, res) => {
   const files = Array.isArray(req.files) ? req.files : [];
 
   if (files.length === 0) {
@@ -100,7 +100,7 @@ app.get('/api/auto-load', (req, res) => {
   }
 });
 
-app.post('/api/run-pipeline', upload.any(), (req, res) => {
+app.post('/api/run-pipeline', upload.array('files'), (req, res) => {
   const files = Array.isArray(req.files) ? req.files : [];
   
   if (files.length === 0) {

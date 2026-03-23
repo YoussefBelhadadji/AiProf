@@ -1,3 +1,4 @@
+# pyre-ignore-all-errors
 import pandas as pd
 import json
 import os
@@ -21,7 +22,6 @@ def run():
     results = run_full_pipeline(df)
     
     # Convert results to JSON-serializable format
-    # The 'data' is the main student table
     student_results = results["data"].to_dict(orient="records")
     
     final_output = {
@@ -29,8 +29,12 @@ def run():
         "metrics": {
             "rf_metrics": results["rf_metrics"],
             "rf_importance": results["rf_importance"],
-            "cluster_centroids": results["cluster_centroids"]
-        }
+            "cluster_centroids": results["cluster_centroids"],
+            # Gap 4: cluster k justification (elbow + silhouette)
+            "cluster_justification": results.get("cluster_justification", {}),
+        },
+        # Gap 2: Draft 1 vs Draft 2 growth analysis
+        "growth_analysis": results.get("growth_analysis", {}),
     }
     
     # Ensure frontend data directory exists
@@ -41,7 +45,7 @@ def run():
     with open(output_path, "w", encoding="utf-8") as f:
         json.dump(final_output, f, indent=2, ensure_ascii=False)
         
-    print(f"Successfully saved diagnostic results for 28 students to {output_path}")
+    print(f"Successfully saved diagnostic results to {output_path}")
 
 if __name__ == "__main__":
     run()

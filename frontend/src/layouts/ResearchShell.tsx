@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Menu, LayoutDashboard, Users, FileText, FileEdit, Lightbulb, Search, BookOpen, Workflow } from 'lucide-react';
+import { Menu, LayoutDashboard, Users, FileText, FileEdit, Lightbulb, Search, BookOpen, Workflow, ShieldAlert } from 'lucide-react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import clsx from 'clsx';
 import { GlassCard } from '../components/GlassCard';
@@ -66,6 +66,22 @@ function InterpretationPanel() {
             <GlassCard className="p-4 text-xs text-[var(--text-sec)] font-forensic">
               <p className="mb-2">Hattie (2009) - Visible Learning</p>
               <p>Zimmerman (2002) - Self-regulation</p>
+            </GlassCard>
+          </section>
+
+          <section>
+            <div className="flex items-center gap-2 mb-3 text-[var(--red)] font-medium font-navigation">
+              <ShieldAlert size={16} /> Instructor Control
+            </div>
+            <GlassCard className="p-4 text-sm text-[var(--text-primary)]">
+              <p className="mb-3 text-[var(--text-sec)] text-xs font-body">The system automates diagnosis, but you still control:</p>
+              <ul className="space-y-2">
+                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Rubric scoring</li>
+                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Thresholds</li>
+                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Rules</li>
+                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Template wording</li>
+                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Final approval of feedback</li>
+              </ul>
             </GlassCard>
           </section>
         </div>

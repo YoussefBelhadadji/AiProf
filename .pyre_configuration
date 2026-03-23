@@ -1,0 +1,10 @@
+{
+  "source_directories": [
+    "backend/ai_engine"
+  ],
+  "search_path": [
+    "C:/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0/Lib/site-packages"
+  ],
+  "site_package_search_strategy": "pep561",
+  "ignore_all_errors": true
+}

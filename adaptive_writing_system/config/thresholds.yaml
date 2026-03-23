@@ -7,7 +7,7 @@ thresholds:
   time_on_task:
     low: [0, 14.99]
     moderate: [15, 29.99]
-    strong: [30, 1000]
+    strong: [30, 300]
 
   rubric_views:
     low: [0, 0]
@@ -33,3 +33,19 @@ thresholds:
     low: [1, 2]
     moderate: [3, 3]
     strong: [4, 5]
+
+  feedback_uptake:
+    none: [0, 0]
+    partial: [1, 1]
+    strong: [2, 100]
+
+  help_seeking_messages:
+    none: [0, 0]
+    procedural: [1, 1]
+    adaptive: [2, 100]
+
+  # Gap 5 fix: sentence length added as text feature
+  avg_sentence_length:
+    concise: [0, 20]
+    moderate: [21, 30]
+    complex: [31, 1000]
