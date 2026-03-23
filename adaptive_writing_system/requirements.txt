@@ -3,3 +3,5 @@ pyyaml
 scikit-learn
 pgmpy
 streamlit
+textstat
+nltk
