@@ -104,10 +104,7 @@ export function Reports() {
   const selectedTask = selectedCase
     ? getSelectedTask(selectedCase, getSelectedTaskId({ selectedCaseId, selectedTaskByCase }))
     : null;
-  const uniqueLearnerCount = new Set(cases.map((studyCase) => studyCase.meta.userId)).size;
-  const visibleStationIds = uniqueLearnerCount <= 1
-    ? selectedStationIds.filter((stationId) => ![6, 7, 8].includes(stationId))
-    : selectedStationIds;
+  const visibleStationIds = selectedStationIds;
 
   if (!selectedCase) {
     return (
@@ -145,18 +142,37 @@ export function Reports() {
     [visibleStationIds]
   );
   const stationAvailability = useMemo(() => {
+    const clusteringCaseLevel = typeof selectedCase.student.cluster_label === 'number' && selectedCase.student.cluster_label >= 0;
+    const predictionCaseLevel =
+      typeof selectedCase.student.predicted_score === 'number' ||
+      Boolean(selectedCase.student.random_forest_output);
+    const bayesianCaseLevel =
+      Boolean(selectedCase.analytics?.bayesian.available) ||
+      Boolean(selectedCase.student.bayesian_output) ||
+      Boolean(selectedCase.student.ai_argument_state);
+
     return new Map<number, { available: boolean; note?: string }>([
       [6, {
-        available: Boolean(selectedCase.analytics?.clustering.available),
-        note: selectedCase.analytics?.clustering.available ? undefined : selectedCase.analytics?.clustering.reason ?? 'Not available for the current imported cohort.',
+        available: Boolean(selectedCase.analytics?.clustering.available) || clusteringCaseLevel,
+        note: selectedCase.analytics?.clustering.available
+          ? 'Cohort-backed clustering is active for this report.'
+          : clusteringCaseLevel
+            ? 'Case-level clustering view is active because the learner profile is available even though the cohort is still small.'
+            : selectedCase.analytics?.clustering.reason ?? 'No clustering output is available for the current imported case.',
       }],
       [7, {
-        available: Boolean(selectedCase.analytics?.prediction.available),
-        note: selectedCase.analytics?.prediction.available ? undefined : selectedCase.analytics?.prediction.reason ?? 'Not available for the current imported cohort.',
+        available: Boolean(selectedCase.analytics?.prediction.available) || predictionCaseLevel,
+        note: selectedCase.analytics?.prediction.available
+          ? 'Cohort-backed prediction is active for this report.'
+          : predictionCaseLevel
+            ? 'Case-level predictive output is active because the selected learner already has a stored score estimate and improvement label.'
+            : selectedCase.analytics?.prediction.reason ?? 'No predictive output is available for the current imported case.',
       }],
       [8, {
-        available: Boolean(selectedCase.analytics?.bayesian.available),
-        note: selectedCase.analytics?.bayesian.available ? undefined : selectedCase.analytics?.bayesian.reason ?? 'Not connected in the current live build.',
+        available: bayesianCaseLevel,
+        note: bayesianCaseLevel
+          ? 'Bayesian competence-state synthesis is active for this report.'
+          : selectedCase.analytics?.bayesian.reason ?? 'No Bayesian competence signals were returned for the current case.',
       }],
     ]);
   }, [selectedCase]);
@@ -570,7 +586,7 @@ export function Reports() {
                       <div className="report-card">
                         <h2 className="report-section-title">Concluding Judgment</h2>
                         <p className="report-text">
-                          This concluding section is limited to verified workbook evidence. It shows a learner who submitted multiple drafts, returned to teacher feedback, and asked clarification questions during the writing cycle. Any higher-level pedagogical classification remains the instructor&apos;s responsibility, and any advanced modelling is shown only when the live app can verify it from imported data.
+                          This concluding section is limited to verified workbook evidence. It shows a learner who submitted multiple drafts, returned to teacher feedback, and asked clarification questions during the writing cycle. Any higher-level pedagogical classification remains the instructor&apos;s responsibility, while advanced modelling can appear either in case-level mode or in cohort-backed mode depending on the available imported data.
                         </p>
                       </div>
                       </section>

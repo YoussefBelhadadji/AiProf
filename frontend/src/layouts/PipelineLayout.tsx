@@ -54,9 +54,9 @@ export function PipelineLayout({
     3: Boolean(selectedCase),
     4: Boolean(selectedCase),
     5: Boolean(selectedCase),
-    6: Boolean(selectedCase?.analytics?.clustering.available) && uniqueLearnerCount >= 4,
-    7: Boolean(selectedCase?.analytics?.prediction.available) && uniqueLearnerCount >= 5,
-    8: false,
+    6: Boolean(selectedCase),
+    7: Boolean(selectedCase),
+    8: Boolean(selectedCase),
     9: Boolean(selectedCase),
     10: Boolean(selectedCase),
     11: Boolean(selectedCase),
@@ -159,8 +159,8 @@ export function PipelineLayout({
                     </p>
                     <p className="mt-3 font-body text-sm text-[var(--text-sec)] max-w-3xl leading-relaxed">
                       {uniqueLearnerCount <= 1
-                        ? 'The current workspace is in single-student study mode. Writing-task, evidence, diagnosis, feedback planning, intervention planning, and revision stations remain available, while cohort-only stations stay hidden.'
-                        : 'Import enough verified workbook cases, then select a case with available clustering or prediction results to open the corresponding station.'}
+                        ? 'The current workspace is in single-student study mode. All stations remain visible, but S06-S08 use case-level outputs when cohort-backed modelling is not available.'
+                        : 'When the cohort is small, the station will fall back to case-level AI outputs. When the cohort is large enough, the same station switches to cohort-backed modelling.'}
                     </p>
                   </div>
                   {unavailableContent ? (
@@ -190,8 +190,8 @@ export function PipelineLayout({
                 <ActivitySquare size={48} className="mb-4 text-[var(--text-muted)]" />
                 <p className="font-body text-xs text-[var(--text-sec)]">
                   {uniqueLearnerCount <= 1
-                    ? 'Teacher interpretation is available for single-case evidence stations. Cohort-only stations remain hidden.'
-                    : 'Verified pipeline interpretation will appear here when live analytics is connected.'}
+                    ? 'Teacher interpretation is available across all stations. Cohort-backed analytics downgrade to case-level interpretation when the imported cohort is still small.'
+                    : 'Teacher interpretation appears here for both case-level and cohort-backed analytics.'}
                 </p>
               </div>
             )}

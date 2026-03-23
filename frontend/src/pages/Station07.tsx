@@ -51,6 +51,7 @@ export function Station07() {
   const metrics = selectedCase?.metrics?.rf_metrics;
   const student = selectedCase?.student;
   const cohortSize = selectedCase?.analytics?.cohort_size ?? 0;
+  const cohortBackedMode = predictionAvailable && Boolean(metrics);
 
   const importance = selectedCase?.metrics?.rf_importance ?? [];
   const featureData: FeatureBar[] = importance.slice(0, 5).map((feature, index) => {
@@ -61,7 +62,13 @@ export function Station07() {
       color: colors[index] ?? 'var(--text-muted)',
     };
   });
-  const readiness = getModelReadiness(cohortSize, featureData.length);
+  const readiness = cohortBackedMode
+    ? getModelReadiness(cohortSize, featureData.length)
+    : {
+        label: 'Case-level mode',
+        note: 'The cohort is not yet large enough for verified Random Forest training, so this station falls back to the selected learner\'s stored predictive summary and feature ordering.',
+        accent: 'var(--gold)',
+      };
   const topFeature = featureData[0]?.name ?? 'No dominant feature';
   const predictiveTakeaway = topFeature.toLowerCase().includes('time')
     ? 'Time-on-task appears highly influential here. The teacher should therefore check whether time reflects productive effort, repeated consultation, or confusion before turning it into a classroom decision.'
@@ -82,21 +89,27 @@ export function Station07() {
 
   return (
     <PipelineLayout
-      verifiedEnabled={predictionAvailable && Boolean(student) && Boolean(metrics)}
+      verifiedEnabled={Boolean(student)}
       unavailableTitle="Verified Prediction Unavailable"
       unavailableMessage={
         selectedCase
-          ? selectedCase.analytics?.prediction.reason ?? 'This selected case does not currently have verified prediction output.'
+          ? selectedCase.analytics?.prediction.reason ?? 'This selected case does not currently have prediction output.'
           : 'Select an imported workbook case first to open the verified prediction station.'
       }
       rightPanel={
-        metrics && featureData[0] ? (
+        student ? (
           <PedagogicalInsightBadge
             urgency="positive"
             label="Predictive Signal"
-            observation={`The verified cohort model estimates ${student?.name}'s writing score with R2 = ${metrics.r2.toFixed(2)} and MAE = ${metrics.mae.toFixed(2)}.`}
-            implication={`${featureData[0].name} is the strongest model feature in the current imported cohort, but the instructional meaning still requires teacher judgment.`}
-            action="Use the prediction as a support signal, then confirm priorities from the actual text, rubric evidence, and revision trace."
+            observation={cohortBackedMode && metrics
+              ? `The verified cohort model estimates ${student.name}'s writing score with R2 = ${metrics.r2.toFixed(2)} and MAE = ${metrics.mae.toFixed(2)}.`
+              : `${student.name} still has a case-level predictive output: ${student.random_forest_output ?? 'predictive summary available'}; projected score ${student.predicted_score?.toFixed?.(1) ?? student.predicted_score ?? 'N/A'}.`}
+            implication={featureData[0]
+              ? `${featureData[0].name} is the strongest visible feature in the current model view, but the instructional meaning still requires teacher judgment.`
+              : 'Even when the cohort is small, the predictive output can still guide attention to likely priorities; it should not be treated as an autonomous decision.'}
+            action={cohortBackedMode
+              ? 'Use the prediction as a support signal, then confirm priorities from the actual text, rubric evidence, and revision trace.'
+              : 'Use the case-level prediction as a prompt for inspection, then validate it from the writing sample, rubric evidence, and revision trace.'}
             citation="Hattie & Timperley (2007) - The Power of Feedback"
           />
         ) : undefined
@@ -107,7 +120,7 @@ export function Station07() {
 
         <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            This screen uses verified Random Forest output computed from the imported workbook cohort. It opens only when the backend has enough verified cases to train and evaluate the model without fallback values, and the results are presented as decision support rather than automatic teaching judgment.
+            This screen also supports two modes. When enough verified cases are imported, it uses cohort-backed Random Forest metrics. When the cohort is still small, it stays open in case-level mode and shows the stored prediction, improvement label, and feature ordering for the selected learner.
           </p>
         </GlassCard>
 
@@ -116,16 +129,24 @@ export function Station07() {
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] flex items-center justify-center text-[var(--teal)]"><TrendingUp size={20} /></div>
               <div className="min-w-0">
-                <p className="font-forensic text-[var(--teal)] text-lg">MAE: {metrics?.mae.toFixed(2)}</p>
-                <p className="font-body text-[10px] text-[var(--text-sec)]">Model-wide prediction error</p>
+                <p className="font-forensic text-[var(--teal)] text-lg">
+                  {cohortBackedMode && metrics ? `MAE: ${metrics.mae.toFixed(2)}` : `Predicted: ${student?.predicted_score?.toFixed?.(1) ?? student?.predicted_score ?? 'N/A'}`}
+                </p>
+                <p className="font-body text-[10px] text-[var(--text-sec)]">
+                  {cohortBackedMode ? 'Model-wide prediction error' : 'Case-level projected score'}
+                </p>
               </div>
             </div>
             <div className="hidden sm:block w-px h-10 bg-[var(--border)]"></div>
             <div className="flex items-center gap-3 min-w-0">
               <div className="w-10 h-10 rounded-full bg-[var(--bg-card)] border border-[var(--border)] flex items-center justify-center text-[var(--lav)]"><CheckCircle2 size={20} /></div>
               <div className="min-w-0">
-                <p className="font-forensic text-[var(--lav)] text-lg">R2: {metrics?.r2.toFixed(2)}</p>
-                <p className="font-body text-[10px] text-[var(--text-sec)]">Variance explained in cohort evaluation</p>
+                <p className="font-forensic text-[var(--lav)] text-lg">
+                  {cohortBackedMode && metrics ? `R2: ${metrics.r2.toFixed(2)}` : student?.predicted_improvement ?? 'N/A'}
+                </p>
+                <p className="font-body text-[10px] text-[var(--text-sec)]">
+                  {cohortBackedMode ? 'Variance explained in cohort evaluation' : 'Stored improvement label'}
+                </p>
               </div>
             </div>
           </div>
@@ -134,18 +155,34 @@ export function Station07() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <GlassCard className="p-4">
             <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Family</div>
-            <div className="font-forensic text-lg text-[var(--teal)]">Random Forest</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Used here to estimate writing performance from behaviour and text signals in the imported cohort.</div>
+            <div className="font-forensic text-lg text-[var(--teal)]">
+              {cohortBackedMode ? 'Random Forest' : 'Predictive Layer'}
+            </div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              {cohortBackedMode
+                ? 'Used here to estimate writing performance from behaviour and text signals in the imported cohort.'
+                : 'The selected learner still retains predictive output from the adaptive engine even without a trainable cohort.'}
+            </div>
           </GlassCard>
           <GlassCard className="p-4">
-            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Training Base</div>
-            <div className="font-forensic text-lg text-[var(--lav)]">{cohortSize} cases</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Prediction is shown only when the imported cohort is large enough for verified training and evaluation.</div>
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">
+              {cohortBackedMode ? 'Training Base' : 'Selected Learner'}
+            </div>
+            <div className="font-forensic text-lg text-[var(--lav)]">
+              {cohortBackedMode ? `${cohortSize} cases` : student?.name ?? 'No case'}
+            </div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              {cohortBackedMode
+                ? 'Prediction is shown only when the imported cohort is large enough for verified training and evaluation.'
+                : 'The station remains visible so the learner\'s predictive interpretation does not disappear in single-case mode.'}
+            </div>
           </GlassCard>
           <GlassCard className="p-4">
             <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Teacher Use</div>
             <div className="font-forensic text-lg text-[var(--gold)]">Decision Support</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Feature importance highlights what the model noticed, but the teacher still decides what matters pedagogically.</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              Feature importance highlights what the model noticed, but the teacher still decides what matters pedagogically.
+            </div>
           </GlassCard>
         </div>
 
@@ -164,9 +201,13 @@ export function Station07() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-          <GlassCard elevation="high" className="p-6 md:p-8 min-h-[380px] md:min-h-[450px]" pedagogicalLabel="Random Forest feature importance identifies the strongest variables in the selected learner's cohort-backed score estimate.">
+          <GlassCard elevation="high" className="p-6 md:p-8 min-h-[380px] md:min-h-[450px]" pedagogicalLabel="Predictive feature importance identifies the strongest variables in the selected learner's current score estimate, whether case-level or cohort-backed.">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-2">Predictive Feature Importance</h3>
-            <p className="font-body text-[var(--text-sec)] text-xs mb-6">Variables most influential in the selected learner's score estimate within the imported cohort.</p>
+            <p className="font-body text-[var(--text-sec)] text-xs mb-6">
+              {cohortBackedMode
+                ? 'Variables most influential in the selected learner\'s score estimate within the imported cohort.'
+                : 'Stored feature ordering for the selected learner. Treat this as a case-level support signal until the cohort is large enough for verified model fitting.'}
+            </p>
 
             <ResponsiveContainer width="100%" height="80%" minWidth={0} minHeight={240}>
               <BarChart data={featureData} layout="vertical" margin={{ top: 0, right: 30, left: 20, bottom: 0 }}>
@@ -211,7 +252,7 @@ export function Station07() {
         <GlassCard className="p-6">
           <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            Random Forest answers a predictive question: which variables in the imported cohort are most associated with writing performance or improvement? The model output is retained here as advanced analytic support, while the teacher remains responsible for interpreting whether the predicted pattern should change feedback, diagnosis, or instruction.
+            Random Forest answers a predictive question: which variables are most associated with writing performance or improvement? When the cohort is large enough, this station shows verified model metrics. When it is not, the station stays open with case-level predictive output so the AI layer remains visible in the teacher workflow.
           </p>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mt-3">
             {predictiveTakeaway}

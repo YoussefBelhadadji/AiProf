@@ -72,10 +72,7 @@ export function Dashboard() {
   const selectedTask = selectedCase
     ? getSelectedTask(selectedCase, getSelectedTaskId({ selectedCaseId, selectedTaskByCase }))
     : null;
-  const uniqueLearnerCount = new Set(cases.map((studyCase) => studyCase.meta.userId)).size;
-  const visibleStationIds = uniqueLearnerCount <= 1
-    ? selectedStationIds.filter((stationId) => ![6, 7, 8].includes(stationId))
-    : selectedStationIds;
+  const visibleStationIds = selectedStationIds;
   const highlightedVariables = selectedCase
     ? STUDY_VARIABLES.filter((variable) => selectedVariableIds.includes(variable.id)).slice(0, 4)
     : [];
@@ -319,7 +316,7 @@ export function Dashboard() {
                     ? `The current task selection is ${selectedTask.title}.`
                     : `The current overview covers ${selectedCase.writing.artifacts.length} writing samples extracted from the workbook.`}
                   implication="Only workbook-derived counts and texts are displayed in this view."
-                  action="Use reports and notes for interpretation. In a single-student study, focus on S01-S05 and S09-S12. Open Station 06 or Station 07 only after importing enough verified workbooks for clustering or prediction."
+                  action="Use reports and notes for interpretation. S06-S08 now remain visible in case-level mode and become cohort-backed automatically after enough verified workbooks are imported."
                   citation="Vygotsky (1978) - Guided support and gradual control"
                 />
               </div>

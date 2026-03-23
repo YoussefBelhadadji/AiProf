@@ -133,7 +133,10 @@ async function main() {
     assert.equal(uploadBody.analytics.cohort_size, 2);
     assert.equal(uploadBody.analytics.clustering.available, false);
     assert.equal(uploadBody.analytics.prediction.available, false);
-    assert.equal(uploadBody.cases[0].data[0].predicted_score, null);
+    assert.equal(uploadBody.cases[0].analytics.bayesian.available, true);
+    assert.equal(uploadBody.cases[0].data[0].cluster_label, 3);
+    assert.equal(uploadBody.cases[0].data[0].predicted_score, 24.2);
+    assert.equal(uploadBody.cases[0].metrics.rf_metrics.r2, 0.68);
 
     const pipelineFormData = new FormData();
     pipelineFormData.append('files', new Blob(['student_id,task_id,draft_no\nS1,T1,1\n']), 'moodle_logs.csv');

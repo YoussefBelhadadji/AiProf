@@ -218,48 +218,94 @@ function trainPredictionModel(students) {
   };
 }
 
+function hasBayesianSignals(student) {
+  return Boolean(
+    student?.bayesian_output ||
+    student?.ai_argument_state ||
+    student?.ai_cohesion_state ||
+    student?.ai_revision_state ||
+    student?.ai_feedback_state
+  );
+}
+
+function buildFallbackReason(baseReason, fallbackNote) {
+  return baseReason ? `${baseReason} ${fallbackNote}` : fallbackNote;
+}
+
 function buildAnalyticsSummary(cases) {
   const students = cases.map((studyCase) => studyCase.data[0]).filter(Boolean);
   const clustering = runClustering(students);
   const prediction = trainPredictionModel(students);
+  const anyBayesianAvailable = students.some(hasBayesianSignals);
 
   const enrichedCases = cases.map((studyCase) => {
     const student = studyCase.data[0];
     const studentId = student.student_id;
+    const fallbackMetrics = studyCase.metrics ?? {};
+    const fallbackClusterLabel =
+      typeof student.cluster_label === 'number' ? student.cluster_label : -1;
+    const fallbackClusterProfile =
+      student.cluster_profile ??
+      (fallbackClusterLabel >= 0 ? getClusterLabelDescription(fallbackClusterLabel) : null);
+    const bayesianAvailable = hasBayesianSignals(student);
 
     return {
       ...studyCase,
       data: [
         {
           ...student,
-          cluster_label: clustering.available ? clustering.labelsById[studentId] : -1,
+          cluster_label:
+            clustering.available && typeof clustering.labelsById[studentId] === 'number'
+              ? clustering.labelsById[studentId]
+              : fallbackClusterLabel,
           cluster_profile:
             clustering.available && clustering.labelsById[studentId] >= 0
               ? getClusterLabelDescription(clustering.labelsById[studentId])
-              : student.cluster_profile ?? null,
+              : fallbackClusterProfile,
           predicted_score_estimate: student.predicted_score ?? null,
-          predicted_score: prediction.available ? prediction.predictionsById[studentId] : null,
+          predicted_score:
+            prediction.available && typeof prediction.predictionsById[studentId] === 'number'
+              ? prediction.predictionsById[studentId]
+              : student.predicted_score ?? null,
         },
       ],
       metrics: {
-        rf_metrics: prediction.metrics ?? null,
-        rf_importance: prediction.importance,
-        cluster_centroids: clustering.clusterCentroids,
+        rf_metrics: prediction.metrics ?? fallbackMetrics.rf_metrics ?? null,
+        rf_importance:
+          prediction.importance.length > 0
+            ? prediction.importance
+            : fallbackMetrics.rf_importance ?? [],
+        cluster_centroids:
+          clustering.clusterCentroids.length > 0
+            ? clustering.clusterCentroids
+            : fallbackMetrics.cluster_centroids ?? [],
       },
       analytics: {
         source: 'verified-cohort',
         cohort_size: students.length,
         clustering: {
           available: clustering.available,
-          reason: clustering.reason,
+          reason: clustering.available
+            ? null
+            : buildFallbackReason(
+                clustering.reason,
+                'The current case still retains a case-level learner profile from the adaptive decision layer.'
+              ),
         },
         prediction: {
           available: prediction.available,
-          reason: prediction.reason,
+          reason: prediction.available
+            ? null
+            : buildFallbackReason(
+                prediction.reason,
+                'The current case still retains case-level predictive output from the adaptive decision layer.'
+              ),
         },
         bayesian: {
-          available: false,
-          reason: 'A verified live Bayesian service is not connected in the current backend build.',
+          available: bayesianAvailable,
+          reason: bayesianAvailable
+            ? null
+            : 'No Bayesian competence signals were returned for this case.',
         },
       },
     };
@@ -282,8 +328,10 @@ function buildAnalyticsSummary(cases) {
         rf_importance: prediction.importance,
       },
       bayesian: {
-        available: false,
-        reason: 'A verified live Bayesian service is not connected in the current backend build.',
+        available: anyBayesianAvailable,
+        reason: anyBayesianAvailable
+          ? null
+          : 'No Bayesian competence signals were returned across the current imported cases.',
       },
     },
   };

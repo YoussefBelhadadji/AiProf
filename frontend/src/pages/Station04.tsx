@@ -50,7 +50,13 @@ export function Station04() {
       }
     >
       <div className="max-w-7xl mx-auto p-6 md:p-8 pb-32">
-        <StationHeader id={4} title="Stylometric Fingerprint" subtitle="Layer 5: Systematic Analytics (Thresholds & Indices)" />
+        <StationHeader id={4} title="Stylometric Fingerprint" subtitle="Layer 5: NLP and Systematic Analytics" />
+
+        <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
+          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
+            This station shows the NLP-derived and stylometric indicators extracted from the selected case, including TTR, cohesion, lexical resource, grammar accuracy, error density, and argumentation.
+          </p>
+        </GlassCard>
 
         <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 mb-8">
           <GlassCard elevation="high" className="xl:col-span-8 p-6 md:p-8 flex flex-col min-h-[420px] md:min-h-[500px]" pedagogicalLabel="This radar charts six key writing indices against the target band for a successful argumentative paragraph.">

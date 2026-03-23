@@ -92,8 +92,13 @@ export function Station06() {
   const clusteringAvailable = Boolean(selectedCase?.analytics?.clustering.available);
   const student = selectedCase?.student;
   const cohortSize = selectedCase?.analytics?.cohort_size ?? 0;
-
   const centroids = selectedCase?.metrics?.cluster_centroids ?? [];
+  const cohortBackedMode = clusteringAvailable && centroids.length > 0;
+  const activeClusterLabel =
+    student?.learner_profile ??
+    student?.cluster_profile ??
+    (student ? getClusterNameFromLabel(student.cluster_label) : null);
+
   const scatterData: ScatterPoint[] = student && clusteringAvailable
     ? [
         ...centroids.map((centroid) => ({
@@ -111,11 +116,28 @@ export function Station06() {
           isCentroid: false,
         },
       ]
+    : student
+      ? [
+          ...centroids.map((centroid) => ({
+            name: `${getClusterNameFromLabel(Number(centroid.cluster_label ?? 3))} Reference`,
+            eng: Math.min(100, Number(centroid.time_on_task ?? 0) / 3),
+            perf: Number(centroid.total_score ?? 0) / 5,
+            cluster: getClusterNameFromLabel(Number(centroid.cluster_label ?? 3)),
+            isCentroid: true,
+          })),
+          {
+            name: student.name,
+            eng: getEngagementScore(student),
+            perf: student.total_score / 5,
+            cluster: getClusterNameFromLabel(student.cluster_label),
+            isCentroid: false,
+          },
+        ]
     : [];
 
   const clusterCounts = cases.reduce<Record<ClusterName, number>>(
     (accumulator, entry) => {
-      if (entry.analytics?.clustering.available && entry.student.cluster_label >= 0) {
+      if (entry.student.cluster_label >= 0) {
         const cluster = getClusterNameFromLabel(entry.student.cluster_label);
         accumulator[cluster] += 1;
       }
@@ -129,27 +151,36 @@ export function Station06() {
     }
   );
 
-  const activeCluster = student ? getClusterNameFromLabel(student.cluster_label) : null;
   const representedClusters = Object.values(clusterCounts).filter((count) => count > 0).length;
-  const readiness = getClusterReadiness(cohortSize, representedClusters);
+  const readiness = cohortBackedMode
+    ? getClusterReadiness(cohortSize, representedClusters)
+    : {
+        label: 'Case-level mode',
+        note: 'The imported cohort is still too small for verified K-Means training, so this station falls back to the learner profile and reference centroids already stored in the case record.',
+        accent: 'var(--gold)',
+      };
 
   return (
     <PipelineLayout
-      verifiedEnabled={clusteringAvailable && Boolean(student)}
+      verifiedEnabled={Boolean(student)}
       unavailableTitle="Verified Clustering Unavailable"
       unavailableMessage={
         selectedCase
-          ? selectedCase.analytics?.clustering.reason ?? 'This selected case does not currently have verified clustering output.'
+          ? selectedCase.analytics?.clustering.reason ?? 'This selected case does not currently have clustering output.'
           : 'Select an imported workbook case first to open the verified clustering station.'
       }
       rightPanel={
-        activeCluster ? (
+        activeClusterLabel ? (
           <PedagogicalInsightBadge
             urgency="monitor"
             label="Cluster Diagnostics"
-            observation={`${student?.name} aligns with the ${activeCluster} profile in the verified imported cohort.`}
-            implication="The clustering output places the learner near similar engagement and writing traces in the cohort, but the cluster label is still only an analytic grouping until the teacher interprets it pedagogically."
-            action="Use the cohort profile as a comparative signal, then confirm any teaching response from the workbook evidence, rubric, and revision history."
+            observation={`${student?.name} is currently read as ${activeClusterLabel}${cohortBackedMode ? ' in the verified imported cohort.' : ' in case-level fallback mode.'}`}
+            implication={cohortBackedMode
+              ? 'The clustering output places the learner near similar engagement and writing traces in the cohort, but the cluster label is still only an analytic grouping until the teacher interprets it pedagogically.'
+              : 'The profile label remains useful for teacher orientation, but it should be read as a case-level adaptive classification until enough imported cases are available for cohort-backed clustering.'}
+            action={cohortBackedMode
+              ? 'Use the cohort profile as a comparative signal, then confirm any teaching response from the workbook evidence, rubric, and revision history.'
+              : 'Use this profile as an orientation signal, then verify the pedagogical reading from the text, rubric, and revision trace.'}
             citation="Gasevic et al. (2015) - Learning Analytics and Educational Data Mining"
           />
         ) : undefined
@@ -160,25 +191,41 @@ export function Station06() {
 
         <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            This screen uses verified K-Means output from the imported workbook cohort. It opens only when the backend has enough unique learners to calculate clusters without fallback values, and the profile labels remain teacher-interpreted rather than automatically pedagogical.
+            This screen now supports two modes. When the imported cohort is large enough, it uses verified K-Means output. When the cohort is still small, it stays open in case-level mode and shows the learner profile already inferred for the selected student so the station does not disappear from the workflow.
           </p>
         </GlassCard>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
           <GlassCard className="p-4">
             <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Model Status</div>
-            <div className="font-forensic text-lg text-[var(--teal)]">Verified K-Means</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Cluster output appears only when the imported cases are sufficient for verified cohort profiling.</div>
+            <div className="font-forensic text-lg text-[var(--teal)]">
+              {cohortBackedMode ? 'Verified K-Means' : 'Case-Level Profile'}
+            </div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              {cohortBackedMode
+                ? 'The imported cases are sufficient for verified cohort profiling.'
+                : 'The selected learner still retains a usable profile even though the cohort is too small for live K-Means training.'}
+            </div>
           </GlassCard>
           <GlassCard className="p-4">
-            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Imported Cohort</div>
-            <div className="font-forensic text-lg text-[var(--lav)]">{cohortSize} cases</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">The selected learner is plotted against live cohort centroids rather than against static demo points.</div>
+            <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">
+              {cohortBackedMode ? 'Imported Cohort' : 'Selected Learner'}
+            </div>
+            <div className="font-forensic text-lg text-[var(--lav)]">
+              {cohortBackedMode ? `${cohortSize} cases` : activeClusterLabel ?? 'No profile'}
+            </div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              {cohortBackedMode
+                ? 'The selected learner is plotted against live cohort centroids.'
+                : 'The plotted references are retained from the case record so the station can still explain the learner profile.'}
+            </div>
           </GlassCard>
           <GlassCard className="p-4">
             <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] mb-1">Teacher Use</div>
             <div className="font-forensic text-lg text-[var(--gold)]">Profile Reading</div>
-            <div className="font-body text-xs text-[var(--text-sec)] mt-1">Use cluster position for comparison, then interpret its pedagogical meaning from real case evidence.</div>
+            <div className="font-body text-xs text-[var(--text-sec)] mt-1">
+              Use the profile for comparison when the cohort is ready, or as a case-level orientation signal when it is not.
+            </div>
           </GlassCard>
         </div>
 
@@ -196,10 +243,12 @@ export function Station06() {
           </GlassCard>
         </div>
 
-        <GlassCard elevation="high" className="p-6 md:p-8 mb-8 h-[500px] w-full relative" pedagogicalLabel="K-means centroids position the case against cohort-derived engagement and performance profiles.">
+        <GlassCard elevation="high" className="p-6 md:p-8 mb-8 h-[500px] w-full relative" pedagogicalLabel="Profile references position the case against engagement and performance patterns, either from the cohort model or from the retained case-level profile record.">
           <div className="absolute top-8 left-8">
             <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)]">Behavioral Profile Positioning</h3>
-            <p className="font-body text-[var(--text-sec)] text-sm mb-6">Subject: {student?.name} (ID: {student?.student_id})</p>
+            <p className="font-body text-[var(--text-sec)] text-sm mb-6">
+              Subject: {student?.name} (ID: {student?.student_id}) {cohortBackedMode ? '· cohort-backed view' : '· case-level fallback view'}
+            </p>
           </div>
 
           <div className="w-full h-full pt-16">
@@ -276,7 +325,7 @@ export function Station06() {
         <GlassCard className="p-6">
           <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)] mb-3">Method Reading</h3>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            Clustering answers a comparative question: which learners in the imported cohort show similar behavioural and writing profiles? It does not replace teacher judgment. The educational meaning of each profile still depends on the selected learner&apos;s rubric, writing samples, feedback uptake, and revision trace.
+            Clustering answers a comparative question: which learners show similar behavioural and writing profiles? When the cohort is large enough, that comparison is cohort-backed. When it is not, the station still surfaces the selected learner's stored profile so the analytic pathway remains visible to the teacher.
           </p>
           <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mt-3">
             Higher-level teacher actions should follow from these profile signals only after they are checked against the writing sample, rubric evidence, and revision history. In this build, cluster labels are therefore prompts for comparison, not final classifications of the learner.

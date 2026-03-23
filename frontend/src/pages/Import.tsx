@@ -196,7 +196,7 @@ export function Import() {
                     </p>
                     {uniqueLearnerCount <= 1 && parsedCases.length > 0 && (
                       <p className="font-body text-xs text-[var(--text-sec)] mt-2">
-                        Single-student case detected. Available stations for this study mode: S01-S05 and S09-S12. Cohort-only stations S06-S08 stay hidden or unavailable.
+                        Single-student case detected. All stations remain visible. S06-S08 run in case-level mode until you import enough verified workbooks for cohort-backed modelling.
                       </p>
                     )}
                     {analyticsStatus && (
@@ -267,7 +267,7 @@ export function Import() {
                     {uniqueLearnerCount <= 1 && (
                       <div className="mb-6 rounded-lg border border-[var(--gold)]/20 bg-[var(--gold-dim)] px-4 py-3">
                         <p className="font-body text-sm text-[var(--text-sec)]">
-                          Single-student case mode is now active. Use S01-S05 and S09-S12 for this file. S06-S08 remain hidden because they depend on cohort-level modelling.
+                          Single-student case mode is now active. You can still open S06-S08 in case-level mode. They will switch automatically to cohort-backed analytics after more verified workbooks are imported.
                         </p>
                       </div>
                     )}

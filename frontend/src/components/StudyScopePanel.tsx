@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { SlidersHorizontal, Upload, UserRoundSearch, BookMarked, Waypoints } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { GlassCard } from './GlassCard';
@@ -50,8 +49,6 @@ const QUICK_PRESETS: Array<{
   },
 ];
 
-const COHORT_ONLY_STATIONS: StudyStationId[] = [6, 7, 8];
-
 export function StudyScopePanel({
   title = 'Build Your Teaching View',
   subtitle = 'Follow these steps to choose the student, the exercise, the stations, and the indicators you want to read.',
@@ -74,23 +71,7 @@ export function StudyScopePanel({
   const selectedTask = getSelectedTask(selectedCase, selectedTaskId);
   const uniqueLearnerCount = new Set(cases.map((studyCase) => studyCase.meta.userId)).size;
   const isSingleStudentMode = uniqueLearnerCount <= 1;
-  const availableStationIds = isSingleStudentMode
-    ? STUDY_STATIONS.filter((station) => !COHORT_ONLY_STATIONS.includes(station.id)).map((station) => station.id)
-    : STUDY_STATIONS.map((station) => station.id);
-  const visibleSelectedStationIds = selectedStationIds.filter((stationId) => availableStationIds.includes(stationId));
-
-  useEffect(() => {
-    if (!isSingleStudentMode) {
-      return;
-    }
-
-    if (selectedStationIds.every((stationId) => availableStationIds.includes(stationId))) {
-      return;
-    }
-
-    const filtered = selectedStationIds.filter((stationId) => availableStationIds.includes(stationId));
-    setStationSelection(filtered.length > 0 ? filtered : availableStationIds);
-  }, [availableStationIds, isSingleStudentMode, selectedStationIds, setStationSelection]);
+  const visibleSelectedStationIds = selectedStationIds;
 
   if (!selectedCase) {
     return (
@@ -139,12 +120,12 @@ export function StudyScopePanel({
         </div>
         {isSingleStudentMode && (
           <div className="rounded-lg border border-[var(--gold)]/20 bg-[var(--gold-dim)] px-4 py-3 font-body text-xs text-[var(--text-sec)]">
-            Single-student study mode is active. Available stations: S01-S05 and S09-S12. Cohort-only stations S06-S08 are shown below as locked previews so the teacher can still see the full station architecture.
+            Single-student study mode is active. S06-S08 now remain available in case-level mode. They switch automatically to cohort-backed analytics after you import enough verified workbooks.
           </div>
         )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
           {QUICK_PRESETS.map((preset) => {
-            const visiblePresetStations = preset.stations.filter((stationId) => availableStationIds.includes(stationId));
+            const visiblePresetStations = preset.stations;
 
             return (
               <button
@@ -241,37 +222,23 @@ export function StudyScopePanel({
         <div className="flex flex-wrap gap-2">
           {STUDY_STATIONS.map((station) => {
             const isSelected = selectedStationIds.includes(station.id);
-            const isLockedPreview = isSingleStudentMode && COHORT_ONLY_STATIONS.includes(station.id);
-
             return (
               <button
                 key={station.id}
                 type="button"
-                onClick={() => {
-                  if (isLockedPreview) {
-                    return;
-                  }
-                  toggleStation(station.id);
-                }}
-                disabled={isLockedPreview}
+                onClick={() => toggleStation(station.id)}
                 className={`rounded-full border px-3 py-2 text-left transition-colors ${
-                  isLockedPreview
-                    ? 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-muted)] opacity-55 cursor-not-allowed'
-                    : isSelected
+                  isSelected
                     ? 'border-[var(--teal)] bg-[var(--teal-dim)] text-[var(--teal)]'
                     : 'border-[var(--border)] bg-[var(--bg-card)] text-[var(--text-sec)] hover:text-[var(--text-primary)]'
                 }`}
-                title={
-                  isLockedPreview
-                    ? `${station.description} Locked in single-student mode because it requires cohort analytics or a live Bayesian service.`
-                    : station.description
-                }
+                title={station.description}
               >
                 <span className="block font-navigation text-[10px] uppercase tracking-widest">{station.group}</span>
                 <span className="block font-body text-xs mt-1">S{String(station.id).padStart(2, '0')} - {station.label}</span>
-                {isLockedPreview ? (
+                {isSingleStudentMode && [6, 7, 8].includes(station.id) ? (
                   <span className="block font-navigation text-[10px] uppercase tracking-widest mt-2 text-[var(--gold)]">
-                    locked preview
+                    case-level mode
                   </span>
                 ) : null}
               </button>

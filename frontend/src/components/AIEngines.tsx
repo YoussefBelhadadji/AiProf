@@ -7,7 +7,7 @@ export function AIEngines() {
       <GlassCard className="p-6 md:p-8">
         <h2 className="font-editorial text-2xl text-[var(--teal)] mb-6">Adaptive Assessment Architecture</h2>
         <div className="mb-6 rounded-lg border border-[var(--gold)]/25 bg-[var(--gold-dim)] px-4 py-3 font-body text-sm text-[var(--text-sec)]">
-          This screen documents the study methodology. In the current app build, workbook extraction is live, descriptive and text-analytic layers are workbook-derived, cohort clustering and prediction are verified only when enough imported cases are available, and Bayesian inference remains unavailable in the live upload flow.
+          This screen documents the study methodology. In the current app build, workbook extraction is live, NLP and stylometric indicators are workbook-derived, clustering and prediction can operate in case-level mode or cohort-backed mode, and Bayesian synthesis is visible whenever the imported case includes competence-state output.
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
@@ -15,8 +15,8 @@ export function AIEngines() {
             <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--lav)] mb-3">AI Assistant Tool Role</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>Calculate descriptive patterns from verified Moodle workbook evidence.</li>
-              <li>Store rubric rows, extract text indicators, and organise process and product traces.</li>
-              <li>Surface learner grouping and predictive signals only when the imported cohort is sufficient.</li>
+              <li>Store rubric rows, extract NLP and text indicators, and organise process and product traces.</li>
+              <li>Surface learner grouping and predictive signals in case-level mode first, then upgrade to cohort-backed modelling when enough imported cases are available.</li>
               <li>Suggest diagnostic signals and feedback triggers for teacher review.</li>
             </ul>
           </GlassCard>
@@ -44,8 +44,8 @@ export function AIEngines() {
             <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--gold)] mb-3">Band 2: AI Support</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>K-Means clustering for learner profiles when the cohort is sufficient.</li>
-              <li>Random Forest for predictive factors and score estimation when verified.</li>
-              <li>Bayesian competence inference is documented methodologically but not live in the current build.</li>
+              <li>Random Forest for predictive factors and score estimation, with case-level fallback when the cohort is still small.</li>
+              <li>Bayesian competence inference is visible through the adaptive competence-state synthesis shown in Station 08.</li>
             </ul>
           </GlassCard>
           <GlassCard className="p-5">
@@ -111,11 +111,11 @@ export function AIEngines() {
               </thead>
               <tbody className="divide-y divide-[var(--border)] text-[var(--text-sec)]">
                 <tr><td className="py-3 px-2">Process integration</td><td className="py-3 px-2">Station 02-03</td><td className="py-3 px-2"><StatusChip variant="teal">Workbook-derived</StatusChip></td></tr>
-                <tr><td className="py-3 px-2">Text analytics</td><td className="py-3 px-2">Station 04</td><td className="py-3 px-2"><StatusChip variant="teal">Workbook-derived</StatusChip></td></tr>
+                <tr><td className="py-3 px-2">NLP / text analytics</td><td className="py-3 px-2">Station 04</td><td className="py-3 px-2"><StatusChip variant="teal">Workbook-derived</StatusChip></td></tr>
                 <tr><td className="py-3 px-2">Evidence alignment</td><td className="py-3 px-2">Station 05</td><td className="py-3 px-2"><StatusChip variant="teal">Case-derived</StatusChip></td></tr>
-                <tr><td className="py-3 px-2">K-Means</td><td className="py-3 px-2">Station 06</td><td className="py-3 px-2"><StatusChip variant="teal">Verified cohort-backed when available</StatusChip></td></tr>
-                <tr><td className="py-3 px-2">Random Forest</td><td className="py-3 px-2">Station 07</td><td className="py-3 px-2"><StatusChip variant="teal">Verified cohort-backed when available</StatusChip></td></tr>
-                <tr><td className="py-3 px-2">Bayesian competence inference</td><td className="py-3 px-2">Station 08</td><td className="py-3 px-2"><StatusChip variant="red">Not connected in live build</StatusChip></td></tr>
+                <tr><td className="py-3 px-2">K-Means</td><td className="py-3 px-2">Station 06</td><td className="py-3 px-2"><StatusChip variant="teal">Case-level or cohort-backed</StatusChip></td></tr>
+                <tr><td className="py-3 px-2">Random Forest</td><td className="py-3 px-2">Station 07</td><td className="py-3 px-2"><StatusChip variant="teal">Case-level or cohort-backed</StatusChip></td></tr>
+                <tr><td className="py-3 px-2">Bayesian competence inference</td><td className="py-3 px-2">Station 08</td><td className="py-3 px-2"><StatusChip variant="gold">Case-level synthesis live</StatusChip></td></tr>
                 <tr><td className="py-3 px-2">Teacher review signals</td><td className="py-3 px-2">Station 09-11</td><td className="py-3 px-2"><StatusChip variant="gold">Teacher-supervised</StatusChip></td></tr>
                 <tr><td className="py-3 px-2">Growth across drafts</td><td className="py-3 px-2">Station 12</td><td className="py-3 px-2"><StatusChip variant="teal">Workbook-derived</StatusChip></td></tr>
               </tbody>
@@ -141,6 +141,7 @@ export function AIEngines() {
                 <StatusChip variant="lav">Clustering</StatusChip>
                 <StatusChip variant="lav">Prediction</StatusChip>
                 <StatusChip variant="lav">Text Indicators</StatusChip>
+                <StatusChip variant="lav">Bayesian States</StatusChip>
               </div>
             </div>
             <div>
