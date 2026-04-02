@@ -1,11 +1,117 @@
-frontend/node_modules/
-backend/node_modules/
-frontend/dist/
-**/__pycache__/
-*.pyc
-*.log
-*.tmp
-*.pid
+# =============================================================================
+# WRITELEN SYSTEM - COMPREHENSIVE .GITIGNORE
+# =============================================================================
+
+# Environment Variables
 .env
 .env.*
+!.env.example
+
+# Virtual Environments  
+.venv/
+venv/
+env/
+ENV/
+build-env/
+
+# Node Dependencies (npm/yarn/pnpm)
+node_modules/
+frontend/node_modules/
+backend/node_modules/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Python Cache & Compiled Files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+.pytest_cache/
+.coverage
+.mypy_cache/
+.pytype/
+*.egg
+
+# IDE & Editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.project
+.pydevproject
+.vim
+*.swp
+*.swo
+*~
+.netrwhist
+
+# Build Outputs
+frontend/dist/
+backend/dist/
+dist/
+build/
+*.min.js
+*.min.css
+
+# Database Temporary Files
+*.db-shm
+*.db-wal
+*.db-journal
+
+# Generated Reports & Results (recreatable)
+AI_ANALYSIS_REPORTS/
+results/
+temp/
+tmp/
+.cache/
+
+# OS Files
 .DS_Store
+Thumbs.db
+desktop.ini
+.directory
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Temporary Files
+*.tmp
+*.bak
+*.backup
+*.swp
+*.swo
+*~
+.~*
+*.temp
+
+# Development tooling
+.pyre/
+.dmypy.json
+dmypy.json
+
+# VS Code Extensions
+.vscode/extensions/
+.vscode/settings.json
+.vscode/launch.json
+
+# Platform-specific
+.node-version
+
+# Keep these important files
+!.tools/**
+!.gitignore
+!README.md
+!requirements.txt
+!package.json

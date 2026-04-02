@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React, { useState } from 'react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -32,6 +32,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         ref={ref}
         disabled={isLoading || props.disabled}
+        aria-busy={isLoading}
         className={twMerge(
           clsx(`btn-${variant} flex items-center justify-center gap-2 whitespace-nowrap`, {
             'opacity-70 cursor-wait': isLoading,
@@ -45,7 +46,7 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
         )}
-        {isLoading ? 'Processing...' : children}
+        {children}
       </button>
     );
   }
@@ -105,9 +106,9 @@ export function StudyProgressTimeline({ steps, className }: { steps: TimelineSte
           <div className="flex flex-col items-center gap-2 group flex-1 min-w-0">
             <div
               className={clsx(
-                'w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center font-navigation text-[10px] md:text-xs border transition-all duration-500 shrink-0 font-bold',
+                'w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center font-navigation text-xs md:text-xs border transition-all duration-500 shrink-0 font-bold',
                 {
-                  'bg-[var(--teal)] border-[var(--teal)] text-[var(--bg-deep)] shadow-[0_0_15px_var(--teal-dim)]': step.status === 'completed',
+                  'bg-[var(--blue)] border-[var(--blue)] text-[var(--bg-deep)] shadow-[0_0_15px_var(--blue-dim)]': step.status === 'completed',
                   'bg-[var(--lav)] border-[var(--lav)] text-[var(--bg-deep)] shadow-[0_0_15px_var(--lav-glow)] scale-110': step.status === 'current',
                   'bg-transparent border-[var(--border)] text-[var(--text-muted)]': step.status === 'upcoming',
                 }
@@ -117,9 +118,9 @@ export function StudyProgressTimeline({ steps, className }: { steps: TimelineSte
             </div>
             <span
               className={clsx(
-                'text-[8px] md:text-[9px] uppercase tracking-widest font-navigation transition-colors text-center truncate w-full px-1',
+                'text-xs md:text-xs uppercase tracking-widest font-navigation transition-colors text-center truncate w-full px-1',
                 {
-                  'text-[var(--teal)]': step.status === 'completed',
+                  'text-[var(--blue)]': step.status === 'completed',
                   'text-[var(--lav)] font-bold': step.status === 'current',
                   'text-[var(--text-muted)]': step.status === 'upcoming',
                 }
@@ -132,7 +133,7 @@ export function StudyProgressTimeline({ steps, className }: { steps: TimelineSte
             <div
               className={clsx(
                 'h-[1px] flex-1 mb-5 md:mb-6 transition-colors duration-500 min-w-[10px]',
-                step.status === 'completed' ? 'bg-[var(--teal)]' : 'bg-[var(--border)]'
+                step.status === 'completed' ? 'bg-[var(--blue)]' : 'bg-[var(--border)]'
               )}
             />
           )}
@@ -141,3 +142,47 @@ export function StudyProgressTimeline({ steps, className }: { steps: TimelineSte
     </div>
   );
 }
+import { Info } from 'lucide-react';
+
+/* Tooltip components */
+export function Tooltip({ children, content, position = 'top' }: { children: React.ReactNode, content: React.ReactNode, position?: 'top' | 'bottom' | 'left' | 'right' }) {
+  const [isVisible, setIsVisible] = useState(false);
+  
+  const positionClasses = {
+    top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
+    bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
+    left: 'right-full top-1/2 -translate-y-1/2 mr-2',
+    right: 'left-full top-1/2 -translate-y-1/2 ml-2',
+  };
+
+  return (
+    <div 
+      className="relative inline-flex items-center"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+      onFocus={() => setIsVisible(true)}
+      onBlur={() => setIsVisible(false)}
+    >
+      {children}
+      {isVisible && (
+        <div className={clsx(
+          "absolute z-50 w-64 p-2 text-xs font-body font-normal text-[var(--text-primary)] bg-[var(--bg-high)] border border-[var(--border)] rounded shadow-xl pointer-events-none animate-in fade-in duration-200",
+          positionClasses[position]
+        )}>
+          {content}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function InfoTooltip({ content, className, position = 'top' }: { content: React.ReactNode, className?: string, position?: 'top' | 'bottom' | 'left' | 'right' }) {
+  return (
+    <Tooltip content={content} position={position}>
+      <button type="button" className={clsx("text-[var(--text-muted)] hover:text-[var(--lav)] transition-colors inline-block", className)} aria-label="More information" onClick={(e) => { e.preventDefault(); e.stopPropagation(); }}>
+        <Info size={14} />
+      </button>
+    </Tooltip>
+  );
+}
+

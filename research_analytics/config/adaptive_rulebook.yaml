@@ -1,0 +1,175 @@
+{
+  "metadata": {
+    "title": "WriteLens Unified Strong Rule Table (2026 Academic Edition)",
+    "preface": "Raw data indicators and AI learner-state outputs jointly drive the adaptive feedback decision. Thresholded evidence establishes what was observed, AI diagnosis interprets what the learner likely needs, and the rule layer maps that need onto transparent pedagogical action."
+  },
+  "profile_rules": [
+    {
+      "profile_id": "disengaged",
+      "priority": 120,
+      "display_label": "Disengaged learner",
+      "conditions": { "ai_states": { "all": { "engagement_risk": "High" } } },
+      "theoretical_justification": "Siemens (2013); Zimmerman (2000)"
+    },
+    {
+      "profile_id": "effortful_but_struggling",
+      "priority": 110,
+      "display_label": "Effortful but struggling writer",
+      "conditions": { "ai_states": { "all": { "argumentation_state": "Low", "engagement_risk": "Low" } } },
+      "theoretical_justification": "Dawson (2018); Siemens (2013)"
+    },
+    {
+      "profile_id": "fragile_regulator",
+      "priority": 100,
+      "display_label": "Efficient but fragile regulator",
+      "conditions": { "ai_states": { "all": { "revision_depth": "Low", "argumentation_state": "Medium" } } },
+      "theoretical_justification": "Zimmerman (2000)"
+    }
+  ],
+  "feedback_rules": [
+    {
+      "rule_id": "A1",
+      "category": "Planning",
+      "priority": 100,
+      "conditions": { "ai_states": { "all": { "forethought_risk": "High" } } },
+      "display": {
+        "raw_data_condition": "rubric_views = 0 + time_on_task < 15 + word_count < 80",
+        "ai_learner_state_output": "Forethought risk = High",
+        "pedagogical_interpretation": "Weak planning and low criteria awareness constrain the learner before drafting begins.",
+        "adaptive_feedback_type": "Metacognitive + feedforward scaffold",
+        "feedback_message_focus": "Plan before writing, consult the rubric, and outline the paragraph structure.",
+        "theoretical_justification": "Zimmerman (2000); Nicol and Macfarlane-Dick (2006)"
+      },
+      "actions": {
+        "feedback_templates": ["planning_scaffold"],
+        "onsite_interventions": ["rubric_walkthrough_and_outline_support"]
+      }
+    },
+    {
+      "rule_id": "B6",
+      "category": "Linguistic Accuracy",
+      "priority": 95,
+      "conditions": { "ai_states": { "all": { "linguistic_accuracy_risk": "High" } } },
+      "display": {
+        "raw_data_condition": "error density high + grammar accuracy low",
+        "ai_learner_state_output": "Linguistic accuracy risk = High",
+        "pedagogical_interpretation": "Recurring grammar problems are reducing clarity and need explicit attention.",
+        "adaptive_feedback_type": "Direct corrective feedback",
+        "feedback_message_focus": "Correct repeated error patterns and apply the correction consistently.",
+        "theoretical_justification": "Ferris; Weigle (2002)"
+      },
+      "actions": {
+        "feedback_templates": ["direct_corrective_feedback"],
+        "onsite_interventions": ["targeted_error_correction_cycle"]
+      }
+    },
+    {
+      "rule_id": "C4",
+      "category": "Feedback Uptake",
+      "priority": 90,
+      "conditions": { "ai_states": { "all": { "feedback_uptake_risk": "High" } } },
+      "display": {
+        "raw_data_condition": "feedback viewed repeatedly + revision follows but argument remains developing",
+        "ai_learner_state_output": "Feedback uptake risk = High",
+        "pedagogical_interpretation": "The learner uses feedback, but still needs help decoding comments at a deeper level.",
+        "adaptive_feedback_type": "Feedback-decoding scaffold",
+        "feedback_message_focus": "Reconnect teacher comments to explicit meaning-level changes.",
+        "theoretical_justification": "Carless and Boud (2018); Hattie and Timperley (2007)"
+      },
+      "actions": {
+        "feedback_templates": ["feedback_decoding"],
+        "onsite_interventions": ["feedback_to_revision_mapping"]
+      }
+    },
+    {
+      "rule_id": "B1",
+      "category": "Argumentation",
+      "priority": 85,
+      "conditions": { "ai_states": { "all": { "argumentation_weakness": "High" } } },
+      "display": {
+        "raw_data_condition": "argumentation low or under threshold for stable support and explanation",
+        "ai_learner_state_output": "Argumentation weakness = High",
+        "pedagogical_interpretation": "Claim-evidence-reasoning structure remains weak and unsupported.",
+        "adaptive_feedback_type": "Strategic higher-order feedback",
+        "feedback_message_focus": "Add a clear example and explain how it supports the main claim.",
+        "theoretical_justification": "Hyland (2019); Weigle (2002)"
+      },
+      "actions": {
+        "feedback_templates": ["argument_scaffold"],
+        "onsite_interventions": ["claim_evidence_explanation_modelling"]
+      }
+    },
+    {
+      "rule_id": "B4",
+      "category": "Discourse",
+      "priority": 80,
+      "conditions": { "ai_states": { "all": { "discourse_competence": "Low" } } },
+      "display": {
+        "raw_data_condition": "organization weak + cohesion index low",
+        "ai_learner_state_output": "Discourse competence = Low",
+        "pedagogical_interpretation": "Paragraph structure and transitions remain unstable, weakening discourse flow.",
+        "adaptive_feedback_type": "Strategic discourse feedback",
+        "feedback_message_focus": "Use connectors and clearer sequencing to improve paragraph unity.",
+        "theoretical_justification": "Halliday and Hasan; Hyland (2019)"
+      },
+      "actions": {
+        "feedback_templates": ["cohesion_support"],
+        "onsite_interventions": ["transition_and_linking_support"]
+      }
+    },
+    {
+      "rule_id": "D1",
+      "category": "Engagement",
+      "priority": 110,
+      "conditions": { "ai_states": { "all": { "engagement_risk": "High" } } },
+      "display": {
+        "raw_data_condition": "low assignment views + low resource access + no productive re-entry",
+        "ai_learner_state_output": "Engagement risk = High",
+        "pedagogical_interpretation": "Behavioural participation is too low for detailed feedback to be effective yet.",
+        "adaptive_feedback_type": "Motivational re-engagement",
+        "feedback_message_focus": "Re-enter the task with simplified steps, rubric support, and explicit direction.",
+        "theoretical_justification": "Siemens (2013); Zimmerman (2000)"
+      },
+      "actions": {
+        "feedback_templates": ["motivational_reengagement"],
+        "onsite_interventions": ["motivational_checkin_and_task_restart"]
+      }
+    },
+    {
+      "rule_id": "F1",
+      "category": "Bayesian Reasoning",
+      "priority": 60,
+      "conditions": { "ai_states": { "all": { "argument_competence_prob": "Medium" } } },
+      "display": {
+        "raw_data_condition": "Bayesian posterior keeps argument competence in a developing middle band",
+        "ai_learner_state_output": "Argument competence probability = Medium",
+        "pedagogical_interpretation": "Argumentative control is emerging but not yet stable.",
+        "adaptive_feedback_type": "Argument refinement feedback",
+        "feedback_message_focus": "Refine evidence integration and explanation so the claim becomes more secure.",
+        "theoretical_justification": "Murphy (2022); Mislevy (2003)"
+      },
+      "actions": {
+        "feedback_templates": ["argument_refinement"],
+        "onsite_interventions": ["guided_refinement_of_evidence_integration_and_explanation"]
+      }
+    },
+    {
+      "rule_id": "F2",
+      "category": "Bayesian Reasoning",
+      "priority": 55,
+      "conditions": { "ai_states": { "all": { "srl_revision_competence_prob": "Low" } } },
+      "display": {
+        "raw_data_condition": "Bayesian-style self-regulated revision state low",
+        "ai_learner_state_output": "Self-regulated revision competence = Low",
+        "pedagogical_interpretation": "The learner needs explicit support to plan, monitor, and evaluate revision.",
+        "adaptive_feedback_type": "Metacognitive training",
+        "feedback_message_focus": "Teach revision as a managed process rather than a one-step correction task.",
+        "theoretical_justification": "Zimmerman (2000); Hayes (2012)"
+      },
+      "actions": {
+        "feedback_templates": ["metacognitive_training"],
+        "onsite_interventions": ["explicit_srl_training_planning_monitoring_evaluating"]
+      }
+    }
+  ]
+}

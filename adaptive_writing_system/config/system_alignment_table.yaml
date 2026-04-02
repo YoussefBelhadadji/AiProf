@@ -1,0 +1,389 @@
+# Master System Alignment Table
+# Complete mapping: Analytics Source → AI Output → Threshold Logic → Rule Interpretation → Feedback Template Family
+# This is the operational controller of the adaptive system
+
+system_alignment:
+
+  # =========================
+  # PROCESS PHASE ALIGNMENTS
+  # =========================
+
+  forethought_alignment:
+    analytics_source: "descriptive analytics / process logs"
+    ai_output: "forethought_risk"
+    threshold_logic: "rubric_views AND time_on_task AND word_count_at_first_save"
+    state_determination:
+      - condition: "rubric_views == 0 AND time_on_task < 15 AND word_count < 80"
+        ai_state: "high"
+        rule_interpretation: "weak planning and weak criteria awareness"
+        feedback_family: ["planning_scaffold", "criteria_referenced_feedback"]
+        intervention_priority: "high"
+      - condition: "rubric_views == 1 OR (time_on_task 15-29 AND word_count 80-119)"
+        ai_state: "medium"
+        rule_interpretation: "partial planning; criteria awareness developing"
+        feedback_family: ["planning_scaffold"]
+        intervention_priority: "medium"
+      - condition: "rubric_views >= 2 AND time_on_task >= 30"
+        ai_state: "low"
+        rule_interpretation: "strong forethought and criteria awareness"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  engagement_alignment:
+    analytics_source: "descriptive analytics / engagement logs"
+    ai_output: "engagement_risk"
+    threshold_logic: "assignment_views AND resource_access_count AND feedback_views AND submission_frequency"
+    state_determination:
+      - condition: "assignment_views <= 1 AND resource_access_count == 0 AND feedback_views == 0"
+        ai_state: "high"
+        rule_interpretation: "disengagement or low behavioural participation"
+        feedback_family: ["motivational_reengagement"]
+        intervention_priority: "critical"
+      - condition: "assignment_views <= 2 OR resource_access_count <= 1 OR sporadic_submission"
+        ai_state: "medium"
+        rule_interpretation: "variable engagement; participation inconsistent"
+        feedback_family: ["motivational_reengagement"]
+        intervention_priority: "high"
+      - condition: "assignment_views >= 3 AND resource_access_count >= 2 AND consistent_activity"
+        ai_state: "low"
+        rule_interpretation: "consistent, high engagement"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  # =========================
+  # SELF-REGULATION PHASE ALIGNMENTS
+  # =========================
+
+  revision_alignment:
+    analytics_source: "growth analysis / revision tracking"
+    ai_output: "revision_depth"
+    threshold_logic: "revision_frequency AND draft_comparison AND score_gain"
+    state_determination:
+      - condition: "revision_frequency == 0"
+        ai_state: "high"
+        rule_interpretation: "weak self-regulated revision"
+        feedback_family: ["revision_prompt", "metacognitive_training", "metacognitive_prompt"]
+        intervention_priority: "critical"
+      - condition: "revision_frequency == 1 AND score_gain < 2 AND surface_changes_only"
+        ai_state: "medium"
+        rule_interpretation: "developing revision competence"
+        feedback_family: ["global_revision_feedback", "revision_prompt"]
+        intervention_priority: "high"
+      - condition: "revision_frequency >= 2 OR (revision_frequency == 1 AND score_gain >= 2)"
+        ai_state: "low"
+        rule_interpretation: "strong self-regulated revision and control"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  feedback_uptake_alignment:
+    analytics_source: "feedback analysis / revision alignment scoring"
+    ai_output: "feedback_uptake_state"
+    threshold_logic: "feedback_views AND revision_frequency AND feedback_alignment_score"
+    state_determination:
+      - condition: "feedback_views == 0 OR (feedback_views >= 1 AND revision_frequency == 0)"
+        ai_state: "high"
+        rule_interpretation: "weak feedback literacy / feedback not internalized"
+        feedback_family: ["feedback_decoding", "feedforward_guidance"]
+        intervention_priority: "high"
+      - condition: "feedback_views >= 1 AND revision_frequency == 1 AND feedback_alignment_score < 0.6"
+        ai_state: "medium"
+        rule_interpretation: "partial feedback uptake; needs guidance"
+        feedback_family: ["feedforward_guidance"]
+        intervention_priority: "medium"
+      - condition: "feedback_views >= 2 AND revision_frequency >= 1 AND feedback_alignment_score >= 0.6"
+        ai_state: "low"
+        rule_interpretation: "strong feedback literacy and internalization"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  help_seeking_alignment:
+    analytics_source: "message analytics / help-seeking classification"
+    ai_output: "help_seeking_state"
+    threshold_logic: "help_seeking_message_count AND message_content_type AND performance_context"
+    state_determination:
+      - condition: "help_seeking_message_count == 0 AND (argument_score <= 2 OR grammar_score <= 2)"
+        ai_state: "none"
+        rule_interpretation: "passive approach or hidden difficulty; metacognitive awareness gap"
+        feedback_family: ["metacognitive_prompt", "motivational_reengagement"]
+        intervention_priority: "critical"
+      - condition: "help_seeking_message_count >= 1 AND message_type IN [format, submission, system]"
+        ai_state: "procedural"
+        rule_interpretation: "instrumental engagement; limited metacognitive regulation"
+        feedback_family: ["explicit_strategic_instruction"]
+        intervention_priority: "medium"
+      - condition: "help_seeking_message_count >= 1 AND message_type IN [content, argument, language, rubric]"
+        ai_state: "adaptive"
+        rule_interpretation: "active metacognitive regulation and learning mindset"
+        feedback_family: ["dialogic_scaffolding", "reinforcement_feedback"]
+        intervention_priority: "low"
+
+  # =========================
+  # PRODUCT QUALITY ALIGNMENTS
+  # =========================
+
+  argumentation_alignment:
+    analytics_source: "rubric scoring + text analytics"
+    ai_output: "argumentation_state"
+    threshold_logic: "argument_criterion_score AND claims_per_paragraph AND evidence_use"
+    state_determination:
+      - condition: "argument_criterion_score <= 2"
+        ai_state: "high"
+        rule_interpretation: "weak claim–evidence–reasoning structure"
+        feedback_family: ["argument_scaffold", "explicit_strategic_instruction"]
+        intervention_priority: "high"
+      - condition: "argument_criterion_score == 3"
+        ai_state: "medium"
+        rule_interpretation: "argument present but underdeveloped"
+        feedback_family: ["argument_expansion", "argument_refinement"]
+        intervention_priority: "medium"
+      - condition: "argument_criterion_score >= 4"
+        ai_state: "low"
+        rule_interpretation: "strong argumentative competence"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  discourse_alignment:
+    analytics_source: "rubric scoring + text analytics"
+    ai_output: "discourse_state"
+    threshold_logic: "organization_criterion_score AND cohesion_index AND transition_markers"
+    state_determination:
+      - condition: "organization_criterion_score <= 2 AND cohesion_index < 2"
+        ai_state: "high"
+        rule_interpretation: "discourse organization problem"
+        feedback_family: ["cohesion_support", "organization_support"]
+        intervention_priority: "high"
+      - condition: "(organization_criterion_score == 3 OR cohesion_index 2-3)"
+        ai_state: "medium"
+        rule_interpretation: "discourse organization developing"
+        feedback_family: ["organization_support"]
+        intervention_priority: "medium"
+      - condition: "organization_criterion_score >= 4 AND cohesion_index >= 4"
+        ai_state: "low"
+        rule_interpretation: "strong discourse competence"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  linguistic_accuracy_alignment:
+    analytics_source: "rubric scoring + text analytics"
+    ai_output: "linguistic_accuracy_state"
+    threshold_logic: "grammar_criterion_score AND error_density AND error_patterns"
+    state_determination:
+      - condition: "grammar_criterion_score <= 2 AND error_density > 8"
+        ai_state: "high"
+        rule_interpretation: "persistent linguistic accuracy problem"
+        feedback_family: ["direct_corrective_feedback", "explicit_strategic_instruction"]
+        intervention_priority: "high"
+      - condition: "grammar_criterion_score == 3 AND error_density 4-8"
+        ai_state: "medium"
+        rule_interpretation: "developing grammatical control"
+        feedback_family: ["metalinguistic_feedback"]
+        intervention_priority: "medium"
+      - condition: "grammar_criterion_score >= 4 AND error_density < 4"
+        ai_state: "low"
+        rule_interpretation: "strong linguistic accuracy"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  lexical_alignment:
+    analytics_source: "rubric scoring + text analytics"
+    ai_output: "lexical_state"
+    threshold_logic: "lexical_criterion_score AND type_token_ratio AND academic_word_coverage"
+    state_determination:
+      - condition: "lexical_criterion_score <= 2 AND type_token_ratio < 0.5"
+        ai_state: "high"
+        rule_interpretation: "restricted lexical repertoire"
+        feedback_family: ["lexical_enrichment", "explicit_strategic_instruction"]
+        intervention_priority: "high"
+      - condition: "lexical_criterion_score == 3 AND type_token_ratio 0.5-0.65"
+        ai_state: "medium"
+        rule_interpretation: "developing lexical precision"
+        feedback_family: ["lexical_refinement"]
+        intervention_priority: "medium"
+      - condition: "lexical_criterion_score >= 4 AND type_token_ratio > 0.65"
+        ai_state: "low"
+        rule_interpretation: "strong lexical competence"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  # =========================
+  # LEARNER PROFILE ALIGNMENTS (Clustering)
+  # =========================
+
+  learner_profile_alignment:
+    analytics_source: "clustering analysis"
+    ai_output: "learner_profile"
+    threshold_logic: "cluster_membership based on multi-dimensional SRL and product indicators"
+    state_determination:
+      - cluster: "strategic_writer"
+        interpretation: "strong self-regulation and competence across all phases"
+        characteristics: "high planning, high engagement, multiple revisions, strong product"
+        feedback_priority: "maintenance and extension"
+        feedback_family: ["metacognitive_extension", "reinforcement_feedback"]
+        intervention_intensity: "low"
+
+      - cluster: "engaged_but_developing"
+        interpretation: "high motivation and participation; skills need development"
+        characteristics: "strong effort and engagement, but moderate-to-weak product quality"
+        feedback_priority: "skill development"
+        feedback_family: ["explicit_strategic_instruction", "targeted_development_feedback"]
+        intervention_intensity: "medium"
+
+      - cluster: "effortful_but_struggling"
+        interpretation: "strong effort but weak strategy or knowledge gap"
+        characteristics: "high engagement and revision, but weak product; may lack knowledge/strategy"
+        feedback_priority: "explicit strategy and skill instruction"
+        feedback_family: ["explicit_strategic_instruction", "directive_scaffolds"]
+        intervention_intensity: "high"
+
+      - cluster: "disengaged"
+        interpretation: "participation and motivation risk requiring urgent re-engagement"
+        characteristics: "low engagement, minimal revision, weak participation"
+        feedback_priority: "re-engagement and barrier removal"
+        feedback_family: ["motivational_reengagement", "metacognitive_prompt"]
+        intervention_intensity: "critical"
+
+      - cluster: "fragile_regulator"
+        interpretation: "inconsistent control; needs metacognitive and strategy development"
+        characteristics: "strength in some phases/dimensions, weakness in others; inconsistent"
+        feedback_priority: "consistency and metacognition"
+        feedback_family: ["metacognitive_training", "explicit_strategic_instruction"]
+        intervention_intensity: "high"
+
+  # =========================
+  # PREDICTIVE MODEL ALIGNMENTS (Random Forest)
+  # =========================
+
+  predicted_improvement_alignment:
+    analytics_source: "random forest regression model"
+    ai_output: "predicted_improvement"
+    threshold_logic: "predicted_score_gain from model; cut-offs: high >= 2.5, medium 1.0-2.4, low < 1.0"
+    state_determination:
+      - condition: "predicted_score_gain < 1.0"
+        ai_state: "low"
+        rule_interpretation: "likely stagnation without strong support"
+        feedback_family: ["intensive_support_plan", "explicit_strategic_instruction"]
+        intervention_intensity: "critical"
+        support_frequency: "high (daily or multiple weekly touches)"
+
+      - condition: "predicted_score_gain 1.0-2.4"
+        ai_state: "medium"
+        rule_interpretation: "responsive to targeted development feedback"
+        feedback_family: ["targeted_development_feedback", "explicit_strategic_instruction"]
+        intervention_intensity: "medium-high"
+        support_frequency: "weekly or 2x weekly"
+
+      - condition: "predicted_score_gain >= 2.5"
+        ai_state: "high"
+        rule_interpretation: "high potential; targeted feedback expected to accelerate growth"
+        feedback_family: ["targeted_development_feedback", "reinforcement_feedback"]
+        intervention_intensity: "medium"
+        support_frequency: "weekly"
+
+  # =========================
+  # BAYESIAN COMPETENCE ALIGNMENTS
+  # =========================
+
+  argument_competence_alignment:
+    analytics_source: "bayesian posterior distribution"
+    ai_output: "argument_competence_prob"
+    threshold_logic: "posterior concentration: low (p<.33), medium (.33-.67), high (p>.67)"
+    state_determination:
+      - condition: "posterior_low_prob > 0.67"
+        ai_state: "low"
+        rule_interpretation: "weak argument competence; development needed"
+        feedback_family: ["argument_scaffold", "explicit_strategic_instruction"]
+        intervention_priority: "critical"
+
+      - condition: "posterior_medium_prob > 0.5"
+        ai_state: "medium"
+        rule_interpretation: "developing but unstable argumentative competence"
+        feedback_family: ["argument_expansion", "argument_refinement"]
+        intervention_priority: "high"
+
+      - condition: "posterior_high_prob > 0.67"
+        ai_state: "high"
+        rule_interpretation: "stable, strong argument competence"
+        feedback_family: ["reinforcement_feedback"]
+        intervention_priority: "low"
+
+  srl_revision_competence_alignment:
+    analytics_source: "bayesian posterior distribution"
+    ai_output: "srl_revision_competence_prob"
+    threshold_logic: "posterior concentration on SRL revision maturity"
+    state_determination:
+      - condition: "posterior_low_prob > 0.67"
+        ai_state: "low"
+        rule_interpretation: "weak regulation of revision behaviour"
+        feedback_family: ["metacognitive_training", "revision_prompt"]
+        intervention_priority: "critical"
+
+      - condition: "posterior_medium_prob > 0.5"
+        ai_state: "medium"
+        rule_interpretation: "developing SRL revision control"
+        feedback_family: ["global_revision_feedback", "metacognitive_prompt"]
+        intervention_priority: "medium"
+
+      - condition: "posterior_high_prob > 0.67"
+        ai_state: "high"
+        rule_interpretation: "strong self-directed revision competence"
+        feedback_family: ["dialogic_scaffolding", "peer_teaching_scaffolds"]
+        intervention_priority: "low"
+
+  # =========================
+  # COMPOSITE & CONTEXTUAL RULES
+  # =========================
+
+  strong_srl_indicator:
+    rule_condition: "revision_depth == low AND feedback_uptake_state == low AND help_seeking_state IN [procedural, adaptive]"
+    meaning: "Strong self-regulated learning across forethought, performance, and reflection phases"
+    override_feedback: "Use reinforcement and extension templates; reduce directive feedback"
+
+  srl_risk_indicator:
+    rule_condition: "revision_depth == high_risk AND (feedback_uptake_state == high_risk OR help_seeking_state == none AND total_score <= 10)"
+    meaning: "Minimal self-regulation across phases; comprehensive intervention needed"
+    override_feedback: "Activate intensive support; increase support frequency and directiveness"
+
+  uneven_product_competence:
+    rule_condition: "one_product_ai_output == low AND one_product_ai_output == high"
+    meaning: "Learner has strength in one dimension (e.g., argument) but weakness in another (cohesion)"
+    intervention: "Targeted support only on weak dimension; leverage strength"
+    example: "If argument_state == low AND discourse_state == low, use argument_scaffold. If discourse_state == high, don't focus there."
+
+  # =========================
+  # FEEDBACK SELECTION LOGIC
+  # =========================
+
+  feedback_selection_algorithm:
+    principle: "Select feedback template family based on rule interpretation with highest priority"
+    priority_order:
+      1: "critical priority interpretations"
+      2: "high priority interpretations"
+      3: "medium priority interpretations"
+      4: "low priority interpretations (reinforcement)"
+
+    multi_template_selection:
+      rule: "If multiple rule interpretations are active for one learner, select up to 3 feedback templates based on:"
+      - "pedagogical sequencing (e.g., planning before revision)"
+      - "cognitive load (don't overwhelm with too many simultaneous feedbacks)"
+      - "learner profile (e.g., explicit strategy first for struggling learners)"
+      - "intervention intensity level (critical cases need immediate high-frequency feedback)"
+
+    example_single_learner:
+      learner_case: "Learner with forethought_risk=high AND revision_depth=high AND argument_state=high"
+      active_interpretations:
+        - "weak criteria consultation (critical)"
+        - "weak self-regulated revision (high)"
+        - "weak claim–evidence–reasoning structure (high)"
+      selected_feedback_families:
+        1: "planning_scaffold (address root cause: forethought)"
+        2: "argument_scaffold (address product issue)"
+        3: "revision_prompt (activate self-regulation)"
+      rationale: "Start with planning (prerequisite), then skill (argument), then process (revision)"
+
+    adaptive_sequencing:
+      rule: "Sequence feedback delivery over time, not all at once"
+      timing:
+        immediate: "critical-priority feedback (e.g., motivational_reengagement for disengaged learner)"
+        within_24_hours: "high-priority feedback (e.g., feedback_decoding, planning_scaffold)"
+        weekly: "medium-priority feedback (e.g., lexical_refinement, targeted_development_feedback)"
+        maintenance: "low-priority feedback (e.g., reinforcement, extension)"

@@ -1,6 +1,7 @@
 import type { ParsedWorkbookCaseResponse } from '../state/studyScope';
+import { useAuthStore } from '../state/authStore';
 
-const DEFAULT_API_BASE = import.meta.env.DEV ? 'http://127.0.0.1:3001' : '';
+const DEFAULT_API_BASE = import.meta.env.DEV ? 'http://127.0.0.1:5000' : '';
 const API_BASE = (import.meta.env.VITE_API_URL ?? DEFAULT_API_BASE).replace(/\/$/, '');
 
 interface UploadDatasetResponse {
@@ -28,8 +29,10 @@ export async function uploadWorkbooks(files: File[]): Promise<ParsedWorkbookCase
     formData.append('files', file);
   }
 
+  const token = useAuthStore.getState().token;
   const response = await fetch(`${API_BASE}/api/upload-dataset`, {
     method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     body: formData,
   });
 
@@ -43,8 +46,10 @@ export async function uploadWorkbooks(files: File[]): Promise<ParsedWorkbookCase
 }
 
 export async function autoLoadWorkbook(): Promise<ParsedWorkbookCaseResponse[]> {
+  const token = useAuthStore.getState().token;
   const response = await fetch(`${API_BASE}/api/auto-load`, {
     method: 'GET',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
   });
 
   if (!response.ok) {

@@ -5,3 +5,7 @@ pgmpy
 streamlit
 textstat
 nltk
+spacy
+flask
+flask-cors
+joblib

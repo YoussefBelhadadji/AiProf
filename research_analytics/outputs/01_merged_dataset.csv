@@ -1,0 +1,7 @@
+student_id,task_id,draft_no,assignment_views,rubric_views,time_on_task,revision_frequency,feedback_views,first_access_delay_minutes,resource_access_count,task_achievement,organization,argumentation,cohesion,lexical_resource,grammar_accuracy,academic_style,mechanics,total_score,essay_text,help_seeking_messages,message_type
+S01,T1,1,2,1,18,0,1,25,1,3,2,2,2,2,4,2,4,21,Online learning is very useful for students. It gives many opportunities for learning. Students can study from home.,1,feedback_clarification
+S01,T1,2,3,2,32,1,1,5,2,4,4,4,4,4,4,4,4,32,"Furthermore, online learning offers university students greater flexibility. In addition, students can review lessons and save time. As a result, they can manage their academic responsibilities more effectively.",1,feedback_followup
+S02,T1,1,1,0,10,0,0,40,0,2,1,2,1,2,3,2,3,16,Online learning is good. Students can study from home.,0,none
+S02,T1,2,2,1,22,1,1,15,1,3,3,3,3,3,3,3,3,24,"Moreover, online learning helps students save time and continue their studies from home. Therefore, it can support university education in practical ways.",0,none
+S03,T1,1,1,1,12,0,0,35,0,2,2,1,2,2,3,2,3,17,Online learning has some advantages for students. It is useful in many situations.,0,none
+S03,T1,2,2,1,28,1,1,10,1,3,3,3,3,3,4,3,4,26,"Furthermore, online platforms allow flexible access to course materials. In addition, students can review lessons repeatedly, which improves understanding.",1,argument_support

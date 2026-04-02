@@ -1,416 +1,368 @@
-import { useEffect, useState } from 'react';
-import { ResearchShell } from '../layouts/ResearchShell';
-import { GlassCard } from '../components/GlassCard';
-import { MetricCard } from '../components/MetricCard';
-import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
-import { Button } from '../components/Atoms';
-import { StudyScopePanel } from '../components/StudyScopePanel';
-import {
-  AlertTriangle,
-  MessageSquare,
-  Download,
-  FileSpreadsheet,
-  Star,
-  BarChart3,
-  Activity,
-  Upload,
-  ArrowRight,
-  Clock,
-  History,
-  Sparkles,
-  BookMarked,
-  MessagesSquare,
-  PenTool,
-  Scale,
-  Workflow,
-  type LucideIcon,
-} from 'lucide-react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
-import { useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import { autoLoadWorkbook } from '../services/workbookApi';
-import {
-  STUDY_STATIONS,
-  STUDY_VARIABLES,
-  getSelectedStudyCase,
-  getSelectedTask,
-  getSelectedTaskId,
-  getStudyCaseVariableValue,
-  useStudyScopeStore,
-  mapParsedCaseToStudyCase,
-  type StudyVariableId,
-} from '../state/studyScope';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, BarChart3, BookOpen, BrainCircuit, CheckCircle2, Database, Loader2, RefreshCw, ShieldCheck, Sparkles, Users } from 'lucide-react';
+import { BarChart, Bar, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts';
+import { useAuthStore } from '../state/authStore';
+import { useStudyScopeStore, type TeacherStudyCase } from '../state/studyScope';
 
-const activityIconMap = {
-  download: Download,
-  alert: AlertTriangle,
-  message: MessageSquare,
-  upload: Upload,
-  activity: Activity,
-} as const;
-
-const variableIconMap: Record<StudyVariableId, LucideIcon> = {
-  assignment_views: FileSpreadsheet,
-  time_on_task: Clock,
-  revision_frequency: History,
-  feedback_views: MessageSquare,
-  help_seeking_messages: MessagesSquare,
-  word_count: PenTool,
-  cohesion: BarChart3,
-  argumentation: Scale,
-  grammar_accuracy: Star,
-  ttr: Sparkles,
-  rubric: BookMarked,
-  private_messages: MessagesSquare,
+type StatCard = {
+  label: string;
+  value: number | string;
+  detail: string;
+  icon: React.ComponentType<{ className?: string }>;
+  tone: 'lav' | 'teal' | 'amber' | 'sky';
 };
 
-export function Dashboard() {
-  const navigate = useNavigate();
+type PipelineStep = {
+  title: string;
+  description: string;
+  href: string;
+  icon: React.ComponentType<{ className?: string }>;
+  status: string;
+};
+
+const API_BASE = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '')).replace(/\/$/, '');
+
+export const Dashboard: React.FC = () => {
+  const token = useAuthStore((state) => state.token);
   const cases = useStudyScopeStore((state) => state.cases);
-  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
-  const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
-  const selectedStationIds = useStudyScopeStore((state) => state.selectedStationIds);
-  const selectedVariableIds = useStudyScopeStore((state) => state.selectedVariableIds);
-  const importCases = useStudyScopeStore((state) => state.importCases);
-  const [isAutoLoading, setIsAutoLoading] = useState(false);
+
+  const [apiSummary, setApiSummary] = useState<{ totalStudents: number; totalMetricsAnalyzed: number; systemPrecision: number; totalRulesApplied: number } | null>(null);
+  const [lastSynced, setLastSynced] = useState<Date | null>(null);
+  const [isSyncing, setIsSyncing] = useState(false);
+
+  const selectedCase: TeacherStudyCase | null = cases[0] ?? null;
+  const pendingReviews = cases.filter((studyCase) => studyCase.meta.ungradedAssignments > 0);
+  const verifiedCases = cases.filter((studyCase) => studyCase.meta.isVerified);
+
+  const refreshSummary = async () => {
+    setIsSyncing(true);
+    try {
+      if (!token) {
+        return;
+      }
+
+      const response = await fetch(`${API_BASE}/api/dashboard`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+
+      const result = await response.json();
+      const summary = result?.data?.summary;
+
+      if (summary) {
+        setApiSummary({
+          totalStudents: Number(summary.totalStudents) || 0,
+          totalMetricsAnalyzed: Number(summary.totalMetricsAnalyzed) || 0,
+          systemPrecision: Number(summary.systemPrecision) || 0,
+          totalRulesApplied: Number(summary.totalRulesApplied) || 0,
+        });
+      }
+
+      setLastSynced(new Date());
+    } catch (error) {
+      console.error('Failed to refresh dashboard summary:', error);
+      setLastSynced(new Date());
+    } finally {
+      setIsSyncing(false);
+    }
+  };
 
   useEffect(() => {
-    if (cases.length === 0) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setIsAutoLoading(true);
-      autoLoadWorkbook()
-        .then((parsedCases) => {
-          const studyCases = parsedCases.map(mapParsedCaseToStudyCase);
-          importCases(studyCases);
-        })
-        .catch((err) => console.error('Auto-load failed', err))
-        .finally(() => setIsAutoLoading(false));
+    void refreshSummary();
+  }, [token]);
+
+  const liveTotals = {
+    totalStudents: apiSummary?.totalStudents ?? cases.length,
+    totalMetricsAnalyzed: apiSummary?.totalMetricsAnalyzed ?? 0,
+    systemPrecision: apiSummary?.systemPrecision ?? 0,
+    totalRulesApplied: apiSummary?.totalRulesApplied ?? pendingReviews.length,
+  };
+
+  const stats: StatCard[] = [
+    {
+      label: 'Imported students',
+      value: liveTotals.totalStudents,
+      detail: 'From Moodle logs, rubrics, essays, and messages',
+      icon: Users,
+      tone: 'lav',
+    },
+    {
+      label: 'Pipeline coverage',
+      value: liveTotals.totalMetricsAnalyzed,
+      detail: 'Descriptive, correlation, clustering, RF, Bayesian',
+      icon: BarChart3,
+      tone: 'sky',
+    },
+    {
+      label: 'Review queue',
+      value: pendingReviews.length,
+      detail: 'Draft feedback waiting for teacher approval',
+      icon: ShieldCheck,
+      tone: 'amber',
+    },
+    {
+      label: 'System precision',
+      value: `${liveTotals.systemPrecision}%`,
+      detail: 'Latest validated model score',
+      icon: CheckCircle2,
+      tone: 'teal',
+    },
+  ];
+
+  const workflowSteps: PipelineStep[] = [
+    {
+      title: 'Import data',
+      description: 'Bring in Moodle logs, rubrics, essays, and messages.',
+      href: '/import',
+      icon: Database,
+      status: cases.length > 0 ? 'Ready' : 'Start here',
+    },
+    {
+      title: 'Run analysis',
+      description: 'Launch the model pipeline and generate analytics.',
+      href: '/pipeline',
+      icon: BrainCircuit,
+      status: cases.length > 0 ? 'Ready to run' : 'Waiting on data',
+    },
+    {
+      title: 'Inspect students',
+      description: 'Open cards and individual profile evidence.',
+      href: '/students',
+      icon: Users,
+      status: selectedCase ? 'Available' : 'No cases loaded',
+    },
+    {
+      title: 'Approve feedback',
+      description: 'Review AI drafts before they reach students.',
+      href: selectedCase ? `/teacher-decision/${selectedCase.student.student_id}` : '/students',
+      icon: BookOpen,
+      status: pendingReviews.length > 0 ? `${pendingReviews.length} waiting` : 'Clear',
+    },
+    {
+      title: 'Track growth',
+      description: 'Monitor longitudinal progress and revision uptake over time.',
+      href: '/reports',
+      icon: Sparkles,
+      status: cases.length > 0 ? 'Tracking' : 'Pending',
+    },
+  ];
+
+  const studentChartData = useMemo(() => {
+    return cases
+      .slice()
+      .sort((left, right) => Number(right.student.total_score || 0) - Number(left.student.total_score || 0))
+      .slice(0, 8)
+      .map((studyCase, index) => ({
+        name: studyCase.meta.studentName.split(' ')[0],
+        score: Number(studyCase.student.total_score || 0),
+        fill: index === 0 ? 'var(--lav)' : index < 3 ? 'var(--teal)' : 'rgba(148,163,184,0.7)',
+      }));
+  }, [cases]);
+
+  const recentSignals = useMemo(() => {
+    const sourceCase = selectedCase ?? cases[0] ?? null;
+    if (!sourceCase) {
+      return [];
     }
-  }, [cases.length, importCases]);
 
-  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
-  const selectedTask = selectedCase
-    ? getSelectedTask(selectedCase, getSelectedTaskId({ selectedCaseId, selectedTaskByCase }))
-    : null;
-  const visibleStationIds = selectedStationIds;
-  const highlightedVariables = selectedCase
-    ? STUDY_VARIABLES.filter((variable) => selectedVariableIds.includes(variable.id)).slice(0, 4)
-    : [];
-  const selectedStations = STUDY_STATIONS.filter((station) => visibleStationIds.includes(station.id));
-
-  if (isAutoLoading) {
-    return (
-      <ResearchShell>
-        <div className="max-w-5xl mx-auto p-6 md:p-8 pb-32">
-          <GlassCard accent="lav" glow className="p-8 md:p-10 flex flex-col items-center justify-center min-h-[40vh]">
-            <h1 className="font-editorial italic text-4xl text-[var(--lav)] animate-pulse">Loading Study Context...</h1>
-            <p className="mt-3 font-body text-sm text-[var(--text-sec)]">Retrieving student dataset.</p>
-          </GlassCard>
-        </div>
-      </ResearchShell>
-    );
-  }
-
-  if (!selectedCase) {
-    return (
-      <ResearchShell>
-        <div className="max-w-5xl mx-auto p-6 md:p-8 pb-32">
-          <GlassCard accent="lav" glow className="p-8 md:p-10">
-            <h1 className="font-editorial italic text-4xl text-[var(--text-primary)]">Verified Overview</h1>
-            <p className="mt-3 font-body text-sm text-[var(--text-sec)] max-w-3xl">
-              No verified workbook is loaded. Import a workbook first so the dashboard can display only evidence extracted from a real student file.
-            </p>
-            <div className="mt-6 flex gap-3 flex-wrap">
-              <Button variant="secondary" onClick={() => navigate('/import')}><Upload size={16} /> Import workbook</Button>
-              <Button variant="ghost" onClick={() => navigate('/notes')}><History size={16} /> Open notes</Button>
-            </div>
-          </GlassCard>
-        </div>
-      </ResearchShell>
-    );
-  }
+    return sourceCase.recentActivity.slice(0, 4).map((entry) => ({
+      title: entry.action,
+      time: entry.time,
+      icon: entry.icon,
+    }));
+  }, [cases, selectedCase]);
 
   return (
-    <ResearchShell>
-      <div className="max-w-7xl mx-auto p-6 md:p-8 space-y-8 pb-32">
-        <div className="flex flex-col md:flex-row gap-6 justify-between items-start md:items-center">
-          <div>
-            <h1 className="font-editorial italic text-4xl font-medium text-[var(--text-primary)]">
-              Teacher Overview
-            </h1>
-            <p className="text-[var(--text-sec)] font-body mt-1">
-              Start by choosing the student and the exercise below. The dashboard, the reports, and the student page will all follow the same selection.
-            </p>
-          </div>
-          <div className="flex gap-3">
-            <Button variant="primary" onClick={() => navigate('/pipeline/1')}><Workflow size={16} /> Open Pipeline</Button>
-            <Button variant="ghost" onClick={() => navigate('/students')}><History size={16} /> Open student registry</Button>
-            <Button variant="secondary" onClick={() => navigate('/import')}><Upload size={16} /> Import workbooks</Button>
-          </div>
-        </div>
-
-        <StudyScopePanel />
-
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {[
-            {
-              step: 'Step 1',
-              title: 'Choose the student case',
-              detail: 'Start with the learner you want to review. The whole interface will follow that choice.',
-              accent: 'lav',
-            },
-            {
-              step: 'Step 2',
-              title: 'Limit the reading scope',
-              detail: 'Pick one exercise or stay on the full case. Then keep only the sections you need.',
-              accent: 'teal',
-            },
-            {
-              step: 'Step 3',
-              title: 'Read or print the result',
-              detail: 'Move to the teacher report when you are ready for a final summary or an exportable PDF.',
-              accent: 'gold',
-            },
-          ].map((item) => (
-            <GlassCard key={item.title} className="p-5 bg-[var(--bg-raised)]/40">
-              <div className={clsx(
-                'font-navigation text-[10px] uppercase tracking-widest',
-                item.accent === 'lav' && 'text-[var(--lav)]',
-                item.accent === 'teal' && 'text-[var(--teal)]',
-                item.accent === 'gold' && 'text-[var(--gold)]'
-              )}>
-                {item.step}
-              </div>
-              <h3 className="mt-3 font-navigation text-sm text-[var(--text-primary)]">{item.title}</h3>
-              <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">{item.detail}</p>
-            </GlassCard>
-          ))}
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <GlassCard accent="lav" glow className="lg:col-span-2 p-6 h-full flex flex-col justify-between">
-            <div>
-              <div className="flex justify-between items-start mb-4 gap-4">
-                <span className="text-[10px] uppercase tracking-widest font-navigation text-[var(--lav)] font-bold">Active Study Selection</span>
-                <span className="text-[var(--text-muted)] font-forensic text-[10px]">Workbook: {selectedCase.workbookName}</span>
-              </div>
-              <h2 className="font-editorial text-2xl text-[var(--text-primary)] leading-tight mb-4">
-                {selectedCase.meta.courseTitle}: {selectedCase.meta.studentName}
-              </h2>
-              <p className="font-body text-sm text-[var(--text-sec)] max-w-3xl">
-                {selectedTask
-                  ? `You are reading the exercise "${selectedTask.title}".`
-                  : 'You are reading the full case overview across the imported semester trace.'} The same selection is used across the dashboard, student page, and reports.
-              </p>
-              <div className="mt-5 flex flex-wrap gap-2">
-                <span className="rounded-full border border-[var(--border)] bg-[var(--bg-deep)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">
-                  {visibleStationIds.length} active sections
-                </span>
-                <span className="rounded-full border border-[var(--border)] bg-[var(--bg-deep)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--teal)]">
-                  {selectedVariableIds.length} active indicators
-                </span>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-navigation">Institution</div>
-                  <div className="text-xs font-body text-[var(--text-sec)]">{selectedCase.meta.institution}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-navigation">Instructor</div>
-                  <div className="text-xs font-body text-[var(--text-sec)]">{selectedCase.meta.instructor}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-navigation">Period</div>
-                  <div className="text-xs font-body text-[var(--text-sec)]">{selectedCase.meta.periodCovered}</div>
-                </div>
-                <div>
-                  <div className="text-[10px] uppercase tracking-widest text-[var(--text-muted)] font-navigation">Workbook</div>
-                  <div className="text-xs font-body text-[var(--text-sec)]">{selectedCase.workbookName}</div>
-                </div>
-              </div>
-            </div>
-          </GlassCard>
-
-          <GlassCard className="p-6 h-full bg-[var(--bg-raised)]/50 border-dashed border-[var(--border-bright)]">
-            <h3 className="font-navigation text-xs uppercase tracking-widest text-[var(--text-sec)] mb-4">Current Teaching Scope</h3>
-            <div className="space-y-4">
-              <div className="flex justify-between items-end mb-1">
-                <span className="text-sm font-editorial italic text-[var(--text-primary)]">Imported student cases</span>
-                <span className="font-forensic text-lg text-[var(--lav)]">{cases.length}</span>
-              </div>
-              <div className="h-1 w-full bg-[var(--bg-deep)] rounded-full overflow-hidden">
-                <div className="h-full bg-[var(--lav)] shadow-[0_0_10px_var(--lav)]" style={{ width: `${Math.min(100, cases.length * 20)}%` }} />
-              </div>
-              <p className="text-[11px] font-body text-[var(--text-sec)] leading-relaxed">
-                This view follows your current choices: one active student, one active exercise, selected sections, and selected indicators.
-              </p>
-              <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] px-4 py-3">
-                <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">What changes when you edit the scope</p>
-                <p className="mt-2 font-body text-xs text-[var(--text-sec)] leading-relaxed">
-                  The selected student, exercise, sections, and indicators are reused in the student registry, the stations, and the final teacher report.
-                </p>
-              </div>
-              <Button onClick={() => navigate('/reports')} className="w-full mt-2 py-2 text-xs">Open teacher report <ArrowRight size={14} /></Button>
-            </div>
-          </GlassCard>
-        </div>
-
-        <GlassCard className="p-6 md:p-8 overflow-x-hidden">
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="font-navigation text-sm font-bold text-[var(--text-primary)] flex items-center gap-2 uppercase tracking-widest">
-              <Sparkles size={16} className="text-[var(--lav)]" />
-              Key Indicators
-            </h3>
-            <span className="text-[var(--text-muted)] font-forensic text-[10px]">
-              {selectedVariableIds.length} variables active
-            </span>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
-            {highlightedVariables.map((variable) => {
-              const Icon = variableIconMap[variable.id];
-
-              return (
-                <MetricCard
-                  key={variable.id}
-                  label={variable.label}
-                  value={getStudyCaseVariableValue(selectedCase, variable.id)}
-                  interpretation={variable.description}
-                  icon={Icon}
-                  accent={variable.category === 'writing' ? 'gold' : variable.category === 'communication' ? 'lav' : variable.category === 'assessment' ? 'red' : 'teal'}
-                />
-              );
-            })}
-          </div>
-        </GlassCard>
-
-        <GlassCard className="p-6 md:p-8 overflow-x-hidden">
-          <div className="flex justify-between items-center mb-8">
-            <h3 className="font-navigation text-sm font-bold text-[var(--text-primary)] flex items-center gap-2 uppercase tracking-widest">
-              <Sparkles size={16} className="text-[var(--lav)]" />
-              Selected Sections
-            </h3>
-            <span className="text-[var(--text-muted)] font-forensic text-[10px]">
-              {selectedStations.length} sections selected
-            </span>
-          </div>
-
-          <div className="flex flex-wrap gap-3">
-            {selectedStations.map((station) => (
-              <div key={station.id} className="rounded-xl border border-[var(--border)] bg-[var(--bg-deep)] px-4 py-3">
-                <div className="font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)]">{station.group}</div>
-                <div className="mt-1 font-body text-sm text-[var(--text-primary)]">
-                  S{String(station.id).padStart(2, '0')} {station.label}
-                </div>
-                <div className="mt-1 font-body text-xs text-[var(--text-sec)]">{station.description}</div>
-              </div>
-            ))}
-          </div>
-        </GlassCard>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <MetricCard label="ACTIVE STUDENT" value={selectedCase.meta.userId} interpretation="Current Moodle user under study" icon={FileSpreadsheet} accent="lav" />
-          <MetricCard label="EXERCISES" value={selectedCase.writing.artifacts.length} interpretation="Writing tasks available in the selected case" icon={BookMarked} accent="teal" />
-          <MetricCard label="FEEDBACK VIEWS" value={selectedCase.student.feedback_views} interpretation="Teacher feedback openings found in the workbook evidence." icon={Star} accent="gold" />
-          <MetricCard label="HELP REQUESTS" value={selectedCase.student.help_seeking_messages} interpretation="Teacher-student messages that show explicit requests for help or clarification." icon={AlertTriangle} accent="teal" />
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <div className="lg:col-span-2 flex flex-col gap-6">
-            <GlassCard accent="teal" className="flex-1 p-6 md:p-8 flex flex-col">
-              <h2 className="font-navigation text-sm uppercase tracking-widest text-[var(--text-primary)] mb-6 flex items-center gap-2 font-bold">
-                <BarChart3 size={16} className="text-[var(--teal)]" />
-                Writing Samples
-              </h2>
-              <div className="h-[280px] w-full">
-                <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={240}>
-                  <BarChart data={selectedCase.writing.artifacts.map((artifact) => ({ name: artifact.title.slice(0, 18), words: artifact.wordCount }))} layout="vertical" margin={{ top: 0, right: 30, left: 0, bottom: 0 }}>
-                    <CartesianGrid strokeDasharray="3 3" horizontal vertical={false} stroke="var(--border)" />
-                    <XAxis type="number" />
-                    <YAxis dataKey="name" type="category" axisLine={false} tickLine={false} tick={{ fill: 'var(--text-sec)', fontSize: 10, fontFamily: 'var(--font-forensic)' }} width={70} />
-                    <Tooltip
-                      cursor={{ fill: 'var(--border)' }}
-                      contentStyle={{ backgroundColor: 'var(--bg-high)', border: '1px solid var(--border)', borderRadius: '8px' }}
-                      itemStyle={{ color: 'var(--lav)', fontFamily: 'var(--font-forensic)', fontSize: '10px' }}
-                    />
-                    <Bar dataKey="words" radius={[0, 4, 4, 0]}>
-                      {selectedCase.writing.artifacts.map((_, index) => (
-                        <Cell key={`cell-${index}`} fill={index === selectedCase.writing.artifacts.length - 1 ? 'var(--teal)' : 'var(--bg-raised)'} />
-                      ))}
-                    </Bar>
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="mt-4 pt-4 border-t border-[var(--border)]">
-                <PedagogicalInsightBadge
-                  urgency="positive"
-                  label="Verified Evidence"
-                  observation={selectedTask
-                    ? `The current task selection is ${selectedTask.title}.`
-                    : `The current overview covers ${selectedCase.writing.artifacts.length} writing samples extracted from the workbook.`}
-                  implication="Only workbook-derived counts and texts are displayed in this view."
-                  action="Use reports and notes for interpretation. S06-S08 now remain visible in case-level mode and become cohort-backed automatically after enough verified workbooks are imported."
-                  citation="Vygotsky (1978) - Guided support and gradual control"
-                />
-              </div>
-            </GlassCard>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <GlassCard className="p-4 hover:bg-[var(--bg-high)]/30 transition-all cursor-pointer group" onClick={() => navigate('/students')}>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[var(--lav-glow)] rounded-lg text-[var(--lav)]"><FileSpreadsheet size={18} /></div>
-                    <span className="font-navigation text-sm font-medium">Choose another student</span>
-                  </div>
-                  <ArrowRight size={16} className="text-[var(--text-muted)] group-hover:text-[var(--lav)] transition-colors" />
-                </div>
-              </GlassCard>
-              <GlassCard className="p-4 hover:bg-[var(--bg-high)]/30 transition-all cursor-pointer group" onClick={() => navigate('/import')}>
-                <div className="flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                    <div className="p-2 bg-[var(--teal-dim)] rounded-lg text-[var(--teal)]"><Upload size={18} /></div>
-                    <span className="font-navigation text-sm font-medium">Import more workbooks</span>
-                  </div>
-                  <ArrowRight size={16} className="text-[var(--text-muted)] group-hover:text-[var(--teal)] transition-colors" />
-                </div>
-              </GlassCard>
-            </div>
-          </div>
-
-          <GlassCard className="h-full flex flex-col">
-            <h3 className="p-6 font-navigation text-sm uppercase tracking-widest text-[var(--lav)] border-b border-[var(--border)] font-bold flex items-center gap-2">
-              <History size={16} />
-              Current Case Events
-            </h3>
-            <div className="flex-1 overflow-y-auto">
-              <div className="divide-y divide-[var(--border)]">
-                {selectedCase.recentActivity.map((item, index) => {
-                  const Icon = activityIconMap[item.icon];
-                  return (
-                    <div key={`${item.time}-${index}`} className="px-6 py-4 flex gap-4 hover:bg-[var(--bg-raised)]/30 transition-colors">
-                      <div className="mt-1 shrink-0 p-1.5 bg-[var(--bg-deep)] rounded border border-[var(--border)] text-[var(--text-muted)]">
-                        <Icon size={14} />
-                      </div>
-                      <div className="min-w-0">
-                        <p className="font-body text-xs text-[var(--text-primary)] leading-snug">{item.action}</p>
-                        <div className="flex items-center gap-1.5 mt-1 text-[var(--text-muted)] font-forensic text-[10px]">
-                          <Clock size={10} />
-                          {item.time}
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-            <div className="p-6 border-t border-[var(--border)]">
-              <Button onClick={() => navigate('/reports')} className="w-full h-12 flex justify-center gap-3 text-sm">
-                Open verified report <ArrowRight size={18} />
-              </Button>
-            </div>
-          </GlassCard>
-        </div>
+    <div className="relative space-y-8 pb-16">
+      <div className="absolute inset-0 -z-10 overflow-hidden pointer-events-none">
+        <div className="absolute left-[-8rem] top-[-6rem] h-64 w-64 rounded-full bg-[rgba(139,92,246,0.12)] blur-3xl" />
+        <div className="absolute right-[-7rem] top-24 h-72 w-72 rounded-full bg-[rgba(20,184,166,0.14)] blur-3xl" />
       </div>
-    </ResearchShell>
+
+      <section className="rounded-[32px] border border-[var(--border)] bg-[linear-gradient(145deg,rgba(15,23,42,0.96),rgba(8,15,31,0.9))] p-6 shadow-[0_30px_90px_rgba(2,6,23,0.45)] md:p-8">
+        <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div className="max-w-3xl space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[rgba(255,255,255,0.04)] px-3 py-1 text-[10px] uppercase tracking-[0.3em] text-[var(--text-muted)] font-navigation">
+              <span className="h-1.5 w-1.5 rounded-full bg-[var(--teal)] animate-pulse" />
+              Professor workflow dashboard
+            </div>
+            <div>
+              <h1 className="font-editorial text-4xl italic leading-none text-[var(--text-primary)] md:text-5xl">
+                One page for import, analysis, review, and growth.
+              </h1>
+              <p className="mt-4 max-w-2xl text-sm leading-6 text-[var(--text-sec)] md:text-base">
+                The dashboard keeps the professor on a single path: load evidence, run the AI pipeline, inspect student profiles, approve feedback, and monitor progress over time.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={() => void refreshSummary()}
+              className="inline-flex items-center gap-2 rounded-2xl border border-[var(--lav-border)] bg-[var(--lav-dim)] px-4 py-3 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--lav-border)]"
+            >
+              {isSyncing ? <Loader2 className="h-4 w-4 animate-spin" /> : <RefreshCw className="h-4 w-4" />}
+              Sync live data
+            </button>
+            <Link
+              to="/import"
+              className="inline-flex items-center gap-2 rounded-2xl bg-[linear-gradient(135deg,var(--lav),var(--teal))] px-4 py-3 text-sm font-semibold text-white shadow-[0_0_30px_var(--lav-glow)] transition-transform hover:-translate-y-0.5"
+            >
+              Import evidence
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </div>
+        </div>
+
+        <div className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {stats.map((stat) => {
+            const Icon = stat.icon;
+            const toneClass = stat.tone === 'lav'
+              ? 'bg-[rgba(139,92,246,0.14)] text-[var(--lav)]'
+              : stat.tone === 'teal'
+                ? 'bg-[rgba(20,184,166,0.14)] text-[var(--teal)]'
+                : stat.tone === 'amber'
+                  ? 'bg-[rgba(245,158,11,0.14)] text-[var(--amber)]'
+                  : 'bg-[rgba(59,130,246,0.14)] text-[var(--blue)]';
+
+            return (
+              <article key={stat.label} className="rounded-[24px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-4">
+                <div className="flex items-center justify-between gap-3">
+                  <div className={`flex h-11 w-11 items-center justify-center rounded-2xl ${toneClass}`}>
+                    <Icon className="h-5 w-5" />
+                  </div>
+                  <span className="text-[10px] uppercase tracking-[0.24em] text-[var(--text-muted)] font-navigation">{stat.detail}</span>
+                </div>
+                <div className="mt-4 text-[10px] uppercase tracking-[0.26em] text-[var(--text-muted)] font-navigation">{stat.label}</div>
+                <div className="mt-2 text-3xl font-semibold text-[var(--text-primary)]">{stat.value}</div>
+              </article>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="grid gap-4 lg:grid-cols-5">
+        {workflowSteps.map((step, index) => {
+          const Icon = step.icon;
+          return (
+            <Link
+              key={step.title}
+              to={step.href}
+              className="group rounded-[24px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-5 transition-all hover:-translate-y-1 hover:border-[var(--lav-border)] hover:bg-[rgba(255,255,255,0.05)]"
+            >
+              <div className="flex items-start justify-between gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-[rgba(255,255,255,0.05)] text-[var(--lav)] transition-transform group-hover:scale-105">
+                  <Icon className="h-5 w-5" />
+                </div>
+                <span className="rounded-full border border-[var(--border)] px-2.5 py-1 text-[10px] uppercase tracking-[0.2em] text-[var(--text-muted)] font-navigation">
+                  0{index + 1}
+                </span>
+              </div>
+              <h2 className="mt-4 text-lg font-semibold text-[var(--text-primary)]">{step.title}</h2>
+              <p className="mt-2 text-sm leading-6 text-[var(--text-sec)]">{step.description}</p>
+              <div className="mt-4 flex items-center justify-between text-xs uppercase tracking-[0.2em] text-[var(--text-muted)] font-navigation">
+                <span>{step.status}</span>
+                <ArrowRight className="h-4 w-4 text-[var(--lav)] transition-transform group-hover:translate-x-1" />
+              </div>
+            </Link>
+          );
+        })}
+      </section>
+
+      <section className="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
+        <article className="rounded-[28px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-5 md:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.26em] text-[var(--text-muted)] font-navigation">Cohort growth snapshot</div>
+              <h3 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">Highest scoring students</h3>
+            </div>
+            <div className="rounded-full border border-[var(--border)] px-3 py-1 text-xs text-[var(--text-muted)]">
+              {verifiedCases.length} verified / {cases.length} cases
+            </div>
+          </div>
+
+          <div className="mt-5 h-[320px]">
+            {studentChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={studentChartData} margin={{ top: 10, right: 8, bottom: 0, left: -12 }}>
+                  <CartesianGrid stroke="rgba(148,163,184,0.15)" strokeDasharray="3 3" />
+                  <XAxis dataKey="name" tick={{ fill: 'rgba(226,232,240,0.9)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <YAxis tick={{ fill: 'rgba(226,232,240,0.9)', fontSize: 12 }} axisLine={false} tickLine={false} />
+                  <Tooltip
+                    cursor={{ fill: 'rgba(255,255,255,0.04)' }}
+                    contentStyle={{
+                      backgroundColor: '#0f172a',
+                      border: '1px solid rgba(148,163,184,0.18)',
+                      borderRadius: '16px',
+                      color: '#f8fafc',
+                    }}
+                  />
+                  <Bar dataKey="score" radius={[14, 14, 8, 8]}>
+                    {studentChartData.map((entry) => (
+                      <Cell key={entry.name} fill={entry.fill} />
+                    ))}
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex h-full items-center justify-center rounded-[24px] border border-dashed border-[var(--border)] text-sm text-[var(--text-muted)]">
+                Import data to see growth trends and student performance.
+              </div>
+            )}
+          </div>
+        </article>
+
+        <article className="rounded-[28px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-5 md:p-6">
+          <div className="flex items-center justify-between gap-3">
+            <div>
+              <div className="text-[10px] uppercase tracking-[0.26em] text-[var(--text-muted)] font-navigation">Recent activity</div>
+              <h3 className="mt-2 text-2xl font-semibold text-[var(--text-primary)]">Latest case signals</h3>
+            </div>
+            <Link to="/students" className="text-sm text-[var(--lav)] transition-colors hover:text-white">Open students</Link>
+          </div>
+
+          <div className="mt-5 space-y-3">
+            {recentSignals.length > 0 ? recentSignals.map((signal) => (
+              <div key={`${signal.time}-${signal.title}`} className="rounded-[20px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-sm font-semibold text-[var(--text-primary)]">{signal.title}</div>
+                    <div className="mt-1 text-xs uppercase tracking-[0.18em] text-[var(--text-muted)]">{signal.time}</div>
+                  </div>
+                  <span className="rounded-full border border-[var(--border)] px-2.5 py-1 text-[10px] uppercase tracking-[0.18em] text-[var(--text-muted)]">
+                    {signal.icon}
+                  </span>
+                </div>
+              </div>
+            )) : (
+              <div className="rounded-[20px] border border-dashed border-[var(--border)] p-5 text-sm text-[var(--text-muted)]">
+                No case activity yet. Import a dataset to populate the workflow.
+              </div>
+            )}
+          </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <Link to="/pipeline" className="rounded-[18px] border border-[var(--lav-border)] bg-[var(--lav-dim)] px-4 py-3 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:bg-[var(--lav-border)]">
+              Launch pipeline
+            </Link>
+            <Link to={selectedCase ? `/teacher-decision/${selectedCase.student.student_id}` : '/students'} className="rounded-[18px] border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-sm font-semibold text-[var(--text-primary)] transition-colors hover:border-[var(--lav-border)]">
+              Review feedback
+            </Link>
+          </div>
+
+          <div className="mt-4 text-xs uppercase tracking-[0.2em] text-[var(--text-muted)]">
+            Last sync: {lastSynced ? lastSynced.toLocaleTimeString() : 'Pending'}
+          </div>
+        </article>
+      </section>
+    </div>
   );
-}
+};

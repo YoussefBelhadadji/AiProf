@@ -67,6 +67,7 @@ export interface StudentRecord {
   ai_help_state?: string;
   profile_rule_id?: string;
   rule_matches?: RuleMatch[];
+  rf_feature_impacts?: { feature: string; impact: number }[];
 }
 
 export interface FeatureImportance {
@@ -157,6 +158,7 @@ export interface DialogueMessage {
   sender: string;
   topic: string;
   message: string;
+  intent?: 'Clarification Request' | 'Procedural Question' | 'Conceptual Support' | 'Language Assistance';
 }
 
 export interface InstructorComment {
@@ -233,7 +235,7 @@ export interface MessageThreshold {
 
 export const caseStudyMeta: CaseStudyMeta = {
   workbookPath: 'C:\\Users\\CORTEC\\Desktop\\projectpr\\lahmarabbou_asmaa_FULL_ENGLISH (1).xlsx',
-  studentName: 'Lahmarabbou Asmaa',
+  studentName: 'lahmarabbou asmaa',
   userId: '9263',
   courseTitle: 'Academic Writing',
   courseId: '379',
@@ -243,10 +245,10 @@ export const caseStudyMeta: CaseStudyMeta = {
   periodCovered: '20 November 2025 - 14 March 2026',
   totalAssignmentsSubmitted: 9,
   gradedAssignments: 1,
-  ungradedAssignments: 8,
+  ungradedAssignments: 9,
   forumPosts: 2,
-  activityLogEntries: 258,
-  chatMessages: 17,
+  activityLogEntries: 260,
+  chatMessages: 48,
   feedbackViewedAt: '12 Feb 2026 23:25',
   introGrade: '10 / 100',
   finalWordCount: 199,
@@ -362,6 +364,196 @@ export const primaryStudent: StudentRecord = {
   ],
   personalized_feedback:
     'You viewed the feedback, but your draft does not yet show enough change. Re-read the comments and apply at least one improvement to your ideas and one to your language. You improved some parts of the paragraph. Now use the feedback to deepen your explanation and improve the structure of your ideas. Your main idea is relevant, but it needs deeper explanation. After giving your example, explain why it proves your point.',
+  rf_feature_impacts: [
+    { feature: 'revision_frequency', impact: 0.15 },
+    { feature: 'feedback_views', impact: 0.12 },
+    { feature: 'argumentation', impact: -0.05 },
+    { feature: 'time_on_task', impact: 0.08 }
+  ],
+};
+
+export const sarahMitchell: StudentRecord = {
+  student_id: '9264',
+  name: 'Sarah Mitchell',
+  email: 's.mitchell@student.edu',
+  assignment_views: 124,
+  resource_access_count: 22,
+  rubric_views: 12,
+  time_on_task: 210,
+  revision_frequency: 5,
+  feedback_views: 6,
+  help_seeking_messages: 4,
+  word_count: 215,
+  error_density: 1.2,
+  cohesion_index: 6,
+  cohesion: 4.8,
+  ttr: 0.62,
+  argumentation: 4.7,
+  grammar_accuracy: 4.8,
+  lexical_resource: 4.9,
+  total_score: 33.5,
+  score_gain: 5.2,
+  first_access_delay_minutes: 2,
+  sample_text: 'The argument for academic integrity is strengthened when students act as partners in the learning process.',
+  triggered_rule_ids: '',
+  interpretations: 'Strategic writer demonstrating strong self-regulatory cycles.',
+  feedback_types: 'metacognitive_challenge',
+  onsite_interventions: 'peer_modeling',
+  cluster_label: 3,
+  predicted_score: 34.5,
+  learner_profile: 'Strategic Writer (High-High)',
+  cluster_profile: 'Engaged or strategic writer',
+  ai_forethought_state: 'High',
+  ai_argument_state: 'High',
+  ai_cohesion_state: 'High',
+  ai_revision_state: 'High',
+  ai_feedback_state: 'High',
+  ai_linguistic_state: 'High',
+  personalized_feedback: 'You are demonstrating excellent self-regulation. Continue using peer-modeling to refine your advanced argumentative structures.',
+  rf_feature_impacts: [
+    { feature: 'time_on_task', impact: 0.22 },
+    { feature: 'revision_frequency', impact: 0.18 },
+    { feature: 'resource_access_count', impact: 0.15 },
+    { feature: 'rubric_views', impact: 0.10 }
+  ],
+};
+
+export const markDavies: StudentRecord = {
+  student_id: '9265',
+  name: 'Mark Davies',
+  email: 'm.davies@student.edu',
+  assignment_views: 95,
+  resource_access_count: 14,
+  rubric_views: 5,
+  time_on_task: 190,
+  revision_frequency: 6,
+  feedback_views: 8,
+  help_seeking_messages: 7,
+  word_count: 185,
+  error_density: 4.5,
+  cohesion_index: 2,
+  cohesion: 2.1,
+  ttr: 0.42,
+  argumentation: 2.2,
+  grammar_accuracy: 2.4,
+  lexical_resource: 2.5,
+  total_score: 16.5,
+  score_gain: 1.2,
+  first_access_delay_minutes: 15,
+  sample_text: 'I try to write but it is hard to find the words to explain my evidence properly.',
+  triggered_rule_ids: 'B2; C4',
+  interpretations: 'Struggling but engaged: high effort without linguistic mastery.',
+  feedback_types: 'direct_corrective; structural_scaffold',
+  onsite_interventions: 'guided_writing_workshop',
+  cluster_label: 2,
+  predicted_score: 22.0,
+  learner_profile: 'Struggling but Engaged (High-Low)',
+  cluster_profile: 'Effortful but struggling writer',
+  ai_forethought_state: 'Medium',
+  ai_argument_state: 'Low',
+  ai_cohesion_state: 'Low',
+  ai_revision_state: 'High',
+  ai_feedback_state: 'High',
+  ai_linguistic_state: 'Low',
+  personalized_feedback: 'Your high level of engagement is a great foundation. We will focus on structural scaffolds to help translate your effort into clearer writing patterns.',
+  rf_feature_impacts: [
+    { feature: 'revision_frequency', impact: 0.20 },
+    { feature: 'help_seeking_messages', impact: 0.14 },
+    { feature: 'error_density', impact: -0.18 },
+    { feature: 'argumentation', impact: -0.12 }
+  ],
+};
+
+export const elenaRodriguez: StudentRecord = {
+  student_id: '9266',
+  name: 'Elena Rodriguez',
+  email: 'e.rodriguez@student.edu',
+  assignment_views: 12,
+  resource_access_count: 2,
+  rubric_views: 0,
+  time_on_task: 45,
+  revision_frequency: 1,
+  feedback_views: 0,
+  help_seeking_messages: 0,
+  word_count: 220,
+  error_density: 1.5,
+  cohesion_index: 4,
+  cohesion: 3.8,
+  ttr: 0.58,
+  argumentation: 4.1,
+  grammar_accuracy: 4.2,
+  lexical_resource: 4.3,
+  total_score: 29.5,
+  score_gain: 0.5,
+  first_access_delay_minutes: 120,
+  sample_text: 'Education systems must evolve to keep up with the demands of the modern workforce.',
+  triggered_rule_ids: 'A1',
+  interpretations: 'Efficient but passive: high performance without regulatory process.',
+  feedback_types: 'metacognitive_prompt',
+  onsite_interventions: 'self_regulation_workshop',
+  cluster_label: 1,
+  predicted_score: 30.0,
+  learner_profile: 'Efficient but Passive (Low-High)',
+  cluster_profile: 'Efficient but fragile regulator',
+  ai_forethought_state: 'Low',
+  ai_argument_state: 'High',
+  ai_cohesion_state: 'High',
+  ai_revision_state: 'Low',
+  ai_feedback_state: 'Low',
+  ai_linguistic_state: 'High',
+  personalized_feedback: 'Your writing is already strong. Let\'s work on increasing your engagement with the feedback cycle to move from passive performance to strategic mastery.',
+  rf_feature_impacts: [
+    { feature: 'argumentation', impact: 0.18 },
+    { feature: 'grammar_accuracy', impact: 0.15 },
+    { feature: 'time_on_task', impact: -0.10 },
+    { feature: 'feedback_views', impact: -0.08 }
+  ],
+};
+
+export const jamesWilson: StudentRecord = {
+  student_id: '9267',
+  name: 'James Wilson',
+  email: 'j.wilson@student.edu',
+  assignment_views: 4,
+  resource_access_count: 1,
+  rubric_views: 0,
+  time_on_task: 20,
+  revision_frequency: 0,
+  feedback_views: 0,
+  help_seeking_messages: 0,
+  word_count: 85,
+  error_density: 6.2,
+  cohesion_index: 1,
+  cohesion: 1.5,
+  ttr: 0.35,
+  argumentation: 1.8,
+  grammar_accuracy: 2.1,
+  lexical_resource: 2.2,
+  total_score: 11.2,
+  score_gain: 0.2,
+  first_access_delay_minutes: 360,
+  sample_text: 'Writing is difficult and I do not know how to start this paragraph.',
+  triggered_rule_ids: 'A1; B2',
+  interpretations: 'At-risk writer: critical disengagement and performance gaps.',
+  feedback_types: 'direct_corrective; immediate_intervention',
+  onsite_interventions: 'one_to_one_scaffolding',
+  cluster_label: 0,
+  predicted_score: 12.5,
+  learner_profile: 'At-Risk Writer (Low-Low)',
+  cluster_profile: 'Disengaged / low-participation learner',
+  ai_forethought_state: 'Low',
+  ai_argument_state: 'Low',
+  ai_cohesion_state: 'Low',
+  ai_revision_state: 'Low',
+  ai_feedback_state: 'Low',
+  ai_linguistic_state: 'Low',
+  personalized_feedback: 'Critical intervention is required to address both engagement and performance gaps. We will start with a one-to-one scaffolding session.',
+  rf_feature_impacts: [
+    { feature: 'assignment_views', impact: -0.22 },
+    { feature: 'time_on_task', impact: -0.18 },
+    { feature: 'error_density', impact: -0.15 },
+    { feature: 'revision_frequency', impact: -0.10 }
+  ],
 };
 
 const rfMetrics: RfMetrics = {
@@ -435,7 +627,7 @@ const clusterCentroids: ClusterCentroid[] = [
 ];
 
 export const diagnosticData: DiagnosticData = {
-  students: [primaryStudent],
+  students: [primaryStudent, sarahMitchell, markDavies, elenaRodriguez, jamesWilson],
   metrics: {
     rf_metrics: rfMetrics,
     rf_importance: rfImportance,
@@ -473,14 +665,15 @@ export function getStudentRiskLevel(student: StudentRecord): 'low' | 'monitor' |
   return 'low';
 }
 
-export function getEngagementScore(student: StudentRecord): number {
+export function getEngagementScore(student: StudentRecord | undefined): number {
+  if (!student) return 0;
   const rawScore =
-    student.time_on_task / 3 +
-    student.assignment_views * 0.2 +
-    student.resource_access_count * 1.4 +
-    student.feedback_views * 6 +
-    student.rubric_views * 2 +
-    student.help_seeking_messages * 4;
+    (student.time_on_task ?? 0) / 3 +
+    (student.assignment_views ?? 0) * 0.2 +
+    (student.resource_access_count ?? 0) * 1.4 +
+    (student.feedback_views ?? 0) * 6 +
+    (student.rubric_views ?? 0) * 2 +
+    (student.help_seeking_messages ?? 0) * 4;
 
   return Math.round(clamp(rawScore / 100, 0, 1) * 100);
 }
@@ -514,28 +707,34 @@ export function getCohortStats(data: StudentRecord[] = students): CohortStats {
 }
 
 export interface BayesianBelief {
-  lexical: number;
-  grammar: number;
-  cohesion: number;
   argumentation: number;
+  cohesion: number;
+  linguistic: number;
   regulation: number;
 }
 
 export function getBayesianBeliefs(student: StudentRecord): { prior: BayesianBelief; posterior: BayesianBelief } {
-  const posterior: BayesianBelief = {
-    lexical: clamp(student.ttr),
-    grammar: clamp(student.grammar_accuracy / 5),
-    cohesion: clamp(student.cohesion / 5),
-    argumentation: clamp(student.argumentation / 5),
-    regulation: clamp((student.revision_frequency + student.feedback_views + student.help_seeking_messages) / 15),
+  // RESEARCH NOTE: This simulates a simplified Bayesian update where observables shift the prior belief.
+  // P(Competence | Evidence) = (P(Evidence | Competence) * P(Competence)) / P(Evidence)
+  
+  const prior: BayesianBelief = {
+    argumentation: 0.35, // Starting theoretical prior for the cohort
+    cohesion: 0.30,
+    linguistic: 0.40,
+    regulation: 0.25,
   };
 
-  const prior: BayesianBelief = {
-    lexical: clamp(posterior.lexical - 0.08, 0.05, 0.95),
-    grammar: clamp(posterior.grammar - 0.16, 0.05, 0.95),
-    cohesion: clamp(posterior.cohesion - 0.14, 0.05, 0.95),
-    argumentation: clamp(posterior.argumentation - 0.18, 0.05, 0.95),
-    regulation: clamp(posterior.regulation - 0.1, 0.05, 0.95),
+  // Evidence Weighting Logic (Likelihoods)
+  const argEvidence = (student.argumentation / 5) * 0.7 + (student.rubric_views / 10) * 0.3;
+  const cohEvidence = (student.cohesion / 5) * 0.6 + (student.cohesion_index / 10) * 0.4;
+  const lingEvidence = (student.grammar_accuracy / 5) * 0.5 + (student.ttr) * 0.5;
+  const regEvidence = (student.revision_frequency / 10) * 0.4 + (student.feedback_views / 10) * 0.3 + (student.help_seeking_messages / 10) * 0.3;
+
+  const posterior: BayesianBelief = {
+    argumentation: clamp(prior.argumentation * 0.4 + argEvidence * 0.6),
+    cohesion: clamp(prior.cohesion * 0.4 + cohEvidence * 0.6),
+    linguistic: clamp(prior.linguistic * 0.4 + lingEvidence * 0.6),
+    regulation: clamp(prior.regulation * 0.4 + regEvidence * 0.6),
   };
 
   return { prior, posterior };
@@ -585,6 +784,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     sender: caseStudyMeta.studentName,
     topic: 'Asking where feedback is',
     message: 'Excuse me, Miss, could you please tell me where I can find it? I seem to be unable to locate it.',
+    intent: 'Procedural Question',
   },
   {
     date: '10 Feb 2026',
@@ -599,6 +799,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     sender: caseStudyMeta.studentName,
     topic: 'Clarification on correction method',
     message: 'Where should I correct my mistakes, in the comments section?',
+    intent: 'Procedural Question',
   },
   {
     date: '10 Feb 2026',
@@ -613,6 +814,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     sender: caseStudyMeta.studentName,
     topic: 'Request for progress update',
     message: 'Miss, could you please show me my progress so far?',
+    intent: 'Conceptual Support',
   },
   {
     date: '7 Mar 2026',
@@ -620,6 +822,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     sender: caseStudyMeta.studentName,
     topic: 'Request for feedback and portfolio questions',
     message: 'Hello miss can you send to me my feedback? And also the questions you told us about when I gave you my portfolio.',
+    intent: 'Clarification Request',
   },
   {
     date: '10 Mar 2026',
@@ -628,6 +831,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     topic: 'Asking for vocabulary advice',
     message:
       'While writing the paragraph, I had difficulty choosing the most appropriate academic vocabulary. Could you please advise me if the wording in this part is appropriate?',
+    intent: 'Language Assistance',
   },
   {
     date: '10 Mar 2026',
@@ -642,6 +846,7 @@ export const teacherStudentDialogue: DialogueMessage[] = [
     sender: caseStudyMeta.studentName,
     topic: 'Missing second feedback report',
     message: 'Miss I did not receive your second feedback. Can you check please if there is a problem?',
+    intent: 'Clarification Request',
   },
   {
     date: '11 Mar 2026',

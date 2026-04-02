@@ -1,1295 +1,570 @@
-{
-  "metadata": {
-    "title": "Unified Strong Rule Table",
-    "preface": "Raw data indicators and AI learner-state outputs jointly drive the adaptive feedback decision. Thresholded evidence establishes what was observed, AI diagnosis interprets what the learner likely needs, and the rule layer maps that need onto transparent pedagogical action.",
-    "strong_rule_table_columns": [
-      "Rule ID",
-      "Raw Data Condition (Indicators)",
-      "AI Learner-State Output",
-      "Pedagogical Interpretation",
-      "Adaptive Feedback Type",
-      "Feedback Message Focus",
-      "Onsite Instructional Intervention",
-      "Theoretical Justification"
-    ]
-  },
-  "profile_rules": [
-    {
-      "profile_id": "disengaged_low_participation",
-      "priority": 120,
-      "display_label": "Disengaged / low-participation learner",
-      "cluster_profile_hint": "Disengaged / low-participation learner",
-      "cluster_label_hint": 0,
-      "predicted_improvement": "Low",
-      "random_forest_summary": "Low improvement predicted; high risk of weak performance",
-      "bayesian_summary": "Forethought = Low; Argument competence = Low; SRL revision = Low",
-      "default_focus_statement": "Re-engage the learner, build planning habits, increase task understanding, and require minimum paragraph development before deeper writing feedback.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_planning": true,
-            "low_time_on_task": true,
-            "low_word_count": true,
-            "no_revision": true,
-            "help_none": true,
-            "very_weak_argument": true,
-            "low_cohesion": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "at_risk_passive",
-      "priority": 95,
-      "display_label": "At-risk passive learner",
-      "cluster_profile_hint": "Disengaged / low-participation learner",
-      "cluster_label_hint": 0,
-      "predicted_improvement": "Low",
-      "random_forest_summary": "Low improvement predicted; risk of stagnation high",
-      "bayesian_summary": "SRL revision = Low; Help-seeking regulation = None",
-      "default_focus_statement": "Encourage recognition of difficulty, explicit help-seeking, and supported revision before performance declines further.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "repeated_difficulty": true,
-            "help_none": true
-          },
-          "any": [
-            {
-              "no_revision": true
-            },
-            {
-              "low_engagement": true
-            }
-          ]
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "persistent_language_support",
-      "priority": 100,
-      "display_label": "Persistent language-support learner",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate improvement predicted, but form-level issues remain limiting",
-      "bayesian_summary": "Linguistic control = Low-Medium; Feedback uptake = Medium",
-      "default_focus_statement": "Target recurrent error patterns systematically and combine correction with explanation and guided reuse.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "persistent_grammar_problems": true,
-            "high_engagement": true,
-            "strong_revision": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "language_limited_developing",
-      "priority": 95,
-      "display_label": "Language-limited developing writer",
-      "cluster_profile_hint": "Effortful but struggling writer",
-      "cluster_label_hint": 2,
-      "predicted_improvement": "Low-Moderate",
-      "random_forest_summary": "Low to moderate improvement predicted unless language support is targeted",
-      "bayesian_summary": "Linguistic control = Low; Lexical competence = Low-Medium",
-      "default_focus_statement": "Reduce repeated grammatical errors, improve rule awareness, and expand academic vocabulary.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_grammar": true,
-            "moderate_revision": true,
-            "low_lexical": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "lexically_developing_with_adaptive_monitoring",
-      "priority": 90,
-      "display_label": "Lexically developing writer with adaptive monitoring",
-      "cluster_profile_hint": "Effortful but struggling writer",
-      "cluster_label_hint": 2,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate improvement predicted if lexical support is provided",
-      "bayesian_summary": "Lexical competence = Low-Medium; Help-seeking regulation = Adaptive",
-      "default_focus_statement": "Improve formal register, precision, and vocabulary choice through guided lexical support.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_lexical": true,
-            "vocabulary_help_available": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "ai_help_state": "Adaptive"
-          }
-        }
-      }
-    },
-    {
-      "profile_id": "feedback_responsive_developing",
-      "priority": 85,
-      "display_label": "Feedback-responsive developing writer",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "Moderate-High",
-      "random_forest_summary": "Moderate to high improvement predicted if higher-order support continues",
-      "bayesian_summary": "Feedback uptake = Medium-High; Argument competence = Medium",
-      "default_focus_statement": "Consolidate feedback use and push the learner from partial revision to deeper reasoning and stronger support.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "feedback_responsive": true,
-            "improvement_visible": true,
-            "weak_argument": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "well_engaged_conceptually_weak",
-      "priority": 85,
-      "display_label": "Well-engaged but conceptually weak writer",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate improvement predicted; argumentation is the key limiting factor",
-      "bayesian_summary": "Argument competence = Low-Medium; SRL = High",
-      "default_focus_statement": "Focus narrowly on reasoning quality, support, and argumentative depth rather than on engagement or language accuracy.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_engagement": true,
-            "strong_planning": true,
-            "adequate_word_count": true,
-            "weak_argument": true,
-            "grammar_stable": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "strategic_writer",
-      "priority": 75,
-      "display_label": "Strategic writer",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "High",
-      "random_forest_summary": "High improvement predicted; strongest predictors = revision quality and discourse control",
-      "bayesian_summary": "Argument competence = High; Cohesion competence = High; SRL revision = High",
-      "default_focus_statement": "Extend the learner beyond the current baseline through self-reflection, counter-argumentation, and stylistic refinement.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_engagement": true,
-            "strong_revision": true,
-            "strong_writing": true,
-            "strong_cohesion": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "ai_feedback_state": "High"
-          }
-        }
-      }
-    },
-    {
-      "profile_id": "efficient_fragile_regulator",
-      "priority": 70,
-      "display_label": "Efficient but fragile regulator",
-      "cluster_profile_hint": "Efficient but fragile regulator",
-      "cluster_label_hint": 1,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate performance predicted, but future growth looks unstable",
-      "bayesian_summary": "Argument competence = Medium; SRL revision = Low-Medium",
-      "default_focus_statement": "Stabilize the writing process and encourage more consistent self-regulation rather than remediating product quality alone.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_engagement": true,
-            "acceptable_writing": true,
-            "limited_revision": true,
-            "help_none": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "developing_discourse_writer",
-      "priority": 65,
-      "display_label": "Developing discourse writer",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate improvement predicted; discourse variables appear highly important",
-      "bayesian_summary": "Cohesion competence = Low-Medium; Argument competence = Medium",
-      "default_focus_statement": "Improve transitions, sequencing, and paragraph unity while keeping the main focus on discourse control rather than grammar.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_engagement": true,
-            "low_cohesion": true,
-            "acceptable_argument": true,
-            "moderate_revision": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "effortful_but_struggling",
-      "priority": 60,
-      "display_label": "Effortful but struggling writer",
-      "cluster_profile_hint": "Effortful but struggling writer",
-      "cluster_label_hint": 2,
-      "predicted_improvement": "Low-Moderate",
-      "random_forest_summary": "Low to moderate improvement predicted; strongest predictors = revision, cohesion, and argument quality",
-      "bayesian_summary": "Argument competence = Low; Feedback uptake = Low; SRL revision = Low",
-      "default_focus_statement": "Support claim-evidence-explanation structure, teach how to use feedback, and move the learner from effort to strategy.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_assignment_views": true,
-            "weak_writing": true,
-            "feedback_viewed_not_used": true,
-            "weak_argument": true
-          }
-        },
-        "ai_states": {}
-      }
-    },
-    {
-      "profile_id": "engaged_but_developing",
-      "priority": 50,
-      "display_label": "Engaged but developing writer",
-      "cluster_profile_hint": "Engaged or strategic writer",
-      "cluster_label_hint": 3,
-      "predicted_improvement": "Moderate",
-      "random_forest_summary": "Moderate improvement predicted; likely gain if cohesion and reasoning improve",
-      "bayesian_summary": "Argument competence = Medium; Cohesion competence = Medium; SRL revision = Medium-High",
-      "default_focus_statement": "Deepen explanation, improve paragraph flow, refine academic wording, and encourage meaning-level revision.",
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_engagement": true,
-            "strong_revision": true,
-            "help_present": true,
-            "adequate_word_count": true,
-            "writing_not_strong": true
-          }
-        },
-        "ai_states": {}
-      }
-    }
-  ],
-  "feedback_rules": [
-    {
-      "rule_id": "A1",
-      "category": "Planning",
-      "enabled": true,
-      "priority": 140,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_planning": true,
-            "low_word_count": true,
-            "low_time_on_task": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "disengaged_low_participation"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "rubric_views = 0 + time_on_task < 15 + word_count < 80",
-        "ai_learner_state_output": "Forethought risk = High",
-        "pedagogical_interpretation": "Weak planning and low criteria awareness constrain the learner before drafting begins.",
-        "adaptive_feedback_type": "Metacognitive + feedforward scaffold",
-        "feedback_message_focus": "Plan before writing, consult the rubric, and outline the paragraph structure.",
-        "theoretical_justification": "Zimmerman (2000); Nicol and Macfarlane-Dick (2006)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "planning_scaffold"
-        ],
-        "onsite_interventions": [
-          "rubric_walkthrough_and_outline_support"
-        ],
-        "focus_statement": "Re-engage the learner, build planning habits, increase task understanding, and require minimum paragraph development before deeper writing feedback."
-      }
-    },
-    {
-      "rule_id": "A2",
-      "category": "Planning",
-      "enabled": true,
-      "priority": 130,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_planning": true,
-            "low_word_count": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "disengaged_low_participation"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "late first access + short composing time + underdeveloped draft",
-        "ai_learner_state_output": "Forethought risk = Medium / procrastination risk",
-        "pedagogical_interpretation": "Task preparation is inconsistent and idea generation begins too late.",
-        "adaptive_feedback_type": "Planning scaffold",
-        "feedback_message_focus": "Break the task into steps and build the paragraph through staged drafting.",
-        "theoretical_justification": "Zimmerman (2000); Hyland (2019)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "elaboration_prompt"
-        ],
-        "onsite_interventions": [
-          "guided_planning_and_idea_expansion"
-        ],
-        "focus_statement": "Increase minimum paragraph development before expecting higher-order revision."
-      }
-    },
-    {
-      "rule_id": "B1",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 120,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "weak_argument": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "well_engaged_conceptually_weak",
-              "effortful_but_struggling"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "argumentation low or under threshold for stable support and explanation",
-        "ai_learner_state_output": "Argumentation weakness = High",
-        "pedagogical_interpretation": "Claim-evidence-reasoning structure remains weak and unsupported.",
-        "adaptive_feedback_type": "Strategic higher-order feedback",
-        "feedback_message_focus": "Add a clear example and explain how it supports the main claim.",
-        "theoretical_justification": "Hyland (2019); Weigle (2002)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "argument_scaffold"
-        ],
-        "onsite_interventions": [
-          "claim_evidence_explanation_modelling"
-        ],
-        "focus_statement": "Support claim-evidence-explanation structure and strengthen the learner's reasoning."
-      }
-    },
-    {
-      "rule_id": "B2",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 100,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "weak_argument": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "feedback_responsive_developing",
-              "well_engaged_conceptually_weak",
-              "engaged_but_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "argumentation moderate + idea present but underdeveloped",
-        "ai_learner_state_output": "Argumentation weakness = Medium",
-        "pedagogical_interpretation": "Reasoning is present but still lacks depth, explanation, and full support.",
-        "adaptive_feedback_type": "Strategic + metacognitive writing feedback",
-        "feedback_message_focus": "Expand the reasoning after the example so the argument becomes fully persuasive.",
-        "theoretical_justification": "Flower and Hayes (1981); Hyland (2019)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "argument_expansion"
-        ],
-        "onsite_interventions": [
-          "guided_argument_development"
-        ],
-        "focus_statement": "Deepen explanation, improve paragraph flow, refine academic wording, and encourage meaning-level revision."
-      }
-    },
-    {
-      "rule_id": "B3",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 110,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "strong_writing": true,
-            "strong_cohesion": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "strategic_writer"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "strong argument quality + strong cohesion + sustained revision",
-        "ai_learner_state_output": "Argumentation competence = High",
-        "pedagogical_interpretation": "The learner already demonstrates strong argumentative control and can be extended rather than remediated.",
-        "adaptive_feedback_type": "Metacognitive extension",
-        "feedback_message_focus": "Move beyond adequacy by adding counter-argument, nuance, or stylistic sophistication.",
-        "theoretical_justification": "Hyland (2019)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metacognitive_extension"
-        ],
-        "onsite_interventions": [
-          "counter_argument_and_style_extension"
-        ],
-        "focus_statement": "Extend the learner beyond the current baseline through self-reflection, counter-argumentation, and stylistic refinement."
-      }
-    },
-    {
-      "rule_id": "B4",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 120,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_cohesion": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "developing_discourse_writer"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "organization weak + cohesion index low",
-        "ai_learner_state_output": "Discourse competence = Low",
-        "pedagogical_interpretation": "Paragraph structure and transitions remain unstable, which weakens discourse flow.",
-        "adaptive_feedback_type": "Strategic discourse feedback",
-        "feedback_message_focus": "Use connectors and clearer sequencing to improve paragraph unity.",
-        "theoretical_justification": "Halliday and Hasan; Hyland (2019)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "cohesion_support"
-        ],
-        "onsite_interventions": [
-          "transition_and_linking_support"
-        ],
-        "focus_statement": "Improve transitions, sequencing, and paragraph unity while keeping the main focus on discourse control rather than grammar."
-      }
-    },
-    {
-      "rule_id": "B5",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 110,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_cohesion": true,
-            "acceptable_argument": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "developing_discourse_writer"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "organization and cohesion developing but still uneven",
-        "ai_learner_state_output": "Discourse competence = Medium",
-        "pedagogical_interpretation": "The learner has emerging organization, but paragraph sequencing and unity remain inconsistent.",
-        "adaptive_feedback_type": "Strategic organization feedback",
-        "feedback_message_focus": "Clarify the order of ideas and strengthen how each sentence supports the main point.",
-        "theoretical_justification": "Hyland (2019); Weigle (2002)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "organization_support"
-        ],
-        "onsite_interventions": [
-          "paragraph_restructuring_with_model"
-        ],
-        "focus_statement": "Strengthen paragraph structure and sequencing so the discourse becomes more coherent."
-      }
-    },
-    {
-      "rule_id": "B6",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 130,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_grammar": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "persistent_language_support",
-              "language_limited_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "error density high + grammar accuracy low",
-        "ai_learner_state_output": "Linguistic accuracy risk = High",
-        "pedagogical_interpretation": "Recurring grammar problems are reducing clarity and need explicit attention.",
-        "adaptive_feedback_type": "Direct corrective feedback",
-        "feedback_message_focus": "Correct repeated error patterns and apply the correction consistently across the paragraph.",
-        "theoretical_justification": "Ferris; Weigle (2002)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "direct_corrective_feedback"
-        ],
-        "onsite_interventions": [
-          "targeted_error_correction_cycle"
-        ],
-        "focus_statement": "Target recurrent error patterns systematically and combine correction with explanation and guided reuse."
-      }
-    },
-    {
-      "rule_id": "B7",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 120,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_grammar": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "persistent_language_support",
-              "language_limited_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "moderate to persistent grammar errors despite visible effort",
-        "ai_learner_state_output": "Linguistic accuracy risk = Medium",
-        "pedagogical_interpretation": "Learner effort is visible, but rule awareness still needs explanation and guided self-correction.",
-        "adaptive_feedback_type": "Metalinguistic feedback",
-        "feedback_message_focus": "Explain the grammar pattern and ask the learner to correct it deliberately.",
-        "theoretical_justification": "Vygotsky; corrective feedback tradition"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metalinguistic_feedback"
-        ],
-        "onsite_interventions": [
-          "mini_lesson_on_recurrent_language_patterns"
-        ],
-        "focus_statement": "Improve rule awareness so correction leads to more stable language control."
-      }
-    },
-    {
-      "rule_id": "B8",
-      "category": "Writing",
-      "enabled": false,
-      "priority": 90,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "ai_linguistic_state": "High"
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "error density low + grammar control strong",
-        "ai_learner_state_output": "Linguistic control = High",
-        "pedagogical_interpretation": "Surface accuracy is secure enough to shift attention toward fluency and refinement.",
-        "adaptive_feedback_type": "Fluency extension",
-        "feedback_message_focus": "Improve stylistic range, precision, and sentence variation.",
-        "theoretical_justification": "Hyland (2019)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "fluency_extension"
-        ],
-        "onsite_interventions": [
-          "advanced_stylistic_refinement"
-        ],
-        "focus_statement": "Extend the learner's stylistic control once accuracy is secure."
-      }
-    },
-    {
-      "rule_id": "B9",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 110,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_lexical": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "language_limited_developing",
-              "lexically_developing_with_adaptive_monitoring"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "lexical resource low + lexical diversity below target",
-        "ai_learner_state_output": "Lexical competence = Low",
-        "pedagogical_interpretation": "Vocabulary range and academic precision remain limited.",
-        "adaptive_feedback_type": "Lexical enrichment feedback",
-        "feedback_message_focus": "Replace basic or repetitive wording with more academic alternatives.",
-        "theoretical_justification": "Hyland (2005); Weigle (2002)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "lexical_enrichment"
-        ],
-        "onsite_interventions": [
-          "academic_vocabulary_expansion"
-        ],
-        "focus_statement": "Expand academic vocabulary and improve lexical precision."
-      }
-    },
-    {
-      "rule_id": "B10",
-      "category": "Writing",
-      "enabled": true,
-      "priority": 100,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "vocabulary_help_available": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "lexically_developing_with_adaptive_monitoring"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "lexical help-seeking present + academic wording uncertainty",
-        "ai_learner_state_output": "Lexical competence = Medium",
-        "pedagogical_interpretation": "The learner is monitoring vocabulary but still needs support refining register and precision.",
-        "adaptive_feedback_type": "Lexical refinement feedback",
-        "feedback_message_focus": "Refine word choice and formal register rather than adding vocabulary randomly.",
-        "theoretical_justification": "Hyland (2005); Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "lexical_refinement"
-        ],
-        "onsite_interventions": [
-          "formal_register_refinement"
-        ],
-        "focus_statement": "Improve formal register, precision, and vocabulary choice through guided lexical support."
-      }
-    },
-    {
-      "rule_id": "C1",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 100,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "no_revision": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "disengaged_low_participation",
-              "at_risk_passive",
-              "efficient_fragile_regulator",
-              "effortful_but_struggling"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "revision frequency = 0",
-        "ai_learner_state_output": "Revision depth = Low",
-        "pedagogical_interpretation": "The learner is not yet monitoring or reworking the text in a productive way.",
-        "adaptive_feedback_type": "Metacognitive revision prompt",
-        "feedback_message_focus": "Revise ideas, examples, and sentence patterns rather than leaving the draft unchanged.",
-        "theoretical_justification": "Hayes (2012); Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "revision_prompt"
-        ],
-        "onsite_interventions": [
-          "guided_revision_checklist"
-        ],
-        "focus_statement": "Encourage recognition of difficulty, explicit help-seeking, and supported revision before performance declines further."
-      }
-    },
-    {
-      "rule_id": "C2",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 90,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "moderate_revision": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "at_risk_passive",
-              "developing_discourse_writer",
-              "effortful_but_struggling",
-              "engaged_but_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "revision present but meaning-level improvement remains limited",
-        "ai_learner_state_output": "Revision depth = Medium",
-        "pedagogical_interpretation": "The learner revises, but the changes remain too local and do not transform meaning sufficiently.",
-        "adaptive_feedback_type": "Strategic global-revision feedback",
-        "feedback_message_focus": "Push revision beyond wording so explanation, organization, and support improve together.",
-        "theoretical_justification": "Flower and Hayes (1981); Hayes (2012)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "global_revision_feedback"
-        ],
-        "onsite_interventions": [
-          "feedback_interpretation_session"
-        ],
-        "focus_statement": "Support the next revision at the level of reasoning, organization, and explanation rather than surface correction alone."
-      }
-    },
-    {
-      "rule_id": "C3",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 100,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "strong_revision": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "strategic_writer"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "substantive revision across ideas and structure",
-        "ai_learner_state_output": "Revision depth = High",
-        "pedagogical_interpretation": "Revision behavior is effective enough to support reflection and transfer.",
-        "adaptive_feedback_type": "Metacognitive feedback",
-        "feedback_message_focus": "Reinforce the strategy that produced improvement so it can transfer to future tasks.",
-        "theoretical_justification": "Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metacognitive_feedback"
-        ],
-        "onsite_interventions": [
-          "self_explanation_and_transfer_prompt"
-        ],
-        "focus_statement": "Extend the learner beyond the current baseline through self-reflection, counter-argumentation, and stylistic refinement."
-      }
-    },
-    {
-      "rule_id": "C4",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 130,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "feedback_responsive": true,
-            "improvement_visible": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "feedback_responsive_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "feedback viewed repeatedly + revision follows but argument remains developing",
-        "ai_learner_state_output": "Feedback uptake risk = High",
-        "pedagogical_interpretation": "The learner uses feedback, but still needs help decoding comments at a deeper level.",
-        "adaptive_feedback_type": "Feedback-decoding scaffold",
-        "feedback_message_focus": "Reconnect teacher comments to explicit meaning-level changes in the next revision.",
-        "theoretical_justification": "Carless and Boud (2018); Hattie and Timperley (2007)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "feedback_decoding"
-        ],
-        "onsite_interventions": [
-          "feedback_to_revision_mapping"
-        ],
-        "focus_statement": "Consolidate feedback use and push the learner from partial revision to deeper reasoning and stronger support."
-      }
-    },
-    {
-      "rule_id": "C5",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 120,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "feedback_responsive_developing",
-              "persistent_language_support"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "feedback viewed and at least partial revision visible",
-        "ai_learner_state_output": "Feedback uptake risk = Medium",
-        "pedagogical_interpretation": "Feedback is being used, but the learner still needs support turning comments into stronger next-draft habits.",
-        "adaptive_feedback_type": "Guided feedforward",
-        "feedback_message_focus": "Use the comment trail to deepen reasoning or stabilize form-level improvement in the next revision cycle.",
-        "theoretical_justification": "Hattie and Timperley (2007); Carless and Boud (2018)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "feedforward_guidance"
-        ],
-        "onsite_interventions": [
-          "next_draft_transfer_prompt"
-        ],
-        "focus_statement": "Translate current gains into future drafting habits through guided feedforward."
-      }
-    },
-    {
-      "rule_id": "C6",
-      "category": "Revision",
-      "enabled": true,
-      "priority": 90,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "strong_revision": true,
-            "improvement_visible": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "strategic_writer"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "feedback uptake strong + revision successful",
-        "ai_learner_state_output": "Feedback uptake = Strong",
-        "pedagogical_interpretation": "Feedback has been internalized productively and can now be reinforced rather than reteached.",
-        "adaptive_feedback_type": "Reinforcement feedback",
-        "feedback_message_focus": "Validate effective uptake and extend the learner into the next level of challenge.",
-        "theoretical_justification": "Formative assessment tradition"
-      },
-      "actions": {
-        "feedback_templates": [
-          "reinforcement_feedback"
-        ],
-        "onsite_interventions": [
-          "strength_based_extension"
-        ],
-        "focus_statement": "Reinforce productive feedback use and preserve high-level revision behavior."
-      }
-    },
-    {
-      "rule_id": "D1",
-      "category": "Engagement",
-      "enabled": true,
-      "priority": 95,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_engagement": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "disengaged_low_participation"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "low assignment views + low resource access + no productive re-entry",
-        "ai_learner_state_output": "Engagement risk = High",
-        "pedagogical_interpretation": "Behavioural participation is too low for detailed feedback to be effective yet.",
-        "adaptive_feedback_type": "Motivational re-engagement",
-        "feedback_message_focus": "Re-enter the task with simplified steps, rubric support, and explicit direction.",
-        "theoretical_justification": "Siemens (2013); Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "motivational_reengagement"
-        ],
-        "onsite_interventions": [
-          "motivational_checkin_and_task_restart"
-        ],
-        "focus_statement": "Rebuild behavioural engagement before expecting deeper writing development."
-      }
-    },
-    {
-      "rule_id": "D2",
-      "category": "Engagement",
-      "enabled": true,
-      "priority": 80,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "high_engagement": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "effortful_but_struggling",
-              "engaged_but_developing"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "high engagement with persistent quality limitations",
-        "ai_learner_state_output": "Learner profile = Effortful but struggling / engaged but developing",
-        "pedagogical_interpretation": "The learner is active, but effort is not yet translating into strong strategy use.",
-        "adaptive_feedback_type": "Explicit strategic instruction",
-        "feedback_message_focus": "Focus the learner on structure, reasoning, and purposeful revision rather than effort alone.",
-        "theoretical_justification": "Dawson (2018); Siemens (2013)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "explicit_strategic_instruction"
-        ],
-        "onsite_interventions": [
-          "explicit_strategy_conference"
-        ],
-        "focus_statement": "Move the learner from effort to clearer strategic action."
-      }
-    },
-    {
-      "rule_id": "D3",
-      "category": "Engagement",
-      "enabled": true,
-      "priority": 110,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "low_engagement": true,
-            "acceptable_writing": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "efficient_fragile_regulator"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "low visible engagement with acceptable product quality",
-        "ai_learner_state_output": "Learner profile = Fragile regulator",
-        "pedagogical_interpretation": "Performance is acceptable, but the writing process is not yet stable or self-regulated enough.",
-        "adaptive_feedback_type": "Metacognitive prompting",
-        "feedback_message_focus": "Reflect on how the task was completed and stabilize the process for future writing.",
-        "theoretical_justification": "Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metacognitive_prompt"
-        ],
-        "onsite_interventions": [
-          "process_stability_prompt"
-        ],
-        "focus_statement": "Stabilize the writing process and encourage more consistent self-regulation rather than remediating product quality alone."
-      }
-    },
-    {
-      "rule_id": "D4",
-      "category": "Engagement",
-      "enabled": true,
-      "priority": 85,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "help_present": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "lexically_developing_with_adaptive_monitoring",
-              "engaged_but_developing"
-            ],
-            "ai_help_state": [
-              "Adaptive",
-              "Present"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "help-seeking message about language, argument, or feedback",
-        "ai_learner_state_output": "Help-seeking regulation = Adaptive",
-        "pedagogical_interpretation": "The learner is actively monitoring difficulty and asking for clarification productively.",
-        "adaptive_feedback_type": "Dialogic scaffolding",
-        "feedback_message_focus": "Clarify the difficulty and turn the question into a guided next writing move.",
-        "theoretical_justification": "Zimmerman (2000); Carless and Boud (2018)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "dialogic_scaffolding"
-        ],
-        "onsite_interventions": [
-          "short_clarification_conference"
-        ],
-        "focus_statement": "Use adaptive help-seeking as part of the revision process."
-      }
-    },
-    {
-      "rule_id": "D5",
-      "category": "Engagement",
-      "enabled": true,
-      "priority": 70,
-      "conditions": {
-        "thresholds": {
-          "all": {
-            "help_none": true
-          }
-        },
-        "ai_states": {
-          "all": {
-            "profile_id": [
-              "disengaged_low_participation",
-              "at_risk_passive"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "weak performance with no help-seeking response",
-        "ai_learner_state_output": "Help-seeking risk = High",
-        "pedagogical_interpretation": "Difficulty remains hidden because the learner is not surfacing problems proactively.",
-        "adaptive_feedback_type": "Metacognitive + motivational prompt",
-        "feedback_message_focus": "Encourage the learner to identify the difficulty and ask for clarification before revising.",
-        "theoretical_justification": "Siemens (2013); Zimmerman (2000)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metacognitive_prompt"
-        ],
-        "onsite_interventions": [
-          "help_seeking_activation_prompt"
-        ],
-        "focus_statement": "Encourage recognition of difficulty, explicit help-seeking, and supported revision before performance declines further."
-      }
-    },
-    {
-      "rule_id": "E1",
-      "category": "Prediction",
-      "enabled": false,
-      "priority": 60,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "predicted_improvement": "Low"
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "predicted score gain low",
-        "ai_learner_state_output": "Predicted improvement = Low",
-        "pedagogical_interpretation": "The learner is unlikely to improve without structured support.",
-        "adaptive_feedback_type": "Intensive support plan",
-        "feedback_message_focus": "Target the weakest dimensions through a step-by-step support plan.",
-        "theoretical_justification": "Educational data mining"
-      },
-      "actions": {
-        "feedback_templates": [
-          "intensive_support_plan"
-        ],
-        "onsite_interventions": [
-          "individualized_support_plan_targeting_weakest_dimensions"
-        ],
-        "focus_statement": "Escalate support intensity when predicted growth remains limited."
-      }
-    },
-    {
-      "rule_id": "E2",
-      "category": "Prediction",
-      "enabled": false,
-      "priority": 55,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "predicted_improvement": [
-              "Moderate",
-              "Moderate-High",
-              "High"
-            ]
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "predicted score gain moderate or high",
-        "ai_learner_state_output": "Predicted improvement = Medium/High",
-        "pedagogical_interpretation": "The learner has growth potential if support is focused on the right constraint.",
-        "adaptive_feedback_type": "Targeted development feedback",
-        "feedback_message_focus": "Concentrate support on the weakest dimension most likely to unlock improvement.",
-        "theoretical_justification": "Educational data mining"
-      },
-      "actions": {
-        "feedback_templates": [
-          "targeted_development_feedback"
-        ],
-        "onsite_interventions": [
-          "focused_support_on_weakest_priority_area"
-        ],
-        "focus_statement": "Direct attention to the dimension most likely to improve next-draft performance."
-      }
-    },
-    {
-      "rule_id": "F1",
-      "category": "Inference",
-      "enabled": false,
-      "priority": 50,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "ai_argument_state": "Medium"
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "Bayesian posterior keeps argument competence in a developing middle band",
-        "ai_learner_state_output": "Argument competence probability = Medium",
-        "pedagogical_interpretation": "Argumentative control is emerging but not yet stable.",
-        "adaptive_feedback_type": "Argument refinement feedback",
-        "feedback_message_focus": "Refine evidence integration and explanation so the claim becomes more secure.",
-        "theoretical_justification": "Murphy (2022); Mislevy (2003)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "argument_refinement"
-        ],
-        "onsite_interventions": [
-          "guided_refinement_of_evidence_integration_and_explanation"
-        ],
-        "focus_statement": "Refine argument structure when the competence estimate is developing but unstable."
-      }
-    },
-    {
-      "rule_id": "F2",
-      "category": "Inference",
-      "enabled": false,
-      "priority": 45,
-      "conditions": {
-        "thresholds": {},
-        "ai_states": {
-          "all": {
-            "ai_revision_state": "Low"
-          }
-        }
-      },
-      "display": {
-        "raw_data_condition": "Bayesian-style self-regulated revision state low",
-        "ai_learner_state_output": "Self-regulated revision competence = Low",
-        "pedagogical_interpretation": "The learner needs explicit support to plan, monitor, and evaluate revision.",
-        "adaptive_feedback_type": "Metacognitive training",
-        "feedback_message_focus": "Teach revision as a managed process rather than a one-step correction task.",
-        "theoretical_justification": "Zimmerman (2000); Hayes (2012)"
-      },
-      "actions": {
-        "feedback_templates": [
-          "metacognitive_training"
-        ],
-        "onsite_interventions": [
-          "explicit_srl_training_planning_monitoring_evaluating"
-        ],
-        "focus_statement": "Train self-regulated revision explicitly when process control remains weak."
-      }
-    }
-  ]
-}
+# WriteLens Adaptive Rulebook (2026 Academic Edition)
+# Evidence-Centered Design: Observable evidence → Pedagogical claims → Adaptive interventions
+# References: Mislevy (2003); Weigle (2002); Siemens (2013); Zimmerman (2000); Hyland (2019)
+
+metadata:
+  title: "WriteLens Comprehensive Adaptive Rulebook"
+  description: "Rule-based mapping from evidence indicators and AI states to pedagogical interventions"
+  version: "2.0"
+  last_updated: "2026-04-02"
+  framework: "Evidence-Centered Design + Self-Regulated Learning Theory + Adaptive Feedback"
+  total_rules: 18
+
+# ============================================================================
+# LEARNER PROFILE RULES (4 learner behavioral clusters)
+# ============================================================================
+
+profile_rules:
+  - profile_id: "disengaged"
+    priority: 120
+    display_label: "Disengaged Learner"
+    description: "Low engagement behavioral pattern with minimal task interaction"
+    conditions:
+      ai_states:
+        all:
+          - engagement_risk: "High"
+          - time_on_task_band: "Low"
+          - rubric_views: 0
+    evidence_indicators:
+      - low_assignment_views
+      - no_productive_re_entry
+      - minimal_resource_access
+      - no_help_seeking
+    pedagogical_interpretation: "Behavioral participation is too low for detailed feedback to be effective. Learner needs motivational re-engagement first."
+    adaptation_strategy: "Simplified task re-entry with external motivation and explicit direction"
+    theoretical_justification: "Siemens (2013) - disengagement is earliest intervention point; Zimmerman (2000) - forethought phase requires active participation"
+    response_template: "motivational_reengagement"
+    onsite_intervention: "motivational_checkin_and_task_restart"
+
+  - profile_id: "effortful_struggling"
+    priority: 110
+    display_label: "Effortful but Struggling"
+    description: "High engagement effort with developing performance"
+    conditions:
+      ai_states:
+        all:
+          - engagement_risk: "Low"
+          - time_on_task_band: "Moderate to Strong"
+          - final_score_band: "Low"
+          - revision_frequency_band: "Moderate"
+    evidence_indicators:
+      - high_time_on_task
+      - good_rubric_consultation
+      - multiple_feedback_views
+      - active_help_seeking
+      - low_quality_scores
+    pedagogical_interpretation: "Learner invests effort but produces developing-quality work. Gap between effort and output suggests need for strategic instruction, not effort escalation."
+    adaptation_strategy: "Explicit strategic instruction paired with metacognitive training"
+    theoretical_justification: "Zimmerman (2000) - effort without strategy needs targeted support; Brophy (2010) - explicit instruction on strategies required"
+    response_template: "strategic_instruction"
+    onsite_intervention: "explicit_strategy_training"
+
+  - profile_id: "fragile_efficient"
+    priority: 100
+    display_label: "Efficient but Fragile"
+    description: "One-draft submission with moderate performance"
+    conditions:
+      ai_states:
+        all:
+          - revision_frequency_band: "Low"
+          - final_score_band: "Moderate"
+          - time_on_task_band: "Moderate"
+          - argumentation_state: "Medium"
+    evidence_indicators:
+      - limited_revision_frequency
+      - no_deep_revision
+      - single_draft_pattern
+      - moderate_scores
+      - limited_improvement_potential
+    pedagogical_interpretation: "Learner achieves moderate success with one-draft approach but needs revision process instruction to unlock improvement potential"
+    adaptation_strategy: "Revision strategy coaching + feedback-to-revision mapping"
+    theoretical_justification: "Hayes (2012) - revision is essential for writing development; Zimmerman (2000) - self-monitoring reveals revision needs"
+    response_template: "revision_strategy_coaching"
+    onsite_intervention: "revision_process_training"
+
+  - profile_id: "strategic_engaged"
+    priority: 85
+    display_label: "Strategic & Engaged"
+    description: "High engagement with strong performance trajectory"
+    conditions:
+      ai_states:
+        all:
+          - engagement_risk: "Low"
+          - time_on_task_band: "Strong"
+          - final_score_band: "Strong"
+          - revision_frequency_band: "Strong"
+          - improvement_trajectory: "Positive"
+    evidence_indicators:
+      - frequent_revision_cycles
+      - high_rubric_consultation
+      - strong_scores
+      - active_help_seeking
+      - positive_growth_pattern
+    pedagogical_interpretation: "Learner demonstrates advanced self-regulated learning. Needs advanced challenge and metacognitive reflection."
+    adaptation_strategy: "Advanced task complexity + metacognitive reflection on strategies"
+    theoretical_justification: "Zimmerman (2000) - advanced learners benefit from reflection; Hanlonetal (2010) - metacognitive awareness accelerates expertise"
+    response_template: "advanced_challenge"
+    onsite_intervention: "metacognitive_reflection_session"
+
+# ============================================================================
+# CONTENT-FOCUSED PEDAGOGICAL RULES (15+ rules by writing area)
+# ============================================================================
+
+feedback_rules:
+
+  # === BLOCK A: Planning & Pre-Writing Competencies ===
+
+  - rule_id: "A1"
+    category: "Planning & Criteria Awareness"
+    priority: 105
+    display_label: "Weak Planning Detected"
+    conditions:
+      thresholds:
+        all:
+          - rubric_views: 0
+          - time_on_task: "< 15"
+          - word_count: "< 80"
+      ai_states:
+        all:
+          - forethought_risk: "High"
+    evidence_chain: "No rubric consultation + minimal time + underdeveloped content → Weak pre-writing planning"
+    pedagogical_claim: "Learner did not engage in adequate planning; criteria awareness is missing before drafting"
+    adaptive_feedback_type: "Metacognitive + Feedforward Scaffold"
+    feedback_focus: "Plan before writing. Consult the rubric. Outline your paragraph structure before drafting."
+    cognitive_demand: "Low (direct instruction in planning steps)"
+    response_template: "planning_scaffold"
+    onsite_intervention:
+      - "rubric_walkthrough_and_outline_support"
+      - "guided_brainstorming_session"
+    theoretical_justification: "Zimmerman (2000) - forethought phase is foundational to SRL; Nicol & Macfarlane-Dick (2006) - criteria awareness is prerequisite for improvement"
+    growth_marker: "Next: Monitor if planning effort increases (rubric_views increase) → move to quality feedback"
+
+  - rule_id: "A2"
+    category: "Planning & Criteria Awareness"
+    priority: 95
+    display_label: "Strong Planning Indicators"
+    conditions:
+      thresholds:
+        all:
+          - rubric_views: ">= 3"
+          - first_access_timing: "<= 12"
+          - time_on_task: "> 30"
+    evidence_chain: "Early access + frequent rubric consultation + sustained engagement → Strong planning behavior"
+    pedagogical_claim: "Learner demonstrates strong planning and criteria awareness"
+    adaptive_feedback_type: "Advancement to Higher-Order Thinking"
+    feedback_focus: "Excellent planning approach! Now focus on deepening your argument with examples and reasoning."
+    cognitive_demand: "High (advanced challenge)"
+    response_template: "advancement_to_higher_order"
+    onsite_intervention: "advanced_argument_development_workshop"
+    theoretical_justification: "Bloom's taxonomy - learners ready for analysis/synthesis when foundational skills strong"
+
+  - rule_id: "A3"
+    category: "Planning & Criteria Awareness"
+    priority: 90
+    display_label: "Late Start Risk"
+    conditions:
+      thresholds:
+        all:
+          - first_access_timing: "> 36"
+          - time_on_task: "< 30"
+      ai_states:
+        all:
+          - procrastination_risk: "High"
+    evidence_chain: "Delayed task entry + limited time + probable procrastination → At-risk for quality"
+    pedagogical_claim: "Learner shows procrastination pattern that may compromise quality even if final submission appears adequate"
+    adaptive_feedback_type: "Supportive reframing + Process coaching"
+    feedback_focus: "Next time, start earlier so you have time to plan and revise. Quality comes from the process, not just the final product."
+    cognitive_demand: "Medium (scaffolded metacognition)"
+    response_template: "procrastination_awareness"
+    onsite_intervention: "time_management_and_planning_workshop"
+    theoretical_justification: "Steel (2007) - procrastination predicts lower work quality; Zimmerman (2000) - forethought includes time planning"
+
+  # === BLOCK B: Discourse Organization & Cohesion ===
+
+  - rule_id: "B1"
+    category: "Discourse Organization"
+    priority: 102
+    display_label: "Weak Discourse Organization"
+    conditions:
+      thresholds:
+        all:
+          - organization_score: "<= 2"
+          - cohesion_index: "< 2"
+      ai_states:
+        all:
+          - discourse_competence: "Low"
+    evidence_chain: "Low organization rubric score + low cohesion index → Ideas lack clear discourse structure"
+    pedagogical_claim: "Paragraph structure and transitions are underdeveloped, reducing discourse clarity and flow"
+    adaptive_feedback_type: "Strategic Discourse Feedback"
+    feedback_focus: "Use clear topic sentences and transitions to guide your reader. Try: 'First...', 'Additionally...', 'In conclusion...'"
+    cognitive_demand: "Low-to-Medium (direct modeling + practice)"
+    response_template: "cohesion_support"
+    onsite_intervention:
+      - "transition_and_linking_support"
+      - "sentence_combining_exercises"
+    theoretical_justification: "Halliday & Hasan (1976) - cohesion essential for text coherence; Hyland (2019) - explicit transition instruction improves discourse control"
+    growth_marker: "Monitor cohesion_index and organization_score on next submission for growth"
+
+  - rule_id: "B2"
+    category: "Discourse Organization"
+    priority: 92
+    display_label: "Adequate but Improvable Organization"
+    conditions:
+      thresholds:
+        all:
+          - organization_score: "== 3"
+          - cohesion_index: "2.0-3.4"
+      ai_states:
+        all:
+          - discourse_competence: "Moderate"
+    evidence_chain: "Moderate organization + adequate transitions → Basic structure present but variety/sophistication limited"
+    pedagogical_claim: "Organization exists but would benefit from more varied and sophisticated transitional devices"
+    adaptive_feedback_type: "Refinement Feedback"
+    feedback_focus: "Good structure! Now add more varied transitions and smoother connections between ideas."
+    cognitive_demand: "Medium (refinement toward mastery)"
+    response_template: "transition_refinement"
+    onsite_intervention: "advanced_transition_and_linking_workshop"
+    theoretical_justification: "Hyland (2019) - once basics mastered, focus shifts to sophistication and variety"
+
+  - rule_id: "B3"
+    category: "Discourse Organization"
+    priority: 85
+    display_label: "Strong Discourse Organization"
+    conditions:
+      thresholds:
+        all:
+          - organization_score: ">= 4"
+          - cohesion_index: ">= 3.5"
+    evidence_chain: "Strong organization + strong cohesion → Clear, well-structured discourse"
+    pedagogical_claim: "Learner demonstrates strong discourse organization; focus can shift to rhetorical sophistication"
+    adaptive_feedback_type: "Extension Challenge"
+    feedback_focus: "Excellent paragraph structure! Now consider: How could you reorganize ideas for maximum rhetorical impact?"
+    cognitive_demand: "High (rhetorical analysis)"
+    response_template: "rhetorical_sophistication"
+    onsite_intervention: "sentence_embedding_and_rhetorical_strategy_workshop"
+    theoretical_justification: "Bloom's taxonomy - synthesis/evaluation level for advanced discourse skills"
+
+  # === BLOCK C: Argumentation & Support ===
+
+  - rule_id: "C1"
+    category: "Argumentation"
+    priority: 103
+    display_label: "Underdeveloped Argumentation"
+    conditions:
+      thresholds:
+        all:
+          - argumentation_score: "< 2.4"
+      ai_states:
+        all:
+          - argumentation_weakness: "High"
+    evidence_chain: "Very low argumentation score → Claims lack adequate evidence and reasoning"
+    pedagogical_claim: "Argument structure (claim-evidence-reasoning) is immature and needs explicit modeling"
+    adaptive_feedback_type: "Direct Scaffolding + Modeling"
+    feedback_focus: "State your claim clearly. Then provide a specific example. Finally, explain how the example supports your claim."
+    cognitive_demand: "Low (direct claim-evidence-reason modeling)"
+    response_template: "argument_scaffold"
+    onsite_intervention:
+      - "claim_evidence_explanation_modelling"
+      - "guided_argument_construction"
+    theoretical_justification: "Hyland (2019) - explicit argument structure modeling essential for novice writers; Toulmin (2003) - claim-evidence-warrant framework foundational"
+    growth_marker: "Next submission: Check if C-E-R structure visible; advance feedback accordingly"
+
+  - rule_id: "C2"
+    category: "Argumentation"
+    priority: 98
+    display_label: "Developing Argumentation"
+    conditions:
+      thresholds:
+        all:
+          - argumentation_score: "2.4-3.6"
+      ai_states:
+        all:
+          - argumentation_weakness: "Moderate"
+    evidence_chain: "Moderate argument score → Basic claims present but support is inconsistent or partial"
+    pedagogical_claim: "Argument is emerging; learner can benefit from refinement feedback focused on evidence quality and explanation depth"
+    adaptive_feedback_type: "Refinement Feedback"
+    feedback_focus: "Your claim is clear. Now strengthen it: Add better evidence or explain how the evidence proves your point."
+    cognitive_demand: "Medium (guided practice toward mastery)"
+    response_template: "argument_refinement"
+    onsite_intervention: "evidence_integration_and_explanation_deepening"
+    theoretical_justification: "Scaffolding theory - reduce support as competence increases; Hyland (2019) - evidence quality matters as much as presence"
+
+  - rule_id: "C3"
+    category: "Argumentation"
+    priority: 88
+    display_label: "Strong Argumentation"
+    conditions:
+      thresholds:
+        all:
+          - argumentation_score: ">= 3.7"
+    evidence_chain: "High argument score → Clear claims well-supported with reasoning"
+    pedagogical_claim: "Learner demonstrates argument control; ready for rhetorical sophistication and counter-argument integration"
+    adaptive_feedback_type: "Advanced Challenge"
+    feedback_focus: "Strong argument! Now: Can you anticipate and address an opposing viewpoint?"
+    cognitive_demand: "High (counter-argument, rhetorical analysis)"
+    response_template: "counter_argument_challenge"
+    onsite_intervention: "counter_argument_and_rhetorical_strategy_workshop"
+    theoretical_justification: "Bloom's taxonomy - synthesis/evaluation for advanced learners; Toulmin (2003) - rebuttal is advanced argumentative move"
+
+  - rule_id: "C4"
+    category: "Argumentation & Feedback Integration"
+    priority: 93
+    display_label: "Feedback Provided but Not Applied to Argument"
+    conditions:
+      thresholds:
+        all:
+          - feedback_views: ">= 2"
+          - revision_frequency: ">= 1"
+          - argumentation_score: "< 3"
+      ai_states:
+        all:
+          - feedback_uptake_risk: "High"
+    evidence_chain: "Feedback viewed + revision attempted BUT argument still low → Feedback understood but not applied at argument level"
+    pedagogical_claim: "Learner is engaged with feedback but needs explicit linking between teacher comments and argument-level changes"
+    adaptive_feedback_type: "Feedback-Decoding Scaffold"
+    feedback_focus: "I see you revised. Let me show you: My comment about 'add evidence' means you should give a specific example that proves your claim."
+    cognitive_demand: "Medium (explicit metacognitive bridge)"
+    response_template: "feedback_decoding"
+    onsite_intervention: "feedback_to_revision_mapping"
+    theoretical_justification: "Carless & Boud (2018) - feedback decoding skill must be explicitly taught; Hattie & Timperley (2007) - feedback only effective if understood"
+
+  # === BLOCK D: Grammar & Vocabulary ===
+
+  - rule_id: "D1"
+    category: "Grammar & Linguistic Accuracy"
+    priority: 100
+    display_label: "High Error Density - Grammar Focus"
+    conditions:
+      thresholds:
+        all:
+          - error_density: ">= 8"
+          - grammar_accuracy: "<= 2"
+      ai_states:
+        all:
+          - linguistic_accuracy_risk: "High"
+    evidence_chain: "High error density + low grammar score → Recurring grammar problems reduce clarity"
+    pedagogical_claim: "Systematic grammar gaps are interfering with meaning; direct error correction and rule-focused instruction needed"
+    adaptive_feedback_type: "Direct Corrective Feedback"
+    feedback_focus: "You have repeated errors in [specific pattern]. Here's the rule: [explain]. Practice: [exercise]."
+    cognitive_demand: "Low (rule explanation + practice)"
+    response_template: "direct_corrective_feedback"
+    onsite_intervention:
+      - "targeted_error_correction_cycle"
+      - "grammar_rule_mini_lesson"
+      - "pattern_specific_practice"
+    theoretical_justification: "Ferris (2006) - error density > 8% indicates need for explicit instruction; direct corrective feedback most effective for grammar"
+
+  - rule_id: "D2"
+    category: "Vocabulary & Lexical Range"
+    priority: 90
+    display_label: "Limited Vocabulary Range"
+    conditions:
+      thresholds:
+        all:
+          - type_token_ratio: "< 0.45"
+    evidence_chain: "Low TTR → Limited word variety; repetitive word choices"
+    pedagogical_claim: "Vocabulary diversity is restricted; learner would benefit from synonym exploration and academic register expansion"
+    adaptive_feedback_type: "Vocabulary Development Scaffolding"
+    feedback_focus: "You use '[repeated word]' many times. Try these alternatives: [list synonyms with examples]. This strengthens your voice."
+    cognitive_demand: "Low-to-Medium (vocabulary building)"
+    response_template: "vocabulary_development"
+    onsite_intervention:
+      - "synonym_and_academic_register_workshop"
+      - "word_choice_refinement_practice"
+    theoretical_justification: "Lexical range indicator of writing sophistication; vocabulary diversity supports academic register development"
+
+  # === BLOCK E: Revision Behavior & Self-Regulated Learning ===
+
+  - rule_id: "E1"
+    category: "Revision Behavior"
+    priority: 104
+    display_label: "No Revision Submitted"
+    conditions:
+      thresholds:
+        all:
+          - revision_frequency: "== 0"
+      ai_states:
+        all:
+          - revision_depth: "None"
+    evidence_chain: "Single draft submission → No revision cycle visible"
+    pedagogical_claim: "Critical gap in self-regulated learning (Performance & Reflection phases); learner has not engaged revision process"
+    adaptive_feedback_type: "Process Training + Metacognitive Prompts"
+    feedback_focus: "Revision is how writers improve. Next time: Draft, then read it again and ask 'Is this clear? Is it complete?'"
+    cognitive_demand: "Low-to-Medium (SRL process instruction)"
+    response_template: "revision_process_introduction"
+    onsite_intervention:
+      - "guided_revision_checklist"
+      - "self_assessment_and_revision_planning"
+    theoretical_justification: "Hayes (2012) - revision essential for writing development; Zimmerman (2000) - self-monitoring/evaluation phase critical for SRL"
+    growth_indicator: "Next submission must show revision_frequency >= 1"
+
+  - rule_id: "E2"
+    category: "Revision Depth & Quality"
+    priority: 94
+    display_label: "Limited Revision - Possible Superficial Changes"
+    conditions:
+      thresholds:
+        all:
+          - revision_frequency: "1-2"
+          - feedback_views: ">= 1"
+      ai_states:
+        all:
+          - revision_depth: "Low"
+    evidence_chain: "1-2 revisions with feedback access BUT persistent content/quality issues → Revision may be surface-level only"
+    pedagogical_claim: "Learner attempts revision but may be focused on mechanics rather than content/meaning changes"
+    adaptive_feedback_type: "Revision Strategy Coaching"
+    feedback_focus: "Good that you revised! But deep revision means: Rethink your ideas, restructure if needed, strengthen evidence. Not just spell-check."
+    cognitive_demand: "Medium (guided practice in revision strategy)"
+    response_template: "revision_strategy_coaching"
+    onsite_intervention: "revision_depth_and_strategy_workshop"
+    theoretical_justification: "Miles & Shevlin (2017) - superficial revision limits improvement; learners need explicit coaching in revision depth"
+
+  - rule_id: "E3"
+    category: "Revision Impact Analysis"
+    priority: 85
+    display_label: "Strong Revision Pattern with Growth"
+    conditions:
+      thresholds:
+        all:
+          - revision_frequency: ">= 3"
+          - score_improvement: ">= 1.0"
+      ai_states:
+        all:
+          - revision_depth: "Deep"
+          - improvement_trajectory: "Positive"
+    evidence_chain: "Multiple revisions + score improvement >= 1.0 → Strategic revision cycles generating improvement"
+    pedagogical_claim: "Learner demonstrates advanced self-regulated learning through strategic revision cycles"
+    adaptive_feedback_type: "Metacognitive Reflection & Strategy Reinforcement"
+    feedback_focus: "Your revisions are really paying off - I can see clear improvement. What strategies are you using? Keep doing them!"
+    cognitive_demand: "High (metacognitive reflection)"
+    response_template: "revision_strategy_reflection"
+    onsite_intervention: "metacognitive_reflection_on_revision_strategies"
+    theoretical_justification: "Zimmerman (2000) - reflection phase allows strategic insights to transfer to future tasks"
+
+  # === BLOCK F: Feedback Uptake & Integration ===
+
+  - rule_id: "F1"
+    category: "Feedback Engagement & Responsiveness"
+    priority: 96
+    display_label: "Feedback Viewed But Not Applied"
+    conditions:
+      thresholds:
+        all:
+          - feedback_views: ">= 2"
+          - revision_frequency: "== 0"
+      ai_states:
+        all:
+          - feedback_uptake_risk: "High"
+          - revision_depth: "None"
+    evidence_chain: "Multiple feedback views + no revision → Feedback accessed but not acted upon"
+    pedagogical_claim: "Learner is reading feedback but not translating it into revision action; needs explicit linking instruction"
+    adaptive_feedback_type: "Feedback-to-Action Bridge"
+    feedback_focus: "I see you read my feedback. Now: Come back and revise based on my comments. Here's how to start: [specific action]."
+    cognitive_demand: "Medium (bridging comprehension to action)"
+    response_template: "feedback_to_revision_linking"
+    onsite_intervention: "feedback_comprehension_and_revision_planning"
+    theoretical_justification: "Hattie & Timperley (2007) - feedback effectiveness depends on comprehension AND action; Carless & Boud (2018) - feedback to action gap common in novices"
+
+  - rule_id: "F2"
+    category: "Feedback Responsiveness & Growth"
+    priority: 86
+    display_label: "Feedback-Responsive Writer with Growth"
+    conditions:
+      thresholds:
+        all:
+          - feedback_views: ">= 2"
+          - revision_frequency: ">= 2"
+          - score_improvement: ">= 1.0"
+      ai_states:
+        all:
+          - feedback_uptake_risk: "Low"
+    evidence_chain: "Multiple feedback views + multiple revisions + score improvement → Strategic feedback integration and growth"
+    pedagogical_claim: "Learner demonstrates feedback responsiveness and translates comments into meaningful improvement"
+    adaptive_feedback_type: "Encouragement + Metacognitive Reflection"
+    feedback_focus: "Excellent - I can see you understand and apply my feedback. What are you learning about your writing from this process?"
+    cognitive_demand: "High (metacognitive)"
+    response_template: "feedback_responsiveness_affirmation"
+    onsite_intervention: "learning_reflection_session"
+    theoretical_justification: "Hattie & Timperley (2007) - feedback works; learners who understand and act on it accelerate learning"
+
+  # === BLOCK G: Help-Seeking as Metacognitive Indicator ===
+
+  - rule_id: "G1"
+    category: "Help-Seeking Behavior"
+    priority: 91
+    display_label: "No Help Seeking - Possible Isolation"
+    conditions:
+      thresholds:
+        all:
+          - help_seeking_messages: "== 0"
+      ai_states:
+        all:
+          - help_seeking_risk: "Low Adaptive Help-Seeking"
+    evidence_chain: "Zero help-seeking messages → Learner has not sought external assistance"
+    pedagogical_claim: "Help-seeking is part of adaptive self-regulated learning; absence may indicate either confidence or reluctance"
+    adaptive_feedback_type: "Normalizing + Entry Point"
+    feedback_focus: "It's OK to ask questions! I'm here to help. If you're ever unsure about something, post a question below."
+    cognitive_demand: "Low (permission + invitation)"
+    response_template: "help_seeking_normalization"
+    onsite_intervention: "early_check_in_and_support_offering"
+    theoretical_justification: "Newman & Schwager (1995) - adaptive help-seeking builds competence; learners need explicit permission to seek help"
+
+  - rule_id: "G2"
+    category: "Help-Seeking Quality & Adaptiveness"
+    priority: 87
+    display_label: "Adaptive Help-Seeking Pattern Detected"
+    conditions:
+      thresholds:
+        all:
+          - help_seeking_messages: ">= 3"
+      ai_states:
+        all:
+          - help_seeking_pattern: "Adaptive"
+          - question_specificity: "High"
+    evidence_chain: "Multiple, specific help-seeking questions → Strategic help-seeking behavior"
+    pedagogical_claim: "Learner demonstrates adaptive help-seeking (specific, focused questions); this is metacognitive self-regulation evidence"
+    adaptive_feedback_type: "Reinforcement + Advanced Support"
+    feedback_focus: "I appreciate your specific questions - shows you're thinking carefully. Here's how to dig even deeper: [advanced scaffolding]."
+    cognitive_demand: "High (advanced metacognitive support)"
+    response_template: "adaptive_help_seeking_reinforcement"
+    onsite_intervention: "advanced_problem_solving_workshop"
+    theoretical_justification: "Ryan & Pintrich (1997) - adaptive help-seeking predicts positive learning outcomes; should be explicitly reinforced"
+
+# ============================================================================
+# RULE APPLICATION GUIDANCE
+# ============================================================================
+
+application_framework: |
+  
+  RULE SELECTION SEQUENCE:
+  
+  1. Identify learner profile (Disengaged / Effortful-Struggling / Fragile-Efficient / Strategic-Engaged)
+  2. Within profile, evaluate content rules A-G in priority order
+  3. Select rules with HIGHEST priority that match learner evidence
+  4. Combine multi-rule feedback into single coherent response (max 3 rules triggered per cycle)
+  
+  COGNITIVE DEMAND ADAPTATION:
+  
+  Low Cognitive Demand (Direct Instruction):
+  Use when: Learner struggling, limited prior success, needs explicit model
+  Rules: A1, C1, D1, E1
+  
+  Medium Cognitive Demand (Guided Practice):
+  Use when: Emerging competence, some success, ready for refinement
+  Rules: A2, B2, C2, E2, F1
+  
+  High Cognitive Demand (Metacognitive Reflection):
+  Use when: Advanced competence, consistent success, ready for analysis/synthesis
+  Rules: A2, B3, C3, E3, F2, G2
+  
+  SEQUENCING ACROSS DRAFTS:
+  
+  Draft 1: Focus rules A, D, E1 (planning, mechanics, revision introduction)
+  Draft 2: Focus rules B, C, E2 (organization, argumentation, revision depth)
+  Draft 3+: Focus rules C3, E3, F2, G2 (advancement, growth, reflection)
+  
+  INTERVENTION ESCALATION:
+  
+  If rule triggered 2+ consecutive times: Schedule onsite intervention
+  If rule triggered 3+ consecutive times: Intensive individual support required
+  If profile risk is "Disengaged": Immediate intervention regardless of rule count

@@ -1,0 +1,272 @@
+# Comprehensive Thresholds Configuration
+# Defines the cut-off values for raw indicators and AI output states
+# Thresholds are empirically grounded in: task design, writing pedagogy, and learning science theory
+
+# =========================
+# RAW DATA INDICATOR THRESHOLDS
+# =========================
+
+raw_indicators:
+
+  # Writing volume and time investment
+  word_count:
+    low_risk: 80
+    developing_min: 80
+    developing_max: 119
+    satisfactory_min: 120
+    satisfactory_max: 150
+    extended: 150
+    unit: "words"
+    justification: "Under 80 words usually signals underdevelopment for a paragraph expected to include claim, support, and explanation (writing pedagogy standards)."
+
+  time_on_task:
+    low_risk_minutes: 15
+    developing_min: 15
+    developing_max: 29
+    satisfactory_min: 30
+    satisfactory_max: 40
+    extended: 40
+    unit: "minutes"
+    justification: "Less than 15 minutes often indicates insufficient planning and development (Zimmerman forethought phase). 30+ minutes suggests substantive engagement."
+
+  first_access_delay_minutes:
+    low_risk: 120  # more than 2 hours after assignment posted
+    developing: 1440  # more than 1 day
+    satisfactory: 0  # accessed within task window
+    unit: "minutes"
+    justification: "Delayed first access may signal procrastination or misunderstanding of timeline."
+
+  # Criteria and feedback engagement
+  rubric_views:
+    low_risk: 0
+    developing: 1
+    satisfactory: 2
+    extended: 3
+    unit: "count"
+    justification: "Zero consultation suggests weak criteria awareness (Assessment Literacy). Two or more views indicate sustained rubric engagement."
+
+  feedback_views:
+    low_risk: 0
+    developing: 1
+    satisfactory: 2
+    extended: 3
+    unit: "count"
+    justification: "Feedback viewed zero times = no opportunity for uptake. Viewed multiple times = engagement with feedback as learning resource."
+
+  resource_access_count:
+    low_risk: 0
+    developing: 1
+    satisfactory: 2
+    extended: 3
+    unit: "count"
+    justification: "Access to discourse, vocabulary, or organizational resources correlates with writing development."
+
+  assignment_views:
+    low_risk: 1
+    developing: 2
+    satisfactory: 3
+    extended: 5
+    unit: "count"
+    justification: "Single view suggests minimal re-engagement with task. Multiple views indicate monitoring and refinement."
+
+  # Revision behaviour
+  revision_frequency:
+    low_risk: 0
+    developing: 1
+    satisfactory: 2
+    extended: 3
+    unit: "count"
+    justification: "Zero revision = submission without monitoring (Performance Phase risk). Multiple revisions indicate self-regulated control."
+
+  # Help-seeking
+  help_seeking_message_count:
+    low_risk: 0
+    developing: 1
+    satisfactory: 2
+    extended: 3
+    unit: "count"
+    justification: "Absence of help-seeking may signal disengagement or hidden difficulty. Active help-seeking indicates metacognitive awareness."
+
+  # Writing quality indicators from text analytics
+  error_density:
+    high_risk: 8.1  # above 8 per 100 words
+    watch: 4.0
+    satisfactory: 4.0  # below 4 per 100 words
+    unit: "errors per 100 words"
+    justification: "Above 8 per 100 words suggests form-level difficulty meriting focused support (L2 writing research)."
+
+  cohesion_index:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "composite index"
+    justification: "Argumentative paragraphs need visible discourse switches/transitions. Index 4+ indicates mature linking."
+
+  type_token_ratio:
+    low_risk: 0.4
+    developing_min: 0.4
+    developing_max: 0.65
+    satisfactory_min: 0.65
+    satisfactory_max: 0.85
+    unit: "ratio"
+    justification: "TTR < 0.4 indicates high word repetition. TTR > 0.65 indicates developing lexical variety."
+
+  avg_sentence_length:
+    low_risk: 8
+    developing_min: 8
+    developing_max: 15
+    satisfactory_min: 15
+    satisfactory_max: 20
+    unit: "words per sentence"
+    justification: "Average 8 words per sentence suggests simple, choppy writing. 15+ suggests more complex structures."
+
+  # Rubric criterion scores
+  argument_criterion_score:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "rubric points"
+    justification: "1–2 = weak structure. 3 = developing. 4–5 = strong argument (analytic rubric logic, Weigle)."
+
+  organization_criterion_score:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "rubric points"
+    justification: "1–2 = disjointed. 3 = adequate. 4–5 = clear structure."
+
+  cohesion_criterion_score:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "rubric points"
+    justification: "1–2 = abrupt transitions. 3 = reasonable linking. 4–5 = confident cohesion."
+
+  grammar_criterion_score:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "rubric points"
+    justification: "1–2 = persistent errors. 3 = some error control. 4–5 = accurate control."
+
+  lexical_criterion_score:
+    low_risk: 2
+    developing: 3
+    satisfactory: 4
+    extended: 5
+    unit: "rubric points"
+    justification: "1–2 = basic vocabulary. 3 = developing precision. 4–5 = academic, precise vocabulary."
+
+  total_rubric_score:
+    low_risk: 10
+    developing_min: 10
+    developing_max: 15
+    satisfactory_min: 15
+    satisfactory_max: 20
+    extended: 20
+    unit: "total points"
+    justification: "Total score is sum of five criteria × quality bands (1–5 each)."
+
+  score_gain:
+    low_risk: 0
+    developing_min: 0
+    developing_max: 2
+    satisfactory_min: 2
+    satisfactory_max: 5
+    unit: "rubric points"
+    justification: "Sign of learning and improvement. Gain > 2 indicates meaningful development."
+
+# =========================
+# AI OUTPUT STATE THRESHOLDS
+# =========================
+# These determine which AI state (low/medium/high) is triggered based on raw indicators
+
+ai_output_thresholds:
+
+  forethought_risk:
+    high_risk_conditions: "rubric_views == 0 AND time_on_task < 15 AND word_count < 80"
+    medium_conditions: "(rubric_views == 1 OR time_on_task 15-29) AND word_count 80-119"
+    low_risk_conditions: "rubric_views >= 2 AND time_on_task >= 30"
+    reasoning: "High risk = weak planning (no prep, minimal time, minimal output). Low risk = active criteria engagement."
+
+  engagement_risk:
+    high_risk_conditions: "assignment_views <= 1 AND resource_access_count == 0 AND feedback_views == 0"
+    medium_conditions: "assignment_views <= 2 OR resource_access_count <= 1 OR uneven submission pattern"
+    low_risk_conditions: "assignment_views >= 3 AND resource_access_count >= 2 AND consistent participation"
+    reasoning: "High risk = minimal engagement throughout. Low risk = sustained interest and resource use."
+
+  revision_depth:
+    high_risk_conditions: "revision_frequency == 0"
+    medium_conditions: "revision_frequency == 1 AND score_gain < 2"
+    low_risk_conditions: "revision_frequency >= 2 OR (revision_frequency == 1 AND score_gain >= 2)"
+    reasoning: "High risk = no self-monitoring. Low risk = multiple or substantive revisions evident."
+
+  feedback_uptake_state:
+    low: 0
+    medium: 1
+    high: 2
+    justification: "Feedback uptake is classified based on the number of feedback views and subsequent actions."
+
+  help_seeking_state:
+    none: 0
+    procedural: 1-2
+    adaptive: 3+
+    justification: "Help-seeking state is determined by the number and type of help-seeking messages."
+
+  argumentation_state:
+    high_risk_conditions: "argument_criterion_score <= 2"
+    medium_conditions: "argument_criterion_score == 3"
+    low_risk_conditions: "argument_criterion_score >= 4"
+    reasoning: "Directly mapped to rubric criterion. Aligns with analytic assessment logic."
+
+  discourse_state:
+    high_risk_conditions: "organization_criterion_score <= 2 AND cohesion_index < 2"
+    medium_conditions: "(organization_criterion_score == 3 OR cohesion_index 2-3)"
+    low_risk_conditions: "organization_criterion_score >= 4 AND cohesion_index >= 4"
+    reasoning: "Dual signals: both structural clarity and discourse markers matter."
+
+  linguistic_accuracy_state:
+    high_risk_conditions: "grammar_criterion_score <= 2 AND error_density > 8"
+    medium_conditions: "grammar_criterion_score == 3 AND error_density 4-8"
+    low_risk_conditions: "grammar_criterion_score >= 4 AND error_density < 4"
+    reasoning: "High risk = both frequency and control are weak. Low risk = both controlled."
+
+  lexical_state:
+    high_risk_conditions: "lexical_criterion_score <= 2 AND type_token_ratio < 0.5"
+    medium_conditions: "lexical_criterion_score == 3 AND type_token_ratio 0.5-0.65"
+    low_risk_conditions: "lexical_criterion_score >= 4 AND type_token_ratio > 0.65"
+    reasoning: "High risk = both score and variety low. Low risk = both developed."
+
+  predicted_improvement:
+    high_gain: "predicted_score_gain >= 2.5"
+    medium_gain: "predicted_score_gain 1.0-2.4"
+    low_gain: "predicted_score_gain < 1.0"
+    reasoning: "RF model output; cut-offs calibrated to typical gain distributions in cohort."
+
+# =========================
+# INTERPRETATION RULES FOR COMPOSITE STATES
+# =========================
+# When multiple indicators align, the system uses these to finalize AI output state
+
+composite_interpretation:
+
+  strong_SRL_indicator:
+    rule: "revision_depth == high AND feedback_uptake_state == high AND help_seeking_state IN [procedural, adaptive]"
+    meaning: "Learner shows strong self-regulated learning across forethought, performance, and reflection"
+
+  SRL_risk_indicator:
+    rule: "revision_depth == high risk AND feedback_uptake_state == high risk OR (help_seeking_state == none AND total_score <= 10)"
+    meaning: "Learner shows minimal self-regulation across phases; intervention needed"
+
+  strong_writing_competence:
+    rule: "argumentation_state == high AND discourse_state == high AND (linguistic_accuracy_state == high OR lexical_state == high)"
+    meaning: "Learner shows developed writing quality across multiple dimensions"
+
+  uneven_competence:
+    rule: "one ai_output == high AND one ai_output == low in product dimension set"
+    meaning: "Learner has strength in one area (e.g., argument) but weakness in another (e.g., cohesion); targeted support needed"

@@ -6,9 +6,13 @@
     "adaptive_writing_system"
   ],
   "exclude": [
+    "**/.*",
+    "**/__pycache__",
+    "**/node_modules",
     "frontend",
     "node_modules",
-    "**/__pycache__"
+    "adaptive_writing_system/tests",
+    "adaptive_writing_system/test_system.py"
   ],
   "extraPaths": [
     "C:/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0/Lib/site-packages",

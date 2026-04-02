@@ -1,0 +1,686 @@
+{
+  "studentInfo": {
+    "name": "lahmarabbou asmaa",
+    "id": "9263",
+    "course": "Academic Writing",
+    "courseId": "379",
+    "instructor": "Fatima GUERCH",
+    "institution": "University of Ain Temouchent",
+    "reportDate": "14 March 2026",
+    "period": "20 November 2025 – 14 March 2026",
+    "semester": "Semester 1 & 2"
+  },
+  "quickStats": {
+    "totalAssignments": 10,
+    "gradedAssignments": 1,
+    "ungradedAssignments": 8,
+    "pendingGrading": 1,
+    "lateSubmissions": 1,
+    "earlySubmissions": 9,
+    "onTimeRate": 90.0,
+    "gradeReceived": "10/100",
+    "forumPosts": 2,
+    "totalLogEntries": 258,
+    "xpLevel": 4,
+    "quizAttempts": 1,
+    "attendanceSem1": "0/0 (N/A)",
+    "attendanceSem2": "0/2 (0%)"
+  },
+  "assignments": [
+    {
+      "id": 1,
+      "title": "Welcome & Instructions",
+      "section": "Academic Writing (S1)",
+      "date": "20 Nov 2025",
+      "submissionTiming": "2h 11min EARLY",
+      "grade": null,
+      "words": null,
+      "status": "submitted"
+    },
+    {
+      "id": 2,
+      "title": "test (Clarity & Formality Assessment)",
+      "section": "Clarity and Formality (S1)",
+      "date": "20 Nov 2025",
+      "submissionTiming": "3 min 47 sec LATE",
+      "grade": null,
+      "words": null,
+      "status": "late"
+    },
+    {
+      "id": 3,
+      "title": "Identifying Paragraph Patterns",
+      "section": "Academic Writing (S1)",
+      "date": "30 Nov 2025",
+      "submissionTiming": "5 days 2h EARLY",
+      "grade": null,
+      "words": 68,
+      "status": "submitted"
+    },
+    {
+      "id": 4,
+      "title": "Diagnostic Writing Tasks",
+      "section": "Academic Writing (S2)",
+      "date": "27 Jan 2026",
+      "submissionTiming": "2 days 1h EARLY",
+      "grade": null,
+      "words": 199,
+      "status": "submitted"
+    },
+    {
+      "id": 5,
+      "title": "Argumentative Essay – Writing an Effective Introduction [DRAFT]",
+      "section": "Argumentative Essays (S2)",
+      "date": "3 Feb 2026",
+      "submissionTiming": "7 days 23h EARLY",
+      "grade": null,
+      "words": 112,
+      "status": "submitted"
+    },
+    {
+      "id": 6,
+      "title": "Argumentative essay Introduction [GRADED]",
+      "section": "Argumentative Essays (S2)",
+      "date": "12 Feb 2026",
+      "submissionTiming": "6h 53min EARLY",
+      "grade": 10,
+      "gradeMax": 100,
+      "words": null,
+      "status": "graded"
+    },
+    {
+      "id": 7,
+      "title": "Argumentative body paragraphs: First paragraph",
+      "section": "Argumentative Essays (S2)",
+      "date": "15 Feb 2026",
+      "submissionTiming": "2 days 1h EARLY",
+      "grade": null,
+      "words": 186,
+      "status": "submitted"
+    },
+    {
+      "id": 8,
+      "title": "Argumentative Essay: Second Body Paragraph [v1]",
+      "section": "Argumentative Essays (S2)",
+      "date": "23 Feb 2026",
+      "submissionTiming": "No due date",
+      "grade": null,
+      "words": 200,
+      "status": "submitted"
+    },
+    {
+      "id": 9,
+      "title": "Argumentative Essay: Second Body Paragraph [v2 FINAL]",
+      "section": "Argumentative Essays (S2)",
+      "date": "6 Mar 2026",
+      "submissionTiming": "1 day 1h EARLY",
+      "grade": null,
+      "words": 198,
+      "status": "submitted"
+    },
+    {
+      "id": 10,
+      "title": "Writing Progress Reflection",
+      "section": "Argumentative Essays (S2)",
+      "date": "14 Mar 2026",
+      "submissionTiming": "Submitted",
+      "grade": null,
+      "words": 123,
+      "status": "submitted"
+    }
+  ],
+  "writingSamples": [
+    {
+      "assignment": "Diagnostic Writing Tasks",
+      "date": "27 Jan 2026",
+      "words": 199,
+      "text": "I used to believe that silence meant weakness. I thought the loudest people were the strongest, and that confidence had to be visible to be real. Growing up in a competitive environment, I often felt invisible when I chose to listen rather than speak. But as I grew older, I began to understand that strength can be quiet. The most influential people in my life were not the ones who talked the most; they were the ones who listened deeply, thought carefully, and acted with purpose. Silence, I learned, is not the absence of strength — it is often its most powerful form.",
+      "feedback": "Not graded | No comments",
+      "type": "narrative_reflective"
+    },
+    {
+      "assignment": "Argumentative Essay Intro – Draft",
+      "date": "3 Feb 2026",
+      "words": 112,
+      "text": "In recent years, education has changed significantly due to technological advancements. The most discussed topic today is the comparison between online learning and onsite learning. While onsite learning has been the dominant form of education for many decades, online learning has become increasingly popular, especially after recent global changes that affected education systems worldwide. This shift has raised concerns about the effectiveness of online learning compared to traditional classroom learning. Although online learning offers certain advantages, onsite learning remains the better form of education because it promotes direct interaction, better concentration, and stronger academic engagement.",
+      "feedback": "The problem must be well stated and explained + clear arguments",
+      "type": "argumentative_intro_v1"
+    },
+    {
+      "assignment": "Argumentative Essay Intro – GRADED",
+      "date": "12 Feb 2026",
+      "words": null,
+      "grade": "10/100",
+      "feedback": "Grade: 10/100. Instructor model provided emphasizing AI debate framing.",
+      "type": "argumentative_intro_graded"
+    },
+    {
+      "assignment": "First Body Paragraph – Original",
+      "date": "15 Feb 2026",
+      "words": 186,
+      "text": "One important concern about using Artificial Intelligence in higher education is that students may start depending on it too much. AI is meant to support learning, but when it becomes the main source for doing assignments, it can slowly weaken important skills like critical thinking and problem solving. When students use AI to write essays or answer difficult questions, they miss the process of thinking deeply, questioning ideas, and building their own arguments. Critical thinking becomes weaker because it grows through practice and effort, not by receiving ready answers. In 2023, UNESCO warned that the uncontrolled use of generative AI in education could affect the development of essential cognitive skills.",
+      "feedback": "Well-structured and logically sequenced. but use this: 1–Add one sentence explaining how dependence weakens critical thinking 2–Dependence and reliance ideas are repeated, use synonyms 3–critical analysis with cited information",
+      "type": "body_p1_v1"
+    },
+    {
+      "assignment": "Second Body Paragraph – FINAL SUBMISSION",
+      "date": "6 Mar 2026",
+      "words": 198,
+      "text": "Another major worry is how AI impacts fairness and student relationships. Some students use AI a lot to do their assignments while others do their work on their own it can make school unfair. Students who take time to research write and revise their work might feel discouraged when they see others getting better results with little effort by using AI.",
+      "feedback": "Argument present but explanation and development are limited. Improve evidence or use a stronger one with in-text citation and example to support the claim.",
+      "type": "body_p2_final"
+    },
+    {
+      "assignment": "Writing Progress Reflection",
+      "date": "14 Mar 2026",
+      "words": 123,
+      "text": "I have learned to organize my ideas in paragraphs. I also learned to use connecting words. I have learned to structure an essay, write a clear thesis statement, and organize ideas into body paragraphs. I also learned how to use transition words and write a proper introduction and conclusion.",
+      "feedback": "Not yet graded | 0 comments",
+      "type": "reflection"
+    }
+  ],
+  "writingAnalysis": {
+    "wordCountProgression": [
+      199,
+      112,
+      186,
+      198,
+      123
+    ],
+    "avgWordCount": 163.6,
+    "earlySubmissions": 7,
+    "lateSubmissions": 1,
+    "onTimeRate": 70.0
+  },
+  "engagementAnalysis": {
+    "monthlyActivity": {
+      "Nov 2025": 5,
+      "Dec 2025": 2,
+      "Jan 2026": 2,
+      "Feb 2026": 10,
+      "Mar 2026": 5
+    },
+    "actionTypeBreakdown": {
+      "assignment": 13,
+      "forum": 3,
+      "quiz": 1,
+      "workshop": 2,
+      "resource": 5
+    },
+    "totalEvents": 24,
+    "totalLogEntries": 258,
+    "uniqueModulesAccessed": 22,
+    "peerReviewsSubmitted": 2,
+    "resourcesViewed": 6,
+    "totalResourceViews": 31,
+    "forumPosts": 2,
+    "xpLevel": 4
+  },
+  "srlAnalysis": {
+    "forethought": {
+      "score": 73,
+      "label": "Task Planning",
+      "evidence": [
+        "7/10 assignments submitted early",
+        "Viewed resources before each major submission",
+        "Participated in workshop before essay submissions",
+        "Peer-reviewed 2 classmates' work"
+      ]
+    },
+    "performance": {
+      "score": 70,
+      "label": "Writing Performance",
+      "evidence": [
+        "3 documented revision cycles",
+        "3 responses to instructor feedback",
+        "Word count growth: 68 → 112 → 186 → 200 words",
+        "Used UNESCO citation in body paragraph 1"
+      ]
+    },
+    "selfReflection": {
+      "score": 90,
+      "label": "Self-Reflection",
+      "evidence": [
+        "Submitted Writing Progress Reflection (123 words)",
+        "Forum post 'Evaluation' demonstrates metacognitive awareness",
+        "Explicitly identified grammar and vocabulary challenges",
+        "Stated future learning goals in reflection"
+      ]
+    },
+    "overallSRL": 78
+  },
+  "argumentationAnalysis": {
+    "progression": [
+      {
+        "assignment": "Diagnostic (Jan 27)",
+        "toulminScore": 25,
+        "formalityScore": 55,
+        "coherenceScore": 70,
+        "notes": "Personal narrative, reflective tone, no argumentation structure"
+      },
+      {
+        "assignment": "Essay Intro Draft (Feb 3)",
+        "toulminScore": 50,
+        "formalityScore": 65,
+        "coherenceScore": 72,
+        "notes": "Has thesis statement and reasons, lacks evidence/citations"
+      },
+      {
+        "assignment": "Body Paragraph 1 (Feb 15)",
+        "toulminScore": 100,
+        "formalityScore": 73,
+        "coherenceScore": 78,
+        "notes": "UNESCO citation included, logical structure, some vocabulary repetition"
+      },
+      {
+        "assignment": "Body Paragraph 2 Final (Mar 6)",
+        "toulminScore": 75,
+        "formalityScore": 60,
+        "coherenceScore": 65,
+        "notes": "Harvard citation but informal, instructor: 'argument present but limited'"
+      }
+    ],
+    "trendToulmin": [
+      25,
+      50,
+      100,
+      75
+    ],
+    "trendFormality": [
+      55,
+      65,
+      73,
+      60
+    ],
+    "trendCoherence": [
+      70,
+      72,
+      78,
+      65
+    ],
+    "labels": [
+      "Diagnostic (Jan 27)",
+      "Essay Intro Draft (Feb 3)",
+      "Body Paragraph 1 (Feb 15)",
+      "Body Paragraph 2 Final (Mar 6)"
+    ],
+    "overallArgQuality": 62
+  },
+  "feedbackAnalysis": {
+    "cycles": [
+      {
+        "round": 1,
+        "feedbackDate": "10 Feb 2026",
+        "instructorNote": "The problem must be well stated and explained + clear arguments",
+        "studentResponse": "Revised introduction and resubmitted same day",
+        "responseTime": "same day",
+        "changesMade": true,
+        "qualityImprovement": 10,
+        "gradeAfter": "10/100"
+      },
+      {
+        "round": 2,
+        "feedbackDate": "16 Feb 2026",
+        "instructorNote": "Well-structured. Add sentence on dependence weakening thinking. Use synonyms. Add citation.",
+        "studentResponse": "Revised body paragraph 1 with citation improvement (comment 406)",
+        "responseTime": "same day",
+        "changesMade": true,
+        "qualityImprovement": 20,
+        "gradeAfter": "Not graded"
+      },
+      {
+        "round": 3,
+        "feedbackDate": "23 Feb 2026",
+        "instructorNote": "Revise structure, use formal language, remove AI generated sentences",
+        "studentResponse": "Full rewrite of body paragraph 2 (24 Feb, 2:49 AM)",
+        "responseTime": "next day",
+        "changesMade": true,
+        "qualityImprovement": 15,
+        "gradeAfter": "Not graded"
+      },
+      {
+        "round": 4,
+        "feedbackDate": "7 Mar 2026",
+        "instructorNote": "Argument present but limited. Improve evidence, add citation, expand reasoning",
+        "studentResponse": "Final revision submitted same evening (comment id 562)",
+        "responseTime": "same evening",
+        "changesMade": true,
+        "qualityImprovement": 10,
+        "gradeAfter": "Not graded"
+      }
+    ],
+    "totalFeedbackCycles": 4,
+    "alwaysResponded": true,
+    "avgResponseTime": "same day / next day",
+    "progressiveImprovement": true,
+    "overallResponsiveness": 88
+  },
+  "predictionAnalysis": {
+    "successProbability": 80,
+    "riskLevel": "LOW",
+    "riskFactors": [
+      {
+        "factor": "Attendance",
+        "severity": "HIGH",
+        "detail": "0/2 sessions recorded in Semester 2"
+      },
+      {
+        "factor": "Metacognitive Feedback Tool",
+        "severity": "MEDIUM",
+        "detail": "Writing Challenges & Metacognitive Strategies – not started"
+      },
+      {
+        "factor": "Low Graded Score",
+        "severity": "HIGH",
+        "detail": "Only graded assignment: 10/100 on Introduction"
+      }
+    ],
+    "strengths": [
+      "Consistent early submission behavior (9/10 assignments early)",
+      "Always responds to instructor feedback with revisions",
+      "Shows growing metacognitive awareness in reflections",
+      "Engaged with peer review and workshop activities",
+      "Citation usage introduced in body paragraph 1 (UNESCO 2023)",
+      "258 Moodle log entries showing sustained engagement",
+      "XP Level 4 achieved (gamification engagement)",
+      "Viewed 6 different learning resources (29 total views)"
+    ],
+    "recommendation": "Student shows strong behavioral engagement and responsiveness to feedback but academic writing quality needs significant development. Priority: formal language, evidence integration, argumentation structure. Attendance must be addressed immediately.",
+    "predictedOutcome": "Borderline pass – requires targeted intervention in formal academic writing"
+  },
+  "clusteringAnalysis": {
+    "cluster": "Cluster 2: High-Effort, Developing Writer",
+    "clusterCode": "C2",
+    "clusterDescription": "Students in this cluster demonstrate strong behavioral indicators (early submissions, resource use, feedback response) but produce writing at a developing level. Gap between effort and output quality is characteristic. These students benefit most from explicit instruction in academic conventions.",
+    "clusterMembers": "Typically 25-30% of writing course cohorts",
+    "studentScores": {
+      "engagementScore": 90,
+      "writingQuality": 63,
+      "srlScore": 68
+    },
+    "nearestClusters": [
+      {
+        "cluster": "C1: High-Effort, Proficient Writer",
+        "distance": 0.31
+      },
+      {
+        "cluster": "C3: Low-Effort, Developing Writer",
+        "distance": 0.62
+      },
+      {
+        "cluster": "C4: Low-Effort, Proficient Writer",
+        "distance": 0.78
+      }
+    ]
+  },
+  "rawActivityLog": [
+    {
+      "date": "20 Nov 2025",
+      "type": "assignment",
+      "action": "viewed",
+      "module": "Forum: Writing Task 1"
+    },
+    {
+      "date": "20 Nov 2025",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Welcome & Instructions"
+    },
+    {
+      "date": "20 Nov 2025",
+      "type": "assignment",
+      "action": "submitted_late",
+      "module": "test (Clarity & Formality)"
+    },
+    {
+      "date": "29 Nov 2025",
+      "type": "assignment",
+      "action": "viewed",
+      "module": "Identifying Paragraph Patterns"
+    },
+    {
+      "date": "30 Nov 2025",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Identifying Paragraph Patterns"
+    },
+    {
+      "date": "11 Dec 2025",
+      "type": "forum",
+      "action": "viewed",
+      "module": "Forum: First Semester"
+    },
+    {
+      "date": "14 Dec 2025",
+      "type": "forum",
+      "action": "posted",
+      "module": "Forum: First Semester – 'Evaluation'"
+    },
+    {
+      "date": "27 Jan 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Diagnostic Writing Tasks"
+    },
+    {
+      "date": "29 Jan 2026",
+      "type": "quiz",
+      "action": "attempted",
+      "module": "Diagnostic Writing Quiz"
+    },
+    {
+      "date": "2 Feb 2026",
+      "type": "workshop",
+      "action": "viewed",
+      "module": "Workshop: Argumentative Essays"
+    },
+    {
+      "date": "3 Feb 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Argumentative Essay Intro DRAFT"
+    },
+    {
+      "date": "8 Feb 2026",
+      "type": "resource",
+      "action": "viewed",
+      "module": "Argumentative Essay Intro Resources"
+    },
+    {
+      "date": "10 Feb 2026",
+      "type": "workshop",
+      "action": "peer_reviewed",
+      "module": "Workshop: peer assessments"
+    },
+    {
+      "date": "12 Feb 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Argumentative Essay Intro GRADED"
+    },
+    {
+      "date": "14 Feb 2026",
+      "type": "forum",
+      "action": "posted",
+      "module": "Forum: check-up"
+    },
+    {
+      "date": "15 Feb 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "First Body Paragraph"
+    },
+    {
+      "date": "18 Feb 2026",
+      "type": "resource",
+      "action": "viewed_multiple",
+      "module": "Argumentative Essay Intro Resources"
+    },
+    {
+      "date": "23 Feb 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Second Body Paragraph v1"
+    },
+    {
+      "date": "24 Feb 2026",
+      "type": "assignment",
+      "action": "revised",
+      "module": "Second Body Paragraph revision"
+    },
+    {
+      "date": "6 Mar 2026",
+      "type": "resource",
+      "action": "viewed",
+      "module": "Structure of argumentative paragraphs"
+    },
+    {
+      "date": "6 Mar 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Second Body Paragraph FINAL"
+    },
+    {
+      "date": "7 Mar 2026",
+      "type": "resource",
+      "action": "viewed",
+      "module": "Common Transition Words"
+    },
+    {
+      "date": "10 Mar 2026",
+      "type": "resource",
+      "action": "viewed",
+      "module": "Model examples page"
+    },
+    {
+      "date": "14 Mar 2026",
+      "type": "assignment",
+      "action": "submitted",
+      "module": "Writing Progress Reflection"
+    }
+  ],
+  "otherActivities": {
+    "forums": [
+      {
+        "title": "Writing Task 1: Clarity and Formality",
+        "date": "Nov 2025",
+        "posts": 0,
+        "grade": "-"
+      },
+      {
+        "title": "First Semester",
+        "date": "14 Dec 2025",
+        "posts": 1,
+        "grade": "-",
+        "postTitle": "Evaluation"
+      },
+      {
+        "title": "check-up",
+        "date": "14 Feb 2026",
+        "posts": 1,
+        "grade": "-",
+        "postId": "1137"
+      }
+    ],
+    "quiz": {
+      "title": "Diagnostic Writing Quiz",
+      "date": "29 Jan 2026",
+      "attemptId": "6295",
+      "grade": "Not yet graded",
+      "maxGrade": 24,
+      "attempts": 1
+    },
+    "workshop": {
+      "title": "Getting Started with Argumentative Essays – Crafting Strong Introductions",
+      "dates": "2 Feb – 11 Feb 2026",
+      "peerAssessmentsSubmitted": 2,
+      "peerSubmissionsViewed": 2,
+      "totalViews": "multiple"
+    },
+    "attendance": {
+      "semester1": {
+        "taken": 0,
+        "total": 0,
+        "pct": 0.0
+      },
+      "semester2": {
+        "taken": 0,
+        "total": 2,
+        "pct": 0.0
+      }
+    },
+    "resources_viewed": [
+      {
+        "title": "Academic writing: Clarity, formality & Precision",
+        "views": 8,
+        "lastViewed": "14 Dec 2025"
+      },
+      {
+        "title": "Argumentative Essay Introductions – Resources",
+        "views": 17,
+        "lastViewed": "23 Feb 2026"
+      },
+      {
+        "title": "Structure of argumentative paragraphs",
+        "views": 1,
+        "lastViewed": "6 Mar 2026"
+      },
+      {
+        "title": "Self-assessment rubric page",
+        "views": 1,
+        "lastViewed": "6 Mar 2026"
+      },
+      {
+        "title": "Two model examples: with/against AI",
+        "views": 3,
+        "lastViewed": "10 Mar 2026"
+      },
+      {
+        "title": "Common Transition Words for Essay Writing",
+        "views": 1,
+        "lastViewed": "7 Mar 2026"
+      }
+    ],
+    "xp": {
+      "level": 4,
+      "achievedDate": "30 Nov 2025"
+    },
+    "feedbackActivity": {
+      "title": "Writing Challenges & Metacognitive Strategies",
+      "status": "NOT STARTED"
+    },
+    "totalLogEntries": 258,
+    "firstLog": "20 November 2025",
+    "lastLog": "14 March 2026",
+    "ipAddresses": [
+      "41.96.x.x",
+      "41.97.x.x",
+      "154.121.x.x"
+    ]
+  },
+  "gradingRubric": {
+    "assignment": "test (Clarity & Formality)",
+    "maxPoints": 8,
+    "criteria": [
+      {
+        "name": "Clarity of Expression",
+        "max": 2
+      },
+      {
+        "name": "Formality of Tone",
+        "max": 2
+      },
+      {
+        "name": "Precision of Vocabulary",
+        "max": 2
+      },
+      {
+        "name": "Organization & Cohesion",
+        "max": 2
+      }
+    ]
+  },
+  "generatedAt": "2026-04-01T18:04:32.646524",
+  "dataSource": "lahmarabbou_asmaa_FULL_ENGLISH (1).xlsx",
+  "isRealData": true
+}

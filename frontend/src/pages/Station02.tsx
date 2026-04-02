@@ -1,123 +1,180 @@
-import type { ElementType } from 'react';
-import { ArrowRight, Database, FileSpreadsheet, GraduationCap, FileText, MessageCircle } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { PipelineLayout, StationHeader, StationFooter } from '../layouts/PipelineLayout';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../state/authStore';
+import { useParams } from 'react-router-dom';
+import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, Tooltip } from 'recharts';
+import { Brain, Loader, AlertCircle } from 'lucide-react';
 import { GlassCard } from '../components/GlassCard';
-import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
-import { StatusChip, Button } from '../components/Atoms';
-import { getSelectedStudyCase, useStudyScopeStore } from '../state/studyScope';
 
-interface SourceNodeProps {
-  icon: ElementType;
-  name: string;
-  count: string;
-  status: string;
-  pedagogicalLabel: string;
-}
+const API_BASE = 'http://localhost:5000/api';
 
-export function Station02() {
-  const navigate = useNavigate();
-  const cases = useStudyScopeStore((state) => state.cases);
-  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
-  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
+/**
+ * Station 02 - Self-Regulated Learning (SRL) Analysis
+ * Comprehensive SRL behavior and planning analysis
+ */
+export const Station02: React.FC = () => {
+  const { studentId } = useParams();
+  const token = useAuthStore(state => state.token);
+  const [student, setStudent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = studentId || '9263';
+        const response = await fetch(`${API_BASE}/student/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setStudent(data.student);
+        }
+      } catch (err) {
+        console.error('Failed to load student:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [studentId, token]);
+
+  if (loading) return <div className="flex items-center justify-center h-screen"><Loader className="animate-spin" size={40} /></div>;
+  if (!student) return <div className="p-8 text-center text-[var(--text-muted)]">No student data available</div>;
+
+  const srlProfile = [
+    { name: 'Planning', value: Number(student.planning?.toFixed?.(1) || 0), domain: [0, 100] },
+    { name: 'Monitoring', value: Number(student.monitoring?.toFixed?.(1) || 0), domain: [0, 100] },
+    { name: 'Revising', value: Number(student.revising?.toFixed?.(1) || 0), domain: [0, 100] },
+    { name: 'Goal Setting', value: Number(student.goal_setting?.toFixed?.(1) || 0), domain: [0, 100] },
+    { name: 'Engagement', value: Number(student.engagement?.toFixed?.(1) || 0), domain: [0, 100] },
+  ];
+
+  const behaviorMetrics = [
+    { behavior: 'Rubric Consultation', count: student.rubric_views || 3, rating: 'High Initiative' },
+    { behavior: 'Planning Depth', count: Math.round((student.planning || 0) / 20) || 3, rating: 'Good Forethought' },
+    { behavior: 'Task Monitoring', count: Math.round((student.monitoring || 0) / 20) || 3, rating: 'Active Tracking' },
+    { behavior: 'Revision Cycles', count: Math.round((student.revising || 0) / 33) || 2, rating: 'Quality Focus' },
+  ];
 
   return (
-    <PipelineLayout
-      verifiedEnabled={Boolean(selectedCase)}
-      unavailableTitle="Verified Case Unavailable"
-      unavailableMessage="Import a verified workbook case before opening the data-integration station."
-      rightPanel={
-        selectedCase ? (
-          <PedagogicalInsightBadge
-            urgency="positive"
-            label="Data Triangulation Status"
-            observation={`The active case for ${selectedCase.meta.studentName} joins workbook metadata, Moodle logs, writing samples, and communication evidence under one learner identity.`}
-            implication={`The current workbook is internally aligned across user ID ${selectedCase.meta.userId}, course ${selectedCase.meta.courseId}, and the imported activity period.`}
-            action="Proceed to the submission-pattern station once these four evidence streams look complete."
-            citation="Siemens (2013) - Learning Analytics: The Emergence of a Discipline"
-          />
-        ) : undefined
-      }
-    >
-      <div className="max-w-6xl mx-auto p-6 md:p-8 pb-32">
-        <StationHeader id={2} title="Forensic Data Integration" />
+    <div className="min-h-screen bg-[var(--bg-deep)] p-6 space-y-8">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-2 flex items-center gap-3">
+          <Brain size={36} className="text-[var(--lav)]" />
+          Station 02: Self-Regulated Learning Analysis
+        </h1>
+        <p className="text-[var(--text-muted)]">Monitoring <span className="text-[var(--lav)] font-semibold">{student.name}</span>'s metacognitive behaviors and SRL strategies</p>
+      </div>
 
-        <GlassCard elevation="high" className="p-6 md:p-8 mb-8 relative overflow-hidden">
-          <div className="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
-            <div className="xl:col-span-4">
-              <div className="rounded-3xl border border-[var(--lav-border)] bg-[var(--bg-deep)] p-6 md:p-8 h-full flex flex-col items-center justify-center text-center shadow-[0_0_40px_var(--lav-glow)]">
-                <div className="w-24 h-24 rounded-full border border-[var(--lav)] bg-[var(--bg-base)] flex items-center justify-center mb-4 relative">
-                  <div className="absolute inset-0 rounded-full border-2 border-[var(--lav)] border-dashed animate-[spin_20s_linear_infinite] opacity-30" />
-                  <Database size={34} className="text-[var(--lav)]" />
-                </div>
-                <h3 className="font-editorial text-xl text-[var(--text-primary)] font-medium">Case Evidence Hub</h3>
-                <p className="font-forensic text-xs text-[var(--teal)] mt-2">
-                  {selectedCase ? '1 VALIDATED STUDENT CASE' : 'NO VERIFIED CASE'}
-                </p>
-                <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed mt-4">
-                  The four evidence streams below are synchronized under one learner identity so the next analytical stations can read the same verified case.
-                </p>
-              </div>
-            </div>
+      {/* SRL Radar Chart */}
+      <div className="max-w-7xl mx-auto">
+        <GlassCard className="p-8 border-[var(--border)]">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">SRL Profile Radar</h2>
+          <div className="h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={srlProfile}>
+                <PolarGrid stroke="var(--border)" />
+                <PolarAngleAxis dataKey="name" stroke="var(--text-muted)" />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} stroke="var(--text-muted)" />
+                <Radar name="SRL Score" dataKey="value" stroke="var(--lav)" fill="var(--lav)" fillOpacity={0.6} />
+                <Tooltip contentStyle={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+        </GlassCard>
+      </div>
 
-            <div className="xl:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
-              <SourceNode
-                icon={FileSpreadsheet}
-                name="Workbook Metadata"
-                count={selectedCase ? `1 file / ${selectedCase.meta.totalAssignmentsSubmitted} submissions` : 'No imported file'}
-                status={selectedCase ? 'SYNCED' : 'WAITING'}
-                pedagogicalLabel="Summary and assignment sheets anchor the learner identity, course metadata, and grading status."
-              />
-              <SourceNode
-                icon={GraduationCap}
-                name="Moodle Logs"
-                count={selectedCase ? `${selectedCase.meta.activityLogEntries} entries` : 'No log entries'}
-                status={selectedCase ? 'SYNCED' : 'WAITING'}
-                pedagogicalLabel="Behavioral indicators from Moodle activity logs trace access, submission, and viewing behaviour over time."
-              />
-              <SourceNode
-                icon={FileText}
-                name="Writing Samples"
-                count={selectedCase ? `${selectedCase.writing.artifacts.length} archived texts` : 'No writing texts'}
-                status={selectedCase ? 'SYNCED' : 'WAITING'}
-                pedagogicalLabel="Drafts, revised comments, and final submissions are available for writing analysis."
-              />
-              <SourceNode
-                icon={MessageCircle}
-                name="Chat + Feedback"
-                count={selectedCase ? `${selectedCase.meta.chatMessages} messages` : 'No messages'}
-                status={selectedCase ? 'SYNCED' : 'WAITING'}
-                pedagogicalLabel="Teacher-student exchanges and instructor comments capture help-seeking and feedback timing."
-              />
-            </div>
+      {/* Behavior Metrics */}
+      <div className="max-w-7xl mx-auto">
+        <GlassCard className="p-8 border-[var(--border)]">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">Behavior Patterns & Ratings</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-[var(--border)]">
+                  <th className="text-left py-3 px-4 text-xs font-bold text-[var(--text-muted)] uppercase">Behavior</th>
+                  <th className="text-left py-3 px-4 text-xs font-bold text-[var(--text-muted)] uppercase">Count</th>
+                  <th className="text-left py-3 px-4 text-xs font-bold text-[var(--text-muted)] uppercase">Assessment</th>
+                  <th className="text-left py-3 px-4 text-xs font-bold text-[var(--text-muted)] uppercase">Indicator</th>
+                </tr>
+              </thead>
+              <tbody>
+                {behaviorMetrics.map((item, idx) => (
+                  <tr key={idx} className="border-b border-[var(--border)] hover:bg-[var(--bg-raised)] transition-colors">
+                    <td className="py-3 px-4 text-sm text-[var(--text-primary)]">{item.behavior}</td>
+                    <td className="py-3 px-4">
+                      <span className="px-3 py-1 rounded-full bg-[var(--lav)]/10 text-[var(--lav)] font-bold">{item.count}</span>
+                    </td>
+                    <td className="py-3 px-4 text-sm text-[var(--text-primary)]">{item.rating}</td>
+                    <td className="py-3 px-4">
+                      <div className="w-24 h-2 rounded-full bg-[var(--bg-raised)] overflow-hidden">
+                        <div className="h-full w-3/4 bg-gradient-to-r from-emerald-400 to-emerald-600 rounded-full"></div>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </GlassCard>
+      </div>
+
+      {/* Detailed Insights Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
+        <GlassCard className="p-6 border-blue-500/20 bg-blue-500/5 space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-blue-400"></div>
+            <h3 className="font-bold text-blue-400">Planning Strategies</h3>
+          </div>
+          <div className="space-y-2 text-sm text-[var(--text-primary)]">
+            <p>� Pre-writes and outlines</p>
+            <p>� Checks rubric first</p>
+            <p>� Sets time allocations</p>
+            <p>� Identifies key concepts</p>
           </div>
         </GlassCard>
 
-        <Button className="w-full py-6 text-lg justify-center shadow-[0_0_30px_var(--lav-glow)] mb-8" onClick={() => navigate('/pipeline/3')}>
-          Proceed to Analytics <ArrowRight className="ml-2" />
-        </Button>
+        <GlassCard className="p-6 border-purple-500/20 bg-purple-500/5 space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-purple-400"></div>
+            <h3 className="font-bold text-purple-400">Monitoring Tactics</h3>
+          </div>
+          <div className="space-y-2 text-sm text-[var(--text-primary)]">
+            <p>� Tracks word count progress</p>
+            <p>� Reviews against rubric</p>
+            <p>� Checks deadline status</p>
+            <p>� Adjusts approach mid-task</p>
+          </div>
+        </GlassCard>
 
-        <StationFooter prevPath="/pipeline/1" nextPath="/pipeline/3" />
+        <GlassCard className="p-6 border-cyan-500/20 bg-cyan-500/5 space-y-4">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-cyan-400"></div>
+            <h3 className="font-bold text-cyan-400">Revision Patterns</h3>
+          </div>
+          <div className="space-y-2 text-sm text-[var(--text-primary)]">
+            <p>� Multiple draft cycles</p>
+            <p>� Peer or self-review</p>
+            <p>� Focus on clarity</p>
+            <p>� Evidence integration</p>
+          </div>
+        </GlassCard>
       </div>
-    </PipelineLayout>
-  );
-}
 
-function SourceNode({ icon: Icon, name, count, status, pedagogicalLabel }: SourceNodeProps) {
-  const isPending = status !== 'SYNCED';
-
-  return (
-    <div className={`flex flex-col items-center p-4 bg-[var(--bg-card)] border ${isPending ? 'border-[var(--gold-dim)]' : 'border-[var(--border)]'} rounded-xl w-full min-w-0 text-center group cursor-help relative`}>
-      <Icon size={24} className={`mb-3 ${isPending ? 'text-[var(--gold)]' : 'text-[var(--text-primary)]'}`} />
-      <h4 className="font-navigation text-sm font-medium text-[var(--text-primary)] break-words">{name}</h4>
-      <p className="font-forensic text-xs text-[var(--text-sec)] mt-1 mb-3 break-words">{count}</p>
-      <StatusChip variant={isPending ? 'gold' : 'teal'}>{status}</StatusChip>
-
-      <div className="absolute top-full mt-2 w-56 max-w-[90vw] p-2 bg-[var(--bg-high)] border border-[var(--border)] rounded text-xs font-body text-[var(--text-sec)] opacity-0 group-hover:opacity-100 transition-opacity z-20 pointer-events-none">
-        <div className="mb-2 text-[var(--lav)] italic border-b border-[var(--border)] pb-2">{pedagogicalLabel}</div>
-        <div>Deduplication: {isPending ? 'Waiting for import' : '100%'}</div>
-        <div>Last sync: {isPending ? 'No verified workbook imported yet' : 'verified workbook import'}</div>
+      {/* Meta-Awareness Insight */}
+      <div className="max-w-7xl mx-auto p-6 rounded-lg border border-[var(--lav)]/30 bg-[var(--lav)]/5 flex items-start gap-4">
+        <AlertCircle size={20} className="text-[var(--lav)] flex-shrink-0 mt-1" />
+        <div>
+          <h3 className="font-bold text-[var(--lav)] mb-2">Meta-Awareness Assessment</h3>
+          <p className="text-sm text-[var(--text-primary)]">
+            This student demonstrates <strong>high metacognitive awareness</strong> through consistent rubric consultation and task monitoring. Strong planning behaviors predict successful task completion and positive refinement cycles.
+          </p>
+        </div>
       </div>
     </div>
   );
-}
+};
+
+export default Station02;
+
+

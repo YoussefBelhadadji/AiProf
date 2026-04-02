@@ -1,4 +1,4 @@
-import type { LucideIcon } from 'lucide-react';
+﻿import type { LucideIcon } from 'lucide-react';
 import clsx from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import { GlassCard } from './GlassCard';
@@ -37,9 +37,9 @@ export function MetricCard({
         {trend && (
           <span
             className={clsx('text-xs font-mono font-medium break-words', {
-              'text-[var(--teal)]': trendDirection === 'up',
-              'text-[var(--red)]': trendDirection === 'down',
-              'text-[var(--gold)]': trendDirection === 'neutral',
+              'text-[var(--blue)]': trendDirection === 'up',
+              'text-[var(--navy)]': trendDirection === 'down',
+              'text-[var(--violet)]': trendDirection === 'neutral',
             })}
           >
             {trendDirection === 'up' ? '^' : trendDirection === 'down' ? 'v' : '>'} {trend}

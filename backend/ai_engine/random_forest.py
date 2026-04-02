@@ -37,6 +37,15 @@ def run_random_forest(df: pd.DataFrame, target: str = "score_gain"):
         print(f"Warning: Not enough samples ({len(df)}) for Random Forest. Returning default metrics.")
         return None, {"mae": 0, "r2": 0}, pd.DataFrame({"feature": features, "importance": [1/len(features)]*len(features)})
 
+    # Add feedback uptake and help-seeking states
+    df["feedback_uptake_state"] = df["feedback_views"].apply(
+        lambda x: "low" if x == 0 else ("medium" if x == 1 else "high")
+    )
+
+    df["help_seeking_state"] = df["help_seeking_messages"].apply(
+        lambda x: "none" if x == 0 else ("procedural" if x <= 2 else "adaptive")
+    )
+
     X = df[features].fillna(0)
     y = df[target]
 

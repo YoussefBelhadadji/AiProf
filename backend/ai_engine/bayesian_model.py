@@ -58,6 +58,15 @@ def discretize_scores(df: pd.DataFrame) -> pd.DataFrame:
         include_lowest=True
     )
 
+    # Add feedback uptake and help-seeking states
+    d["feedback_uptake_state"] = d["feedback_views"].apply(
+        lambda x: "low" if x == 0 else ("medium" if x == 1 else "high")
+    )
+
+    d["help_seeking_state"] = d["help_seeking_messages"].apply(
+        lambda x: "none" if x == 0 else ("procedural" if x <= 2 else "adaptive")
+    )
+
     return d
 
 def run_bayesian(df: pd.DataFrame):

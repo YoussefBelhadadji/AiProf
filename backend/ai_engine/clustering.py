@@ -10,6 +10,18 @@ import os
 # rubric_views, help_seeking_messages, total_score, ttr,
 # cohesion_index, word_count
 
+# Add new features for feedback uptake and help-seeking states
+def add_feedback_and_help_seeking_states(df: pd.DataFrame):
+    df["feedback_uptake_state"] = df["feedback_views"].apply(
+        lambda x: "low" if x == 0 else ("medium" if x == 1 else "high")
+    )
+
+    df["help_seeking_state"] = df["help_seeking_messages"].apply(
+        lambda x: "none" if x == 0 else ("procedural" if x <= 2 else "adaptive")
+    )
+
+    return df
+
 def compute_cluster_justification(X_scaled, k_range: range = range(2, 7)) -> dict:
     """
     Computes elbow (inertia) and silhouette scores to justify the chosen k.

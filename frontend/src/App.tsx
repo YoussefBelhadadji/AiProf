@@ -1,57 +1,164 @@
-import type { ReactNode } from 'react';
+﻿import React, { Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { ErrorBoundary } from './components/ErrorBoundary';
+import { useAuthStore } from './state/authStore';
+import { ResearchShell } from './layouts/ResearchShell';
+
+// Initial route loads
 import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard';
-import { Students } from './pages/Students';
-import { Reports } from './pages/Reports';
-import { Notes } from './pages/Notes';
-import { Import } from './pages/Import';
-import { Settings } from './pages/Settings';
-import { Station01 } from './pages/Station01';
-import { Station02 } from './pages/Station02';
-import { Station03 } from './pages/Station03';
-import { Station04 } from './pages/Station04';
-import { Station05 } from './pages/Station05';
-import { Station06 } from './pages/Station06';
-import { Station07 } from './pages/Station07';
-import { Station08 } from './pages/Station08';
-import { Station09 } from './pages/Station09';
-import { Station10 } from './pages/Station10';
-import { Station11 } from './pages/Station11';
-import { Station12 } from './pages/Station12';
+import { Dashboard } from './pages/Dashboard.tsx';
+
+// Lazy loaded routes (Sprint 3: Performance)
+const LearnerRegistry = React.lazy(() => import('./pages/Students').then(module => ({ default: module.Students })));
+const StudentProfile = React.lazy(() => import('./pages/StudentProfile').then(module => ({ default: module.StudentProfile })));
+const Groups = React.lazy(() => import('./pages/Groups').then(module => ({ default: module.Groups })));
+const Tasks = React.lazy(() => import('./pages/Tasks').then(module => ({ default: module.Tasks })));
+const Reports = React.lazy(() => import('./pages/Reports').then(module => ({ default: module.Reports })));
+const Notes = React.lazy(() => import('./pages/Notes').then(module => ({ default: module.Notes })));
+const Import = React.lazy(() => import('./pages/Import').then(module => ({ default: module.Import })));
+const PipelinePage = React.lazy(() => import('./pages/PipelinePage').then(module => ({ default: module.PipelinePage })));
+const Settings = React.lazy(() => import('./pages/Settings').then(module => ({ default: module.Settings })));
+const NotFound = React.lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
+const StationRouter = React.lazy(() => import('./pages/StationRouter').then(module => ({ default: module.StationRouter })));
+const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword').then(module => ({ default: module.ForgotPassword })));
+const ResetPassword = React.lazy(() => import('./pages/ResetPassword').then(module => ({ default: module.ResetPassword })));
+const Thresholds = React.lazy(() => import('./pages/Thresholds').then(module => ({ default: module.Thresholds })));
+const AuditLogs = React.lazy(() => import('./pages/AuditLogs').then(module => ({ default: module.AuditLogs })));
+const Reliability = React.lazy(() => import('./pages/Reliability').then(module => ({ default: module.Reliability })));
+const Diagnostics = React.lazy(() => import('./pages/Diagnostics').then(module => ({ default: module.Diagnostics })));
+const TeacherDecisionPanel = React.lazy(() => import('./pages/TeacherDecisionPanel').then(module => ({ default: module.TeacherDecisionPanel })));
+const RuleManagement = React.lazy(() => import('./pages/RuleManagement').then(module => ({ default: module.RuleManagement })));
+const FeedbackTemplateManagement = React.lazy(() => import('./pages/FeedbackTemplateManagement').then(module => ({ default: module.FeedbackTemplateManagement })));
+
+// Loading fallback UI
+const PageLoader = () => (
+  <div className="min-h-screen bg-[var(--bg-deep)] flex items-center justify-center">
+    <div className="flex flex-col items-center gap-4">
+      <div className="w-10 h-10 border-4 border-[var(--border)] border-t-[var(--lav)] rounded-full animate-spin"></div>
+      <div className="font-navigation text-xs uppercase tracking-widest text-[var(--lav)] animate-pulse">
+        Initializing Workspace
+      </div>
+    </div>
+  </div>
+);
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-        <Route path="/students" element={<ProtectedRoute><Students /></ProtectedRoute>} />
-        <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
-        <Route path="/notes" element={<ProtectedRoute><Notes /></ProtectedRoute>} />
-        <Route path="/import" element={<ProtectedRoute><Import /></ProtectedRoute>} />
-        <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
-        <Route path="/pipeline/1" element={<ProtectedRoute><Station01 /></ProtectedRoute>} />
-        <Route path="/pipeline/2" element={<ProtectedRoute><Station02 /></ProtectedRoute>} />
-        <Route path="/pipeline/3" element={<ProtectedRoute><Station03 /></ProtectedRoute>} />
-        <Route path="/pipeline/4" element={<ProtectedRoute><Station04 /></ProtectedRoute>} />
-        <Route path="/pipeline/5" element={<ProtectedRoute><Station05 /></ProtectedRoute>} />
-        <Route path="/pipeline/6" element={<ProtectedRoute><Station06 /></ProtectedRoute>} />
-        <Route path="/pipeline/7" element={<ProtectedRoute><Station07 /></ProtectedRoute>} />
-        <Route path="/pipeline/8" element={<ProtectedRoute><Station08 /></ProtectedRoute>} />
-        <Route path="/pipeline/9" element={<ProtectedRoute><Station09 /></ProtectedRoute>} />
-        <Route path="/pipeline/10" element={<ProtectedRoute><Station10 /></ProtectedRoute>} />
-        <Route path="/pipeline/11" element={<ProtectedRoute><Station11 /></ProtectedRoute>} />
-        <Route path="/pipeline/12" element={<ProtectedRoute><Station12 /></ProtectedRoute>} />
-      </Routes>
+      <a href="#main-content" className="skip-link font-navigation text-sm">Skip to main content</a>
+      <ErrorBoundary>
+        <Suspense fallback={<PageLoader />}>
+          <Routes>
+            <Route path="/" element={<Navigate to="/login" replace />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPassword />} />
+
+            {/* Authenticated Research Space */}
+            <Route path="/*" element={
+              <ProtectedRoute>
+                <ResearchShell>
+                  <Routes>
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="students" element={<LearnerRegistry />} />
+                    <Route path="student-profile/:id" element={<StudentProfile />} />
+                    <Route path="groups" element={<Groups />} />
+                    <Route path="tasks" element={<Tasks />} />
+                    <Route path="reports" element={<Reports />} />
+                    <Route path="diagnostics" element={<Diagnostics />} />
+                    <Route path="notes" element={<Notes />} />
+                    <Route path="import" element={<Import />} />
+                    <Route path="pipeline" element={<PipelinePage />} />
+                    <Route path="settings" element={<Settings />} />
+                    <Route path="pipeline/:id" element={<StationRouter />} />
+                    <Route path="teacher-decision/:studentId" element={<TeacherDecisionPanel />} />
+                    
+                    {/* Management Routes */}
+                    <Route path="thresholds" element={<Thresholds />} />
+                    <Route path="rules" element={<RuleManagement />} />
+                    <Route path="templates" element={<FeedbackTemplateManagement />} />
+                    <Route path="logs" element={<AuditLogs />} />
+                    <Route path="reliability" element={<Reliability />} />
+                    
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </ResearchShell>
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </BrowserRouter>
   );
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  const hasResearchAccess = typeof window !== 'undefined' && sessionStorage.getItem('writelens-research-access') === 'granted';
-  return hasResearchAccess ? children : <Navigate to="/login" replace />;
+  const { token, logout } = useAuthStore();
+  const [isValidating, setIsValidating] = React.useState(true);
+  const [isValid, setIsValid] = React.useState(false);
+
+  const hasWorkspaceAccess = typeof window !== 'undefined' && sessionStorage.getItem('writelens-research-access') === 'granted';
+  
+  React.useEffect(() => {
+    const validateToken = async () => {
+      if (!token) {
+        setIsValid(hasWorkspaceAccess);
+        setIsValidating(false);
+        return;
+      }
+
+      try {
+        const apiBase = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '')).replace(/\/$/, '');
+        const response = await fetch(`${apiBase}/api/auth/verify`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          setIsValid(true);
+        } else if (response.status === 401) {
+          // Token expired, clear auth state
+          logout();
+          setIsValid(false);
+        } else {
+          setIsValid(false);
+        }
+      } catch (error) {
+        console.error('Token validation failed:', error);
+        setIsValid(false);
+      } finally {
+        setIsValidating(false);
+      }
+    };
+
+    validateToken();
+  }, [token, logout]);
+
+  if (isValidating) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-[var(--bg-primary)]">
+        <div className="text-center">
+          <div className="w-8 h-8 border-2 border-[var(--lav)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+          <p className="text-[var(--text-primary)]">Verifying session...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // For the research study prototype, we also allow access if a session flag is present
+  if (!isValid && !token && !hasWorkspaceAccess) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (!isValid && token) {
+    return <Navigate to="/login" replace />;
+  }
+  
+  return children;
 }
 
 export default App;
+

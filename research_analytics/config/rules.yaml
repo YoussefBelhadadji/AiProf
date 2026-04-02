@@ -1,0 +1,67 @@
+rules:
+  - rule_id: R1
+    name: discourse_organization_problem
+    conditions:
+      organization: "<=2"
+      cohesion_index: "<2"
+    interpretation: "Discourse organization difficulty"
+    feedback_type: "strategic_feedback"
+    onsite_intervention: "paragraph_restructuring_support"
+
+  - rule_id: R2
+    name: weak_argument_development
+    conditions:
+      argumentation: "<=2"
+    interpretation: "Weak claim-evidence-reasoning structure"
+    feedback_type: "higher_order_feedback"
+    onsite_intervention: "claim_evidence_reasoning_scaffold"
+
+  - rule_id: R3
+    name: linguistic_accuracy_problem
+    conditions:
+      grammar_accuracy: "<=2"
+      error_density: ">8"
+    interpretation: "Persistent grammatical accuracy problem"
+    feedback_type: "direct_corrective_feedback"
+    onsite_intervention: "focused_grammar_support"
+
+  - rule_id: R4
+    name: weak_self_regulated_revision
+    conditions:
+      revision_frequency: "<1"
+    interpretation: "Limited monitoring and revision"
+    feedback_type: "metacognitive_prompt"
+    onsite_intervention: "guided_revision_checklist"
+
+  - rule_id: R5
+    name: low_assessment_literacy
+    conditions:
+      rubric_views: "<1"
+    interpretation: "Limited awareness of criteria"
+    feedback_type: "criteria_referenced_feedback"
+    onsite_intervention: "rubric_walkthrough"
+
+  - rule_id: R6
+    name: low_feedback_uptake
+    conditions:
+      feedback_views: ">=1"
+      revision_frequency: "<1"
+    interpretation: "Feedback viewed but not used"
+    feedback_type: "feedforward_feedback"
+    onsite_intervention: "feedback_decoding_session"
+
+  - rule_id: R7
+    name: adaptive_help_seeking
+    conditions:
+      help_seeking_messages: ">=1"
+    interpretation: "Emerging adaptive help-seeking"
+    feedback_type: "dialogic_scaffolding"
+    onsite_intervention: "onsite_clarification"
+
+  - rule_id: R8
+    name: underdeveloped_paragraph
+    conditions:
+      word_count: "<80"
+    interpretation: "Paragraph underdeveloped for task expectations"
+    feedback_type: "elaboration_feedback"
+    onsite_intervention: "idea_expansion_support"

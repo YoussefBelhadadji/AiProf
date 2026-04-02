@@ -1,0 +1,27 @@
+latent_competencies:
+  - argument_structure
+  - cohesion_competence
+  - linguistic_complexity
+  - self_regulated_revision
+
+evidence_links:
+  argument_structure:
+    - argumentation
+    - word_count
+    - help_seeking_messages
+
+  cohesion_competence:
+    - organization
+    - cohesion
+    - cohesion_index
+
+  linguistic_complexity:
+    - lexical_resource
+    - grammar_accuracy
+    - avg_sentence_length
+    - ttr
+
+  self_regulated_revision:
+    - revision_frequency
+    - feedback_views
+    - time_on_task

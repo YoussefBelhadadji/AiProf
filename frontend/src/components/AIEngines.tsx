@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { GlassCard } from './GlassCard';
 import { StatusChip } from './Atoms';
 import { fetchRulebook, type RulebookResponse } from '../services/rulebookApi';
@@ -45,8 +45,8 @@ export function AIEngines() {
   return (
     <div className="space-y-8 animate-in fade-in duration-300">
       <GlassCard className="p-6 md:p-8">
-        <h2 className="font-editorial text-2xl text-[var(--teal)] mb-6">Adaptive Assessment Architecture</h2>
-        <div className="mb-6 rounded-lg border border-[var(--gold)]/25 bg-[var(--gold-dim)] px-4 py-3 font-body text-sm text-[var(--text-sec)]">
+        <h2 className="font-editorial text-2xl text-[var(--blue)] mb-6">Adaptive Assessment Architecture</h2>
+        <div className="mb-6 rounded-lg border border-[var(--violet)]/25 bg-[var(--violet-dim)] px-4 py-3 font-body text-sm text-[var(--text-sec)]">
           This screen documents the study methodology. AI functions as a diagnostic and decision-support layer: it analyzes behavioural, textual, and performance evidence to cluster learner patterns, estimate likely writing development, infer competence states, and surface candidate feedback actions for teacher review. It does not replace the instructor, rubric, or pedagogical framework.
         </div>
 
@@ -61,7 +61,7 @@ export function AIEngines() {
             </ul>
           </GlassCard>
           <GlassCard className="p-5 bg-[var(--bg-raised)] border-dashed border-[var(--border-bright)]">
-            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--gold)] mb-3">Instructor Role</h3>
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--violet)] mb-3">Instructor Role</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>Interpret what the patterns mean for engagement, writing behaviour, and development.</li>
               <li>Evaluate essays with academic writing criteria and validate the pedagogical reading.</li>
@@ -81,7 +81,7 @@ export function AIEngines() {
             </ul>
           </GlassCard>
           <GlassCard className="p-5">
-            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--gold)] mb-3">Band 2: AI Support</h3>
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--violet)] mb-3">Band 2: AI Support</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>K-Means clustering for learner profiles when the cohort is sufficient.</li>
               <li>Random Forest for predictive factors and score estimation, with case-level fallback when the cohort is still small.</li>
@@ -89,7 +89,7 @@ export function AIEngines() {
             </ul>
           </GlassCard>
           <GlassCard className="p-5">
-            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--teal)] mb-3">Band 3: Pedagogical Action</h3>
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--blue)] mb-3">Band 3: Pedagogical Action</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>Diagnostic signals organize evidence for teacher review.</li>
               <li>Feedback planning suggests focus areas but does not deliver final feedback automatically.</li>
@@ -102,7 +102,7 @@ export function AIEngines() {
       <GlassCard accent="red" className="p-6 md:p-8">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-4">
           <div>
-            <h2 className="font-editorial text-2xl text-[var(--red)]">Canonical Strong Rule Table</h2>
+            <h2 className="font-editorial text-2xl text-[var(--navy)]">Canonical Strong Rule Table</h2>
             <p className="font-body text-sm text-[var(--text-sec)] mt-3">
               Raw data indicators and AI learner-state outputs jointly drive the adaptive feedback decision. Thresholded evidence establishes what was observed, AI diagnosis interprets what the learner likely needs, and the rule layer maps that need onto transparent pedagogical action.
             </p>
@@ -126,8 +126,8 @@ export function AIEngines() {
             </p>
           </GlassCard>
         ) : errorMessage ? (
-          <GlassCard className="p-5 bg-[var(--bg-raised)] border border-[var(--gold)]/25">
-            <p className="font-body text-sm text-[var(--gold)]">{errorMessage}</p>
+          <GlassCard className="p-5 bg-[var(--bg-raised)] border border-[var(--violet)]/25">
+            <p className="font-body text-sm text-[var(--violet)]">{errorMessage}</p>
             <p className="font-body text-xs text-[var(--text-sec)] mt-2">
               The methodology screen stays available, but the live strong rule table cannot be rendered until the backend responds to `/api/rulebook`.
             </p>
@@ -141,7 +141,7 @@ export function AIEngines() {
         ) : (
           <div className="overflow-x-auto rounded-2xl border border-[var(--border)]">
             <table className="w-full min-w-[1120px] text-left font-body text-sm">
-              <thead className="bg-[var(--bg-deep)] text-[var(--text-muted)] uppercase text-[10px] tracking-widest">
+              <thead className="bg-[var(--bg-deep)] text-[var(--text-muted)] uppercase text-xs tracking-widest">
                 <tr>
                   <th className="px-4 py-4">Rule</th>
                   <th className="px-4 py-4">Condition</th>
@@ -206,7 +206,7 @@ export function AIEngines() {
             </ul>
           </GlassCard>
           <GlassCard className="p-5 bg-[var(--bg-raised)]">
-            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--gold)] mb-3">System Implication</h3>
+            <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--violet)] mb-3">System Implication</h3>
             <ul className="space-y-2 font-body text-sm text-[var(--text-sec)]">
               <li>The app should always show model context, fit conditions, and limits beside advanced analytics.</li>
               <li>Pedagogical action should focus on redesign, scaffolds, hints, and teacher judgment, not on model output alone.</li>
@@ -278,3 +278,4 @@ export function AIEngines() {
     </div>
   );
 }
+

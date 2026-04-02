@@ -1,51 +1,130 @@
 rules:
+  # Rule Block A: Planning and Criteria Awareness (SRL Forethought Phase)
   - rule_id: A1
-    condition:
-      rubric_views: "==0"
-      first_access_delay_minutes: ">30"
-    ai_state_required: "Forethought risk = High"
-    interpretation: "Weak forethought regulation and low criteria awareness"
-    feedback_template: "planning_scaffold"
-    onsite_intervention: "rubric_walkthrough_and_outline_support"
+    name: "Weak Criteria Consultation"
+    category: "Planning"
+    priority: 10
+    conditions:
+      rubric_views: 0
+    interpretation: "weak forethought regulation and low criteria awareness"
+    feedback_type: "criteria-referenced prompt"
+    onsite_intervention: "rubric walkthrough"
+    justification: "Zimmerman’s forethought phase and assessment literacy logic."
+    enabled: true
 
+  - rule_id: A2
+    name: "Shallow Planning"
+    category: "Planning"
+    priority: 9
+    conditions:
+      time_on_task: "< 15"
+      word_count: "< 80"
+    interpretation: "insufficient planning and underdeveloped task engagement"
+    feedback_type: "elaboration prompt"
+    onsite_intervention: "guided planning and expansion support"
+    justification: "Weak forethought and shallow text production."
+    enabled: true
+
+  # Rule Block B: Product Quality (L2 Writing & Analytic Assessment)
   - rule_id: B1
-    condition:
-      argumentation: "<=2"
-    ai_state_required: "Argumentation weakness = High"
-    interpretation: "Weak claim-evidence-reasoning structure"
-    feedback_template: "argument_scaffold"
-    onsite_intervention: "claim_evidence_explanation_modelling"
+    name: "Organization Difficulty"
+    category: "Product"
+    priority: 8
+    conditions:
+      organization_score: "<= 2"
+      cohesion_index: "< 2"
+    interpretation: "discourse organization problem"
+    feedback_type: "strategic feedback on transitions"
+    onsite_intervention: "paragraph restructuring support"
+    justification: "Hyland’s discourse pedagogy and Weigle’s analytic diagnosis."
+    enabled: true
+
+  - rule_id: B2
+    name: "Logic Gap"
+    category: "Product"
+    priority: 8
+    conditions:
+      argumentation_score: "<= 2"
+    interpretation: "weak claim–evidence–reasoning structure"
+    feedback_type: "higher-order feedback on support"
+    onsite_intervention: "claim–evidence–explanation scaffold"
+    justification: "Academic writing requires explicit reasoning and support."
+    enabled: true
+
+  - rule_id: B3
+    name: "Linguistic Accuracy Risk"
+    category: "Product"
+    priority: 7
+    conditions:
+      grammar_accuracy_score: "<= 2"
+      error_density: "> 8"
+    interpretation: "persistent linguistic accuracy problem"
+    feedback_type: "metalinguistic feedback"
+    onsite_intervention: "focused grammar mini-lesson"
+    justification: "Form-focused support for recurring patterns."
+    enabled: true
 
   - rule_id: B4
-    condition:
-      organization: "<=2"
-      cohesion_index: "<2"
-    ai_state_required: "Discourse competence = Low"
-    interpretation: "Weak organization and cohesion"
-    feedback_template: "cohesion_support"
-    onsite_intervention: "paragraph_restructuring_with_model"
+    name: "Lexical Ceiling"
+    category: "Product"
+    priority: 7
+    conditions:
+      lexical_resource_score: "<= 2"
+      ttr: "< 0.5"
+    interpretation: "restricted lexical repertoire"
+    feedback_type: "lexical enrichment feedback"
+    onsite_intervention: "vocabulary expansion with model alternatives"
+    justification: "Need for academic vocabulary variety."
+    enabled: true
 
+  # Rule Block C: Revision and Feedback Uptake (SRL Monitoring & Control)
   - rule_id: C1
-    condition:
-      revision_frequency: "==0"
-    ai_state_required: "Revision depth = Low"
-    interpretation: "Weak self-regulated revision"
-    feedback_template: "revision_prompt"
-    onsite_intervention: "guided_revision_checklist"
+    name: "Zero Revision"
+    category: "Revision"
+    priority: 10
+    conditions:
+      revision_frequency: 0
+    interpretation: "weak self-regulated revision"
+    feedback_type: "metacognitive revision prompt"
+    onsite_intervention: "guided revision checklist"
+    justification: "Monitoring and control are central in SRL performance phase."
+    enabled: true
 
-  - rule_id: C4
-    condition:
-      feedback_views: ">=1"
-      revision_frequency: "==0"
-    ai_state_required: "Feedback uptake risk = High"
-    interpretation: "Feedback viewed but not used"
-    feedback_template: "feedback_decoding"
-    onsite_intervention: "feedback_interpretation_session"
+  - rule_id: C2
+    name: "Low Feedback Uptake"
+    category: "Revision"
+    priority: 9
+    conditions:
+      feedback_views: ">= 1"
+      revision_frequency: 0
+    interpretation: "low feedback uptake / weak feedback literacy"
+    feedback_type: "feedforward message"
+    onsite_intervention: "feedback decoding session"
+    justification: "Carless and Boud: feedback must be acted upon."
+    enabled: true
 
-  - rule_id: D4
-    condition:
-      help_seeking_messages: ">=1"
-    ai_state_required: "Help-seeking regulation = Adaptive"
-    interpretation: "Active clarification-seeking"
-    feedback_template: "dialogic_scaffolding"
-    onsite_intervention: "short_clarification_conference"
+  # Rule Block D: Help-Seeking (Social Regulation)
+  - rule_id: D1
+    name: "Adaptive Help-Seeking"
+    category: "Help-Seeking"
+    priority: 5
+    conditions:
+      help_seeking_messages: ">= 1"
+    interpretation: "adaptive help-seeking"
+    feedback_type: "dialogic scaffolding"
+    onsite_intervention: "short teacher-student clarification conference"
+    justification: "Self-regulation via recognizing difficulty and seeking support."
+    enabled: true
+
+  - rule_id: D2
+    name: "Silent Struggling"
+    category: "Help-Seeking"
+    priority: 5
+    conditions:
+      performance_total: "< 15"
+      help_seeking_messages: 0
+    interpretation: "possible passive disengagement or unrecognized difficulty"
+    feedback_type: "motivational prompt"
+    onsite_intervention: "proactive teacher check-in"
+    justification: "Passive struggling requires teacher intervention."
+    enabled: true

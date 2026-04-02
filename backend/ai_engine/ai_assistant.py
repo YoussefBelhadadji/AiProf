@@ -9,11 +9,11 @@ import yaml
 # Add the current directory to sys.path to ensure local modules are importable
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-from clustering import run_clustering
-from random_forest import run_random_forest
-from bayesian_model import run_bayesian
-from rule_engine import apply_rules
-from feedback_generator import load_templates, generate_feedback_text
+from .clustering import run_clustering
+from .random_forest import run_random_forest
+from .bayesian_model import run_bayesian
+from .rule_engine import apply_rules
+from .feedback_generator import load_templates, generate_feedback_text
 
 # Paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

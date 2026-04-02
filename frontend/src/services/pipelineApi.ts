@@ -1,4 +1,6 @@
-const DEFAULT_API_BASE = import.meta.env.DEV ? 'http://127.0.0.1:3001' : '';
+import { useAuthStore } from '../state/authStore';
+
+const DEFAULT_API_BASE = import.meta.env.DEV ? 'http://127.0.0.1:5000' : '';
 const API_BASE = (import.meta.env.VITE_API_URL ?? DEFAULT_API_BASE).replace(/\/$/, '');
 
 export interface PipelineResponse {
@@ -12,8 +14,10 @@ export async function runPipeline(files: File[]): Promise<PipelineResponse> {
     formData.append('files', file, file.name);
   }
 
+  const token = useAuthStore.getState().token;
   const response = await fetch(`${API_BASE}/api/run-pipeline`, {
     method: 'POST',
+    headers: token ? { Authorization: `Bearer ${token}` } : undefined,
     body: formData,
   });
 

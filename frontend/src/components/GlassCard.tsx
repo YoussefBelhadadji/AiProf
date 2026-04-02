@@ -32,6 +32,8 @@ export function GlassCard({
             'accent-gold': accent === 'gold',
             'accent-red': accent === 'red',
             'glow-lav': glow && accent === 'lav',
+            'glow-red': glow && accent === 'red',
+            'glow-teal': glow && accent === 'teal',
           },
           className
         )

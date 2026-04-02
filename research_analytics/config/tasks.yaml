@@ -1,0 +1,16 @@
+tasks:
+  - task_id: T1
+    title: "Argumentative Essay - Second Body Paragraph"
+    genre: "argumentative"
+    stage: "body_paragraph"
+    expected_word_range: [120, 150]
+    expected_time_minutes: [30, 40]
+    expected_structure:
+      - "topic_sentence"
+      - "supporting_evidence"
+      - "explanation"
+      - "transition"
+    learning_goals:
+      - "develop_argument"
+      - "use_cohesion"
+      - "use_academic_vocabulary"

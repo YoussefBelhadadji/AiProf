@@ -1,153 +1,247 @@
-import { Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer } from 'recharts';
-import { PipelineLayout, StationHeader, StationFooter } from '../layouts/PipelineLayout';
+import React, { useState, useEffect } from 'react';
+import { useAuthStore } from '../state/authStore';
+import { useParams } from 'react-router-dom';
+import { RadarChart, Radar, PolarGrid, PolarAngleAxis, PolarRadiusAxis, ResponsiveContainer, Tooltip, BarChart, Bar, CartesianGrid, XAxis, YAxis } from 'recharts';
+import { Award, Loader, BarChart3, FileText } from 'lucide-react';
 import { GlassCard } from '../components/GlassCard';
-import { PedagogicalInsightBadge } from '../components/PedagogicalInsightBadge';
-import { StatusChip } from '../components/Atoms';
-import { getSelectedStudyCase, useStudyScopeStore } from '../state/studyScope';
+import { AdaptiveFeedbackSheet } from '../components/AdaptiveFeedbackSheet';
 
-const benchmark = {
-  ttr: 0.58,
-  cohesion: 4.1,
-  lexical: 4.0,
-  grammar: 4.0,
-  errorDensity: 1.8,
-  argumentation: 4.2,
-};
+const API_BASE = 'http://localhost:5000/api';
 
-export function Station04() {
-  const cases = useStudyScopeStore((state) => state.cases);
-  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
-  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
-  const student = selectedCase?.student;
+/**
+ * Station 04 - Competence Profiling
+ * Competence Profile & Comparative Analysis against benchmarks
+ */
+export const Station04: React.FC = () => {
+  const { studentId } = useParams();
+  const token = useAuthStore(state => state.token);
+  const [student, setStudent] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
-  const radarData = student
-    ? [
-        { subject: 'Vocabulary (TTR)', A: student.ttr * 100, B: benchmark.ttr * 100, fullMark: 100 },
-        { subject: 'Cohesion', A: student.cohesion * 20, B: benchmark.cohesion * 20, fullMark: 100 },
-        { subject: 'Lexical Resource', A: student.lexical_resource * 20, B: benchmark.lexical * 20, fullMark: 100 },
-        { subject: 'Grammar Accuracy', A: student.grammar_accuracy * 20, B: benchmark.grammar * 20, fullMark: 100 },
-        { subject: 'Error Density (Inv)', A: Math.max(0, 100 - student.error_density * 5), B: Math.max(0, 100 - benchmark.errorDensity * 5), fullMark: 100 },
-        { subject: 'Argumentation', A: student.argumentation * 20, B: benchmark.argumentation * 20, fullMark: 100 },
-      ]
-    : [];
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const id = studentId || '9263';
+        const response = await fetch(`${API_BASE}/student/${id}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setStudent(data.student);
+        }
+      } catch (err) {
+        console.error('Failed to load student:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchData();
+  }, [studentId, token]);
+
+  if (loading) return <div className="flex items-center justify-center h-screen"><Loader className="animate-spin" size={40} /></div>;
+  if (!student) return <div className="p-8 text-center text-[var(--text-muted)]">No student data available</div>;
+
+  // Scale all metrics to 0-100
+  const scaleMetric = (value: number, max: number = 5) => Math.min(100, (value / max) * 100);
+
+  const competenceBenchmark = {
+    lexical: 86,
+    cohesion: 82,
+    academic_lexis: 80,
+    grammar: 84,
+    logic: 85,
+  };
+
+  const radarData = [
+    { 
+      name: 'Lexical Range', 
+      student: scaleMetric(student.ttr || 0, 1),
+      benchmark: competenceBenchmark.lexical
+    },
+    { 
+      name: 'Cohesion', 
+      student: scaleMetric(student.cohesion || 0),
+      benchmark: competenceBenchmark.cohesion
+    },
+    { 
+      name: 'Academic Lexis', 
+      student: scaleMetric(student.lexical_resource || 0),
+      benchmark: competenceBenchmark.academic_lexis
+    },
+    { 
+      name: 'Grammar', 
+      student: scaleMetric(student.grammar_accuracy || 0),
+      benchmark: competenceBenchmark.grammar
+    },
+    { 
+      name: 'Logic & Arg', 
+      student: scaleMetric(student.argumentation || 0),
+      benchmark: competenceBenchmark.logic
+    },
+  ];
+
+  const dimensionBreakdown = [
+    { dimension: 'Lexical', value: scaleMetric(student.ttr || 0, 1), color: 'var(--lav)' },
+    { dimension: 'Cohesion', value: scaleMetric(student.cohesion || 0), color: 'var(--blue)' },
+    { dimension: 'Lexical Res.', value: scaleMetric(student.lexical_resource || 0), color: 'var(--teal)' },
+    { dimension: 'Grammar', value: scaleMetric(student.grammar_accuracy || 0), color: 'var(--violet)' },
+    { dimension: 'Argumentation', value: scaleMetric(student.argumentation || 0), color: 'var(--color-danger-500)' },
+  ];
+
+  const averageScore = (radarData.reduce((sum, d) => sum + d.student, 0) / radarData.length).toFixed(1);
+  const benchmarkAverage = (radarData.reduce((sum, d) => sum + d.benchmark, 0) / radarData.length).toFixed(1);
 
   return (
-    <PipelineLayout
-      verifiedEnabled={Boolean(selectedCase && student)}
-      unavailableTitle="Verified Stylometric Analysis Unavailable"
-      unavailableMessage="Import a verified workbook case before opening the stylometric station."
-      rightPanel={
-        student ? (
-          <PedagogicalInsightBadge
-            urgency="monitor"
-            label="Stylometric Profile Synthesis"
-            observation={`${selectedCase?.meta.studentName}'s vocabulary range is workable (TTR ${student.ttr.toFixed(2)}), but grammar accuracy (${student.grammar_accuracy.toFixed(1)}/5) and argumentation (${student.argumentation.toFixed(1)}/5) remain below the target band.`}
-            implication="The main gap is higher-order control: claim development, sentence accuracy, and explicit links between evidence and stance."
-            action="Model sentence combining and claim-evidence explanation in the next feedback round."
-            citation="Crossley & McNamara (2012) - Automated NLP indices of writing quality"
-          />
-        ) : undefined
-      }
-    >
-      <div className="max-w-7xl mx-auto p-6 md:p-8 pb-32">
-        <StationHeader id={4} title="Stylometric Fingerprint" subtitle="Layer 5: NLP and Systematic Analytics" />
+    <div className="min-h-screen bg-[var(--bg-deep)] p-6 space-y-8">
+      {/* Header */}
+      <div className="max-w-7xl mx-auto">
+        <h1 className="text-4xl font-bold text-[var(--text-primary)] mb-2 flex items-center gap-3">
+          <Award size={32} className="text-[var(--lav)]" />
+          Station 04: Competence Profile & Comparative Analysis
+        </h1>
+        <p className="text-[var(--text-muted)]">Multi-dimensional competence assessment for <span className="text-[var(--lav)] font-semibold">{student.name || 'Student'}</span></p>
+      </div>
 
-        <GlassCard className="p-4 mb-6 bg-[var(--bg-raised)]/40 border-dashed border-[var(--border-bright)]">
-          <p className="font-body text-sm text-[var(--text-sec)] leading-relaxed">
-            This station shows the NLP-derived and stylometric indicators extracted from the selected case, including TTR, cohesion, lexical resource, grammar accuracy, error density, and argumentation.
-          </p>
+      {/* Main Grid */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Radar Chart - Student vs Benchmark */}
+        <GlassCard className="p-8 border-[var(--border)]">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6">Student vs Benchmark Comparison</h2>
+          <div className="h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <RadarChart data={radarData}>
+                <PolarGrid stroke="var(--border)" />
+                <PolarAngleAxis dataKey="name" stroke="var(--text-muted)" fontSize={12} />
+                <PolarRadiusAxis angle={90} domain={[0, 100]} stroke="var(--text-muted)" />
+                <Radar name="Student" dataKey="student" stroke="var(--lav)" fill="var(--lav)" fillOpacity={0.25} strokeWidth={2} />
+                <Radar name="Benchmark" dataKey="benchmark" stroke="var(--blue)" fill="transparent" strokeWidth={2} strokeDasharray="5 5" />
+                <Tooltip formatter={(value: any) => value.toFixed(1)} contentStyle={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }} />
+              </RadarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="mt-4 flex gap-4 justify-center">
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 rounded-full" style={{ background: 'var(--lav)' }}></div>
+              <span className="text-sm text-[var(--text-muted)]">Student Performance</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <div className="w-3 h-3 border-2 border-[var(--blue)]" style={{ borderStyle: 'dashed' }}></div>
+              <span className="text-sm text-[var(--text-muted)]">Benchmark Target</span>
+            </div>
+          </div>
         </GlassCard>
 
-        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8 mb-8">
-          <GlassCard elevation="high" className="xl:col-span-8 p-6 md:p-8 flex flex-col min-h-[420px] md:min-h-[500px]" pedagogicalLabel="This radar charts six key writing indices against the target band for a successful argumentative paragraph.">
-            <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6">
-              <div>
-                <h3 className="font-navigation text-lg font-medium text-[var(--text-primary)]">Individual Competence Profile</h3>
-                <p className="font-body text-[var(--text-sec)] text-sm">Case Study: {selectedCase?.meta.studentName}</p>
-              </div>
-              <div className="bg-[var(--bg-deep)] border border-[var(--border)] text-[var(--text-primary)] rounded px-4 py-1.5 font-forensic text-xs break-words">
-                ID: {student?.student_id}
-              </div>
-            </div>
-
-            <div className="flex-1 w-full min-h-[300px]">
-              <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={280}>
-                <RadarChart cx="50%" cy="50%" outerRadius="80%" data={radarData}>
-                  <PolarGrid stroke="var(--border)" />
-                  <PolarAngleAxis dataKey="subject" tick={{ fill: 'var(--text-sec)', fontSize: 11, fontFamily: 'var(--font-navigation)' }} />
-                  <PolarRadiusAxis angle={30} domain={[0, 100]} tick={false} axisLine={false} />
-                  <Radar name={selectedCase?.meta.studentName ?? 'Selected student'} dataKey="A" stroke="var(--lav)" strokeWidth={2} fill="var(--lav)" fillOpacity={0.4} />
-                  <Radar name="Target Benchmark" dataKey="B" stroke="var(--teal)" strokeWidth={2} strokeDasharray="4 4" fill="transparent" />
-                </RadarChart>
-              </ResponsiveContainer>
-            </div>
-            <div className="flex justify-center gap-6 mt-4 font-navigation text-xs">
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full bg-[var(--lav)] opacity-80"></div>
-                <span className="text-[var(--text-primary)]">{selectedCase?.meta.studentName}&apos;s Performance</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-3 h-3 rounded-full border-2 border-[var(--teal)] border-dashed"></div>
-                <span className="text-[var(--text-sec)]">Target Benchmark</span>
-              </div>
-            </div>
-          </GlassCard>
-
-          <div className="xl:col-span-4 flex flex-col gap-6">
-            <div className="space-y-3">
-              <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--text-sec)] mb-2">Individual Indicators</h3>
-              <GlassCard className="p-4 bg-[var(--bg-raised)] border-l-2 border-[var(--teal)]" pedagogicalLabel="High TTR indicates broader lexical range.">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-navigation font-medium text-[var(--text-primary)] text-sm">Vocabulary Diversity</span>
-                  <StatusChip variant={(student?.ttr ?? 0) > 0.4 ? 'teal' : 'gold'}>{(student?.ttr ?? 0) > 0.4 ? 'EXPECTED' : 'LOW'}</StatusChip>
-                </div>
-                <p className="font-body text-xs text-[var(--text-sec)]">TTR Score: {student?.ttr.toFixed(2)}</p>
-              </GlassCard>
-              <GlassCard className="p-4 bg-[var(--bg-raised)] border-l-2 border-[var(--lav)]" pedagogicalLabel="Lexical resource indicates how varied and academically appropriate the vocabulary is.">
-                <div className="flex justify-between items-center mb-1">
-                  <span className="font-navigation font-medium text-[var(--text-primary)] text-sm">Lexical Resource</span>
-                  <StatusChip variant={(student?.lexical_resource ?? 0) >= 4.0 ? 'teal' : 'lav'}>{(student?.lexical_resource ?? 0) >= 4.0 ? 'PROFICIENT' : 'DEVELOPING'}</StatusChip>
-                </div>
-                <p className="font-body text-xs text-[var(--text-sec)]">Score: {student?.lexical_resource.toFixed(1)} / 5</p>
-              </GlassCard>
-            </div>
-
-            <GlassCard className="p-6 flex-1 bg-[var(--bg-base)] border-[var(--border)] overflow-hidden" pedagogicalLabel="Raw indices extracted from the active case text and revision history.">
-              <h3 className="font-navigation text-sm uppercase tracking-widest text-[var(--lav-dim)] mb-6">Individual Telemetry</h3>
-              <div className="font-forensic text-xs space-y-6">
-                <Telemetry label="TTR_SCORE" color="var(--teal)" value={student?.ttr ?? 0} scale={10} display={student?.ttr.toFixed(2) ?? '0.00'} />
-                <Telemetry label="COHESION_IDX" color="var(--gold)" value={(student?.cohesion ?? 0) / 5} scale={10} display={student?.cohesion.toFixed(2) ?? '0.00'} />
-                <Telemetry label="ERROR_DENSITY" color="var(--red)" value={Math.max(0, Math.min(1, (student?.error_density ?? 0) / 10))} scale={10} display={student?.error_density.toFixed(1) ?? '0.0'} />
-                <div className="pt-4 border-t border-[var(--border)] mt-4">
-                  <div className="flex justify-between items-center text-[var(--text-primary)] mb-2">
-                    <span>{student?.student_id ? `AS_${student.student_id}_STATUS` : 'CASE_STATUS'}</span>
-                    <span className={`font-bold ${(student?.total_score ?? 0) >= 10 ? 'text-[var(--teal)]' : 'text-[var(--red)]'}`}>
-                      {(student?.total_score ?? 0) >= 10 ? 'ON TRACK' : 'BELOW TARGET'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </GlassCard>
+        {/* Competence Breakdown by Dimension */}
+        <GlassCard className="p-8 border-[var(--border)]">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
+            <BarChart3 size={20} className="text-[var(--blue)]" />
+            Competence Breakdown
+          </h2>
+          <div className="h-96">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={dimensionBreakdown}>
+                <CartesianGrid stroke="var(--border)" />
+                <XAxis dataKey="dimension" stroke="var(--text-muted)" angle={-45} textAnchor="end" height={80} />
+                <YAxis stroke="var(--text-muted)" domain={[0, 100]} />
+                <Tooltip formatter={(v: any) => v.toFixed(1)} contentStyle={{ background: 'var(--bg-raised)', border: '1px solid var(--border)' }} />
+                <Bar dataKey="value" fill="var(--lav)" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
           </div>
-        </div>
-
-        <StationFooter prevPath="/pipeline/3" nextPath="/pipeline/5" />
+        </GlassCard>
       </div>
-    </PipelineLayout>
-  );
-}
 
-function Telemetry({ label, color, value, scale, display }: { label: string; color: string; value: number; scale: number; display: string }) {
-  const filled = Math.max(0, Math.min(scale, Math.round(value * scale)));
-  return (
-    <div>
-      <div className="flex flex-col gap-2 sm:flex-row sm:justify-between sm:items-center text-[var(--text-primary)] mb-2">
-        <span className="break-words">{label}</span>
-        <span className="flex items-center gap-2 flex-wrap sm:justify-end">
-          <span style={{ color }} className="tracking-tighter break-all">{'#'.repeat(filled) + '-'.repeat(scale - filled)}</span>
-          <span className="w-12 text-right shrink-0">{display}</span>
-        </span>
+      {/* Comparison Metrics */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <GlassCard className="p-6 border-[var(--lav)]/20 bg-[var(--lav)]/5">
+          <p className="text-sm text-[var(--text-muted)] uppercase mb-2">Student Average Score</p>
+          <p className="text-4xl font-bold text-[var(--lav)]">{averageScore}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-2">Across all competence dimensions</p>
+        </GlassCard>
+        <GlassCard className="p-6 border-[var(--blue)]/20 bg-[var(--blue)]/5">
+          <p className="text-sm text-[var(--text-muted)] uppercase mb-2">Benchmark Target</p>
+          <p className="text-4xl font-bold text-[var(--blue)]">{benchmarkAverage}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-2">Expected performance level</p>
+        </GlassCard>
+        <GlassCard className="p-6 border-[var(--teal)]/20 bg-[var(--teal)]/5">
+          <p className="text-sm text-[var(--text-muted)] uppercase mb-2">Gap Analysis</p>
+          <p className="text-4xl font-bold text-[var(--teal)]">{(parseFloat(benchmarkAverage) - parseFloat(averageScore)).toFixed(1)}</p>
+          <p className="text-xs text-[var(--text-muted)] mt-2">Points to benchmark</p>
+        </GlassCard>
       </div>
+
+      {/* Detailed Breakdown */}
+      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8">
+        {/* Strengths */}
+        <GlassCard className="p-6 border-emerald-500/20 bg-emerald-500/5">
+          <h3 className="font-bold text-emerald-400 mb-4 flex items-center gap-2">
+            ? Competence Strengths
+          </h3>
+          <ul className="space-y-3">
+            {radarData
+              .sort((a, b) => b.student - a.student)
+              .slice(0, 3)
+              .map((item, idx) => (
+                <li key={idx} className="flex justify-between items-center p-3 rounded-lg bg-[var(--bg-raised)]">
+                  <span className="text-sm text-[var(--text-primary)]">{item.name}</span>
+                  <span className="text-sm font-bold text-emerald-400">{item.student.toFixed(1)}/100</span>
+                </li>
+              ))}
+          </ul>
+        </GlassCard>
+
+        {/* Development Areas */}
+        <GlassCard className="p-6 border-amber-500/20 bg-amber-500/5">
+          <h3 className="font-bold text-amber-400 mb-4 flex items-center gap-2">
+            ? Development Areas
+          </h3>
+          <ul className="space-y-3">
+            {radarData
+              .sort((a, b) => a.student - b.student)
+              .slice(0, 3)
+              .map((item, idx) => (
+                <li key={idx} className="flex justify-between items-center p-3 rounded-lg bg-[var(--bg-raised)]">
+                  <span className="text-sm text-[var(--text-primary)]">{item.name}</span>
+                  <span className="text-sm font-bold text-amber-400">{item.student.toFixed(1)}/100</span>
+                </li>
+              ))}
+          </ul>
+        </GlassCard>
+      </div>
+
+      {/* Insights */}
+      <div className="max-w-7xl mx-auto">
+        <GlassCard className="p-6 border-[var(--lav)]/20">
+          <h3 className="font-bold text-[var(--lav)] mb-3">Key Insights</h3>
+          <ul className="space-y-2 text-sm text-[var(--text-muted)]">
+            <li>� Student shows strongest competence in {radarData.reduce((max, d) => d.student > max.student ? d : max).name}</li>
+            <li>� Primary focus area: {radarData.reduce((min, d) => d.student < min.student ? d : min).name}</li>
+            <li>� Overall performance is {parseFloat(averageScore) >= parseFloat(benchmarkAverage) ? 'meeting' : 'below'} benchmark standards</li>
+            <li>� Recommended next steps: Focus on developing {radarData.find(d => d.student === Math.min(...radarData.map(r => r.student)))?.name} skills</li>
+          </ul>
+        </GlassCard>
+      </div>
+
+      {/* Adaptive Feedback Sheet Section */}
+      <div className="max-w-7xl mx-auto">
+        <GlassCard className="p-8 border-[var(--border)] overflow-hidden">
+          <h2 className="text-xl font-bold text-[var(--text-primary)] mb-6 flex items-center gap-2">
+            <FileText size={24} className="text-[var(--lav)]" />
+            Adaptive Blended Assessment Feedback Sheet
+          </h2>
+          <p className="text-[var(--text-muted)] mb-8 text-sm">
+            This sheet operationalizes the adaptive assessment mechanism, mapping analytics directly to targeted feedback exactly as specified in the framework.
+          </p>
+          <div className="bg-gray-100 rounded-lg overflow-x-auto p-4 md:p-8">
+            <AdaptiveFeedbackSheet student={student} />
+          </div>
+        </GlassCard>
+      </div>
+
     </div>
   );
-}
+};
+
+export default Station04;
+
+

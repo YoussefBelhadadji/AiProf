@@ -1,17 +1,26 @@
-import { useMemo, useRef, useState } from 'react';
-import { ResearchShell } from '../layouts/ResearchShell';
-import { GlassCard } from '../components/GlassCard';
-import { Button, StatusChip } from '../components/Atoms';
-import { Upload, FileType, CheckCircle2, AlertCircle, ArrowRight, Users, BookOpenText } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+﻿import React, { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { 
+  Upload, 
+  FileText, 
+  CheckCircle2, 
+  AlertCircle, 
+  ArrowRight, 
+  Database,
+  CloudUpload,
+  Search,
+  ChevronRight,
+  Loader2
+} from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { uploadWorkbooks } from '../services/workbookApi';
 import { mapParsedCaseToStudyCase, useStudyScopeStore, type TeacherStudyCase } from '../state/studyScope';
 
-export function Import() {
+export const Import: React.FC = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const importCases = useStudyScopeStore((state) => state.importCases);
+  
   const [step, setStep] = useState(1);
   const [isUploading, setIsUploading] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
@@ -19,9 +28,9 @@ export function Import() {
   const [errorMessage, setErrorMessage] = useState('');
 
   const steps = [
-    { id: 1, label: 'Upload', icon: Upload },
-    { id: 2, label: 'Review', icon: Users },
-    { id: 3, label: 'Finalize', icon: CheckCircle2 },
+    { id: 1, label: 'Data Ingestion', icon: CloudUpload, desc: 'Upload Moodle/Excel workbooks' },
+    { id: 2, label: 'Evidence Review', icon: Search, desc: 'Verify detected learner cases' },
+    { id: 3, label: 'Finalize Workspace', icon: CheckCircle2, desc: 'Commit to research registry' },
   ];
 
   const totals = useMemo(() => {
@@ -34,12 +43,9 @@ export function Import() {
     );
   }, [parsedCases]);
 
-  const analyticsStatus = parsedCases[0]?.analytics ?? null;
-  const uniqueLearnerCount = new Set(parsedCases.map((studyCase) => studyCase.meta.userId)).size;
-
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
-      setErrorMessage('Select at least one workbook before starting the import.');
+      setErrorMessage('Please select at least one dataset before proceeding.');
       return;
     }
 
@@ -52,7 +58,7 @@ export function Import() {
       setParsedCases(mappedCases);
       setStep(2);
     } catch (error) {
-      setErrorMessage(error instanceof Error ? error.message : 'Import failed.');
+      setErrorMessage(error instanceof Error ? error.message : 'Ingestion failed. Check file format.');
     } finally {
       setIsUploading(false);
     }
@@ -60,7 +66,7 @@ export function Import() {
 
   const finalizeImport = () => {
     if (parsedCases.length === 0) {
-      setErrorMessage('No parsed cases are available to import.');
+      setErrorMessage('No valid evidence cases to import.');
       return;
     }
 
@@ -69,244 +75,208 @@ export function Import() {
   };
 
   return (
-    <ResearchShell>
-      <div className="max-w-5xl mx-auto px-4 py-8">
-        <header className="mb-8">
-          <h1 className="font-editorial text-4xl text-[var(--text-primary)] mb-2">Teacher Intake Wizard</h1>
-          <p className="text-[var(--text-sec)] font-body">
-            Upload one or more student workbooks, review the detected cases, then choose them from the dashboard and student registry.
-          </p>
-        </header>
-
-        <div className="flex items-center gap-4 mb-10">
-          {steps.map((stepItem, idx) => (
-            <div key={stepItem.id} className="flex items-center gap-4 flex-1">
-              <div className={`flex items-center gap-2 ${step >= stepItem.id ? 'text-[var(--lav)]' : 'text-[var(--text-muted)]'}`}>
-                <div className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-colors ${step >= stepItem.id ? 'border-[var(--lav)] bg-[var(--lav-glow)]' : 'border-[var(--border)]'}`}>
-                  <stepItem.icon size={16} />
-                </div>
-                <span className="font-navigation text-sm uppercase tracking-wider font-medium">{stepItem.label}</span>
-              </div>
-              {idx < steps.length - 1 && (
-                <div className={`h-px flex-1 transition-colors ${step > stepItem.id ? 'bg-[var(--lav)]' : 'bg-[var(--border)]'}`} />
-              )}
-            </div>
-          ))}
+    <div className="max-w-5xl mx-auto space-y-12 animate-fade-in">
+      {/* Header */}
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-[var(--border)]">
+        <div>
+           <div className="flex items-center gap-2 mb-2">
+              <CloudUpload className="w-4 h-4 text-[var(--lav)]" />
+              <span className="font-navigation text-xs uppercase tracking-widest font-bold text-[var(--text-muted)]">Data Acquisition</span>
+           </div>
+           <h1 className="font-editorial text-5xl italic text-[var(--text-primary)]">
+             Import <span className="text-[var(--lav)]">Workspace</span>
+           </h1>
         </div>
-
-        <AnimatePresence mode="wait">
-          {step === 1 && (
-            <motion.div
-              key="step1"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              <GlassCard elevation="high" className="p-12 border-dashed border-2 flex flex-col items-center text-center">
-                <div className="w-16 h-16 rounded-full bg-[var(--lav-glow)] flex items-center justify-center text-[var(--lav)] mb-6">
-                  <FileType size={32} />
-                </div>
-                <h2 className="text-2xl font-editorial text-[var(--text-primary)] mb-2">Upload student workbooks</h2>
-                <p className="text-[var(--text-sec)] mb-8 max-w-2xl">
-                  You can select one workbook for a single case study or several workbooks to build a teacher-side registry of students.
-                </p>
-
-                <input
-                  ref={fileInputRef}
-                  type="file"
-                  accept=".xlsx,.xls"
-                  multiple
-                  className="hidden"
-                  onChange={(event) => {
-                    const files = Array.from(event.target.files ?? []);
-                    setSelectedFiles(files);
-                    setErrorMessage('');
-                  }}
-                />
-
-                <div className="flex flex-col gap-4 w-full max-w-xl">
-                  <Button
-                    variant="primary"
-                    onClick={() => fileInputRef.current?.click()}
-                    className="w-full"
-                  >
-                    <Upload size={16} /> Select workbook files
-                  </Button>
-                  <Button
-                    variant="secondary"
-                    onClick={handleUpload}
-                    className="w-full relative overflow-hidden"
-                    isLoading={isUploading}
-                    disabled={selectedFiles.length === 0 || isUploading}
-                  >
-                    {isUploading ? 'Parsing workbooks...' : 'Parse selected files'}
-                    {isUploading && (
-                      <motion.div
-                        className="absolute bottom-0 left-0 h-1 bg-[var(--lav-glow)]"
-                        initial={{ width: 0 }}
-                        animate={{ width: '100%' }}
-                        transition={{ duration: 1.4 }}
-                      />
-                    )}
-                  </Button>
-
-                  <div className="rounded-lg border border-[var(--border)] bg-[var(--bg-deep)] px-4 py-4 text-left">
-                    <div className="flex items-center justify-between gap-3 mb-3">
-                      <span className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Selected files</span>
-                      <StatusChip variant="lav">{selectedFiles.length} file{selectedFiles.length !== 1 ? 's' : ''}</StatusChip>
-                    </div>
-                    <div className="space-y-2">
-                      {selectedFiles.length > 0 ? selectedFiles.map((file) => (
-                        <div key={file.name} className="font-forensic text-xs text-[var(--text-sec)]">
-                          {file.name}
-                        </div>
-                      )) : (
-                        <div className="font-body text-xs text-[var(--text-muted)]">No workbook selected yet.</div>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </GlassCard>
-
-              {errorMessage && (
-                <div className="mt-6 flex items-center gap-3 p-4 rounded-lg bg-[var(--gold-dim)] border border-[var(--gold)]/20 text-[var(--gold)] text-sm">
-                  <AlertCircle size={18} />
-                  <span>{errorMessage}</span>
-                </div>
-              )}
-            </motion.div>
-          )}
-
-          {step === 2 && (
-            <motion.div
-              key="step2"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              <GlassCard className="p-0 overflow-hidden">
-                <div className="p-6 border-b border-[var(--border)] flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
-                  <div>
-                    <h3 className="font-navigation text-[var(--text-primary)] font-medium">Detected student cases</h3>
-                    <p className="font-body text-xs text-[var(--text-sec)] mt-2">
-                      Review the detected students before adding them to the study workspace.
-                    </p>
-                    <p className="font-body text-xs text-[var(--text-muted)] mt-2">
-                      Current import analytics are computed from the imported workbook cohort inside the backend service. In this study, AI acts as a diagnostic and decision-support layer: it groups learner patterns, estimates likely writing development, infers competence states, and surfaces feedback signals for teacher review. It does not replace teacher scoring, interpretation, or intervention decisions.
-                    </p>
-                    {uniqueLearnerCount <= 1 && parsedCases.length > 0 && (
-                      <p className="font-body text-xs text-[var(--text-sec)] mt-2">
-                        Single-student case detected. All stations remain visible. S06-S08 run in case-level mode until you import enough verified workbooks for cohort-backed modelling.
-                      </p>
-                    )}
-                    {analyticsStatus && (
-                      <p className="font-body text-xs text-[var(--text-muted)] mt-2">
-                        Cohort size: {analyticsStatus.cohort_size}. Clustering: {analyticsStatus.clustering.available ? 'available' : analyticsStatus.clustering.reason}. Prediction: {analyticsStatus.prediction.available ? 'available' : analyticsStatus.prediction.reason}. Bayesian: {analyticsStatus.bayesian.available ? 'available' : analyticsStatus.bayesian.reason}
-                      </p>
-                    )}
-                  </div>
-                  <div className="flex gap-2 flex-wrap">
-                    <StatusChip variant="teal">{totals.students} students</StatusChip>
-                    <StatusChip variant="lav">{totals.tasks} tasks</StatusChip>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left text-sm font-body">
-                    <thead>
-                      <tr className="bg-[var(--bg-raised)] text-[var(--text-sec)]">
-                        <th className="p-4 font-medium uppercase text-xs">Workbook</th>
-                        <th className="p-4 font-medium uppercase text-xs">Student</th>
-                        <th className="p-4 font-medium uppercase text-xs">Course</th>
-                        <th className="p-4 font-medium uppercase text-xs">Tasks</th>
-                        <th className="p-4 font-medium uppercase text-xs">Workbook Period</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-[var(--border)]">
-                      {parsedCases.map((studyCase) => (
-                        <tr key={studyCase.id} className="hover:bg-[var(--bg-raised)] transition-colors">
-                          <td className="p-4 font-mono text-[var(--lav)] text-xs">{studyCase.workbookName}</td>
-                          <td className="p-4">
-                            <div className="font-navigation text-[var(--text-primary)]">{studyCase.meta.studentName}</div>
-                            <div className="font-forensic text-[10px] text-[var(--text-muted)]">User {studyCase.meta.userId}</div>
-                          </td>
-                          <td className="p-4 text-[var(--text-sec)]">{studyCase.meta.courseTitle}</td>
-                          <td className="p-4 text-[var(--text-sec)]">{studyCase.writing.artifacts.length}</td>
-                          <td className="p-4 text-[var(--text-sec)]">{studyCase.meta.periodCovered}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="p-6 bg-[var(--bg-raised)]/50 flex justify-end gap-3">
-                  <Button variant="ghost" onClick={() => setStep(1)}>Back</Button>
-                  <Button variant="primary" onClick={finalizeImport}>Add to workspace <ArrowRight size={16} /></Button>
-                </div>
-              </GlassCard>
-            </motion.div>
-          )}
-
-          {step === 3 && (
-            <motion.div
-              key="step3"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-            >
-              <GlassCard className="p-8">
-                <div className="flex items-start gap-6">
-                  <div className="w-12 h-12 rounded-full bg-[var(--teal-dim)] text-[var(--teal)] flex items-center justify-center shrink-0">
-                    <CheckCircle2 size={24} />
-                  </div>
-                  <div className="flex-1">
-                    <h3 className="text-2xl font-editorial text-[var(--text-primary)] mb-2">Teacher workspace updated</h3>
-                    <p className="text-[var(--text-sec)] mb-6">
-                      {parsedCases.length} student case{parsedCases.length !== 1 ? 's were' : ' was'} added. You can now select any imported student, choose a specific exercise, and activate the variables you want to examine from the dashboard.
-                    </p>
-                    {uniqueLearnerCount <= 1 && (
-                      <div className="mb-6 rounded-lg border border-[var(--gold)]/20 bg-[var(--gold-dim)] px-4 py-3">
-                        <p className="font-body text-sm text-[var(--text-sec)]">
-                          Single-student case mode is now active. You can still open S06-S08 in case-level mode. They will switch automatically to cohort-backed analytics after more verified workbooks are imported.
-                        </p>
-                      </div>
-                    )}
-
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
-                      <div className="p-4 rounded-lg bg-[var(--bg-deep)] border border-[var(--border)]">
-                        <div className="text-xs text-[var(--text-muted)] uppercase mb-1">Students added</div>
-                        <div className="text-[var(--teal)] font-mono">{totals.students}</div>
-                      </div>
-                      <div className="p-4 rounded-lg bg-[var(--bg-deep)] border border-[var(--border)]">
-                        <div className="text-xs text-[var(--text-muted)] uppercase mb-1">Detected tasks</div>
-                        <div className="text-[var(--lav)] font-mono">{totals.tasks}</div>
-                      </div>
-                      <div className="p-4 rounded-lg bg-[var(--bg-deep)] border border-[var(--border)]">
-                        <div className="text-xs text-[var(--text-muted)] uppercase mb-1">Ready for scope selection</div>
-                        <div className="text-[var(--gold)] font-mono">Yes</div>
-                      </div>
-                    </div>
-
-                    <div className="flex gap-4 flex-wrap">
-                      <Button variant="primary" onClick={() => navigate('/dashboard')}>
-                        Open dashboard controls <ArrowRight size={16} />
-                      </Button>
-                      <Button variant="ghost" onClick={() => navigate('/students')}>
-                        Open student registry
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </GlassCard>
-
-              <div className="mt-6 flex items-center gap-3 p-4 rounded-lg bg-[var(--gold-dim)] border border-[var(--gold)]/20 text-[var(--gold)] text-sm">
-                <BookOpenText size={18} />
-                <span>The next step is not re-importing the same file. Use the dashboard controls to choose the student, the exercise, and the variables to study.</span>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        
+        <p className="max-w-md text-sm text-[var(--text-sec)] leading-relaxed italic">
+          Standardized intake wizard for Moodle logs, Excel rubrics, and student writing samples.
+        </p>
       </div>
-    </ResearchShell>
+
+      {/* Progress Stepper */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {steps.map((s) => (
+          <div key={s.id} className={`p-6 rounded-2xl border transition-all duration-500 ${
+            step === s.id ? 'bg-[var(--bg-high)] border-[var(--lav-border)] shadow-[0_0_20px_var(--lav-glow)]' : 
+            step > s.id ? 'bg-[var(--bg-sidebar)] border-[var(--teal-dim)] opacity-80' : 
+            'bg-[var(--bg-sidebar)] border-[var(--border)] opacity-40'
+          }`}>
+             <div className="flex items-center justify-between mb-4">
+                <div className={`p-2 rounded-lg ${step >= s.id ? 'bg-[var(--lav-dim)] text-[var(--lav)]' : 'bg-[var(--bg-deep)] text-[var(--text-muted)]'}`}>
+                   <s.icon className="w-5 h-5" />
+                </div>
+                {step > s.id && <CheckCircle2 className="w-4 h-4 text-[var(--teal)]" />}
+             </div>
+             <h4 className="font-navigation text-xs uppercase tracking-widest font-bold mb-1">{s.label}</h4>
+             <p className="text-xs text-[var(--text-muted)] truncate">{s.desc}</p>
+          </div>
+        ))}
+      </div>
+
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <motion.div 
+            key="step1" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}
+            className="glass-card p-12 border-dashed border-2 border-[var(--border-bright)] flex flex-col items-center text-center relative overflow-hidden"
+          >
+            <div className="absolute top-0 left-0 w-full h-1 bg-[rgba(255,255,255,0.05)] overflow-hidden">
+               {isUploading && <div className="h-full bg-[var(--lav)] animate-shimmer" style={{ width: '40%' }}></div>}
+            </div>
+
+            <div className="w-20 h-20 rounded-2xl bg-[var(--bg-high)] flex items-center justify-center mb-8 shadow-inner">
+               <Database className="w-10 h-10 text-[var(--lav)]" />
+            </div>
+
+            <h2 className="font-editorial text-3xl italic mb-4 text-[var(--text-primary)]">Drop Analytical Datasets</h2>
+            <p className="text-[var(--text-sec)] max-w-xl mb-10 leading-relaxed font-body">
+              Select one or more .xlsx / .xls files exported from Moodle or private research logs. 
+              The system will automatically map behaviors, writing signals, and communication traces.
+            </p>
+
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept=".xlsx,.xls"
+              multiple
+              className="hidden"
+              onChange={(e) => setSelectedFiles(Array.from(e.target.files ?? []))}
+            />
+
+            <div className="flex flex-col gap-4 w-full max-w-md">
+               <button 
+                onClick={() => fileInputRef.current?.click()}
+                className="btn-ghost py-4 rounded-xl flex items-center justify-center gap-3 border-[var(--border-bright)] group"
+               >
+                  <Upload className="w-4 h-4 group-hover:scale-110 transition-transform" />
+                  <span className="font-navigation text-xs uppercase tracking-widest font-bold">Select Local Files</span>
+               </button>
+
+               {selectedFiles.length > 0 && (
+                 <div className="p-4 rounded-xl bg-[rgba(0,0,0,0.2)] border border-[var(--border)] text-left animate-in zoom-in-95">
+                    <div className="font-navigation text-xs uppercase tracking-widest text-[var(--text-muted)] mb-3 font-bold">Queued for Ingestion</div>
+                    <div className="space-y-2">
+                       {selectedFiles.map(f => (
+                         <div key={f.name} className="flex items-center gap-2 text-xs text-[var(--text-sec)] font-forensic">
+                            <FileText className="w-3 h-3" />
+                            <span className="truncate">{f.name}</span>
+                         </div>
+                       ))}
+                    </div>
+                 </div>
+               )}
+
+               <button 
+                onClick={handleUpload}
+                disabled={selectedFiles.length === 0 || isUploading}
+                className="btn-primary py-4 rounded-xl flex items-center justify-center gap-3 disabled:opacity-50"
+               >
+                  {isUploading ? <Loader2 className="w-4 h-4 animate-spin" /> : <CloudUpload className="w-4 h-4" />}
+                  <span className="font-navigation text-xs uppercase tracking-widest font-bold">Process Evidence</span>
+               </button>
+            </div>
+
+            {errorMessage && (
+              <div className="mt-8 flex items-center gap-3 p-4 rounded-xl bg-[var(--red-dim)] border border-[var(--red-glow)] text-[var(--red)] text-xs font-navigation font-bold uppercase tracking-wide">
+                <AlertCircle className="w-4 h-4" />
+                <span>{errorMessage}</span>
+              </div>
+            )}
+          </motion.div>
+        )}
+
+        {step === 2 && (
+          <motion.div 
+            key="step2" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
+            className="space-y-8"
+          >
+            <div className="glass-card overflow-hidden">
+               <div className="p-8 border-b border-[var(--border)] flex justify-between items-center">
+                  <div>
+                    <h3 className="font-editorial text-2xl italic text-[var(--text-primary)]">Evidence Review Matrix</h3>
+                    <p className="text-xs text-[var(--text-muted)] mt-1 uppercase tracking-widest font-navigation font-bold">Verify parsed cases before commit</p>
+                  </div>
+                  <div className="flex gap-3">
+                     <div className="px-4 py-2 bg-[var(--bg-high)] rounded-lg text-xs font-navigation font-bold uppercase tracking-widest text-[var(--lav)] border border-[var(--lav-border)]">
+                        {totals.students} Cases Detected
+                     </div>
+                  </div>
+               </div>
+
+               <div className="overflow-x-auto">
+                 <table className="w-full text-left font-body">
+                   <thead className="bg-[var(--bg-deep)] text-[var(--text-muted)] border-b border-[var(--border)]">
+                     <tr>
+                       <th className="p-6 font-navigation text-xs uppercase tracking-widest font-bold">Identifier</th>
+                       <th className="p-6 font-navigation text-xs uppercase tracking-widest font-bold">Student Name</th>
+                       <th className="p-6 font-navigation text-xs uppercase tracking-widest font-bold">Tasks</th>
+                       <th className="p-6 font-navigation text-xs uppercase tracking-widest font-bold">Time Depth</th>
+                       <th className="p-6 font-navigation text-xs uppercase tracking-widest font-bold">Status</th>
+                     </tr>
+                   </thead>
+                   <tbody className="divide-y divide-[var(--border)]">
+                     {parsedCases.map((c) => (
+                       <tr key={c.id} className="hover:bg-[rgba(255,255,255,0.01)] transition-colors">
+                         <td className="p-6 font-forensic text-xs text-[var(--lav)]">{c.id.split(':')[0]}</td>
+                         <td className="p-6 font-editorial text-lg italic text-[var(--text-primary)]">{c.meta.studentName}</td>
+                         <td className="p-6 text-xs text-[var(--text-sec)]">{c.writing.artifacts.length} artifacts</td>
+                         <td className="p-6 text-xs text-[var(--text-sec)] italic">{c.meta.periodCovered}</td>
+                         <td className="p-6">
+                            <span className="chip chip-teal text-xs">Verified</span>
+                         </td>
+                       </tr>
+                     ))}
+                   </tbody>
+                 </table>
+               </div>
+
+               <div className="p-8 bg-[rgba(0,0,0,0.1)] flex justify-between items-center">
+                  <button onClick={() => setStep(1)} className="text-[var(--text-muted)] hover:text-white text-xs font-navigation uppercase font-bold tracking-widest">Back to upload</button>
+                  <button 
+                    onClick={finalizeImport}
+                    className="btn-primary px-10 py-4 rounded-xl flex items-center gap-3 shadow-[0_0_20px_var(--lav-glow)] group"
+                  >
+                     <span className="font-navigation text-xs uppercase tracking-widest font-bold">Commit to Registry</span>
+                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </button>
+               </div>
+            </div>
+          </motion.div>
+        )}
+
+        {step === 3 && (
+          <motion.div 
+            key="step3" initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.95 }}
+            className="glass-card p-16 text-center border-[var(--teal-dim)] glow-teal"
+          >
+             <div className="w-24 h-24 rounded-full bg-[var(--teal-dim)] border border-[var(--teal)]/20 flex items-center justify-center text-[var(--teal)] mx-auto mb-8 shadow-[0_0_30px_var(--teal-dim)]">
+                <CheckCircle2 className="w-12 h-12" />
+             </div>
+             
+             <h2 className="font-editorial text-4xl italic mb-4 text-[var(--text-primary)]">Registry Provisioned</h2>
+             <p className="text-[var(--text-sec)] max-w-2xl mx-auto mb-12 leading-relaxed">
+               The learner cases have been successfully integrated into the teacher repository. 
+               You can now utilize the scope controls to initiate high-resolution diagnostics.
+             </p>
+
+             <div className="flex flex-col md:flex-row gap-4 justify-center items-center">
+                <button 
+                  onClick={() => navigate('/dashboard')}
+                  className="btn-primary px-10 py-4 rounded-xl flex items-center gap-3 shadow-[0_0_20px_var(--lav-glow)] group"
+                >
+                  <span className="font-navigation text-xs uppercase tracking-widest font-bold">Enter Dashboard</span>
+                  <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </button>
+                <button 
+                  onClick={() => navigate('/students')}
+                  className="btn-ghost px-10 py-4 rounded-xl text-xs uppercase font-navigation font-bold tracking-widest border-[var(--border-bright)]"
+                >
+                  View Case Registry
+                </button>
+             </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
-}
+};
+

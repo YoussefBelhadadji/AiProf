@@ -1,0 +1,314 @@
+# AI Outputs Definition
+# These are the learner-state diagnoses the system generates from analytics and ML models
+# Each output maps to one or more rule interpretations and feedback families
+# Grounded in: SRL theory (Zimmerman), assessment literacy (Carless & Boud), L2 writing theory
+
+ai_outputs:
+
+  # =========================
+  # PROCESS / SELF-REGULATION OUTPUTS
+  # =========================
+  # These come from behavioural trace data and represent SRL phases
+  
+  forethought_risk:
+    description: "Readiness, planning quality, and criteria awareness in the forethought phase (Zimmerman)"
+    possible_states:
+      - value: low
+        meaning: "Active rubric consultation, adequate drafting time, reasonable early output"
+      - value: medium
+        meaning: "Some planning activity but incomplete or delayed"
+      - value: high
+        meaning: "No rubric views, short time-on-task, minimal early output"
+    evidence_sources:
+      - rubric_views
+      - time_on_task
+      - word_count_at_first_save
+      - first_access_delay_minutes
+    interpretation_if_high: "weak planning and weak criteria awareness"
+    interpretation_if_medium: "partial planning; criteria awareness developing"
+    interpretation_if_low: "strong forethought and criteria awareness"
+
+  engagement_risk:
+    description: "Sustained participation and resource-seeking behaviours"
+    possible_states:
+      - value: low
+        meaning: "Repeated engagement with assignment, resources, and drafting"
+      - value: medium
+        meaning: "Uneven participation, some gaps in resource use"
+      - value: high
+        meaning: "Very low views, low resource access, minimal submission activity"
+    evidence_sources:
+      - assignment_views
+      - resource_access_count
+      - submission_activity_frequency
+      - days_active_in_assignment
+    interpretation_if_high: "disengagement or low behavioural participation"
+    interpretation_if_medium: "variable engagement; needs monitoring"
+    interpretation_if_low: "consistent, high engagement"
+
+  revision_depth:
+    description: "Self-regulated revision through multiple drafts; extent of performance-phase monitoring"
+    possible_states:
+      - value: low
+        meaning: "Zero revisions or only surface-level cosmetic changes"
+      - value: medium
+        meaning: "One substantive revision; some content-level changes"
+      - value: high
+        meaning: "Multiple revisions with evidence of meaning-level improvements"
+    evidence_sources:
+      - revision_frequency
+      - draft_comparison_score  # proximity between drafts
+      - score_gain
+      - content_changes_vs_surface_changes_ratio
+    interpretation_if_high: "strong self-regulated revision and control"
+    interpretation_if_medium: "developing revision competence"
+    interpretation_if_low: "weak self-regulated revision"
+
+  feedback_uptake_state:
+    description: "Feedback literacy: ability to access, understand, and act on feedback"
+    possible_states:
+      - value: low
+        meaning: "Feedback viewed zero times, or viewed with no revision follow-up"
+      - value: medium
+        meaning: "Feedback viewed; partial revision alignment (some changes unrelated to feedback)"
+      - value: high
+        meaning: "Feedback viewed; clear revision aligned with feedback content"
+    evidence_sources:
+      - feedback_views
+      - revision_after_feedback
+      - feedback_alignment_score  # manually or ML-scored alignment
+      - time_between_feedback_and_revision
+    interpretation_if_high: "strong feedback literacy and internalization"
+    interpretation_if_medium: "partial feedback uptake; needs guidance"
+    interpretation_if_low: "weak feedback literacy or feedback not internalized"
+
+  help_seeking_state:
+    description: "Type and pattern of help-seeking behaviour; metacognitive awareness"
+    possible_states:
+      - value: none
+        meaning: "No help-seeking messages despite weak product quality"
+      - value: procedural
+        meaning: "Help requests about task format, system use, or submission"
+      - value: adaptive
+        meaning: "Help requests about content, argument, language use, or rubric interpretation"
+    evidence_sources:
+      - help_seeking_message_count
+      - help_seeking_message_content_classification
+      - performance_level_when_help_sought
+      - help_seeking_timing
+    interpretation_if_none: "passive approach or hidden difficulty; awareness gap"
+    interpretation_if_procedural: "instrumental engagement; limited metacognition"
+    interpretation_if_adaptive: "active metacognitive regulation and learning mindset"
+
+  # =========================
+  # PRODUCT / WRITING COMPETENCE OUTPUTS
+  # =========================
+  # These come from rubric scoring and text analytics
+  # Grounded in: Analytic writing assessment (Weigle), L2 writing theory (Hyland), functional grammar
+
+  argumentation_state:
+    description: "Quality of claim–evidence–reasoning structure in writing"
+    possible_states:
+      - value: low
+        meaning: "Argument score 1–2; weak claim, minimal evidence or explanation"
+      - value: medium
+        meaning: "Argument score 3; claim present with basic support"
+      - value: high
+        meaning: "Argument score 4–5; clear claim with relevant evidence and explanation"
+    evidence_sources:
+      - argumentation_rubric_score
+      - claims_per_paragraph
+      - evidence_use_count
+      - explanation_depth
+    interpretation_if_high: "strong argumentative competence"
+    interpretation_if_medium: "developing but variable argumentative competence"
+    interpretation_if_low: "weak claim–evidence–reasoning structure"
+
+  discourse_state:
+    description: "Text organization, cohesion, and logical flow"
+    possible_states:
+      - value: low
+        meaning: "Low organization score + low cohesion index; disjointed discourse"
+      - value: medium
+        meaning: "Partial organization; some transitions present but inconsistent"
+      - value: high
+        meaning: "Strong organization + high cohesion index; clear logical relationships"
+    evidence_sources:
+      - organization_rubric_score
+      - cohesion_score
+      - cohesion_index
+      - transition_markers_per_paragraph
+      - paragraph_unity_score
+    interpretation_if_high: "strong discourse competence"
+    interpretation_if_medium: "developing discourse organization"
+    interpretation_if_low: "discourse organization problem"
+
+  linguistic_accuracy_state:
+    description: "Grammatical accuracy, error control, and structural complexity"
+    possible_states:
+      - value: low
+        meaning: "Grammar score 1–2 + error density > 8; high error frequency"
+      - value: medium
+        meaning: "Grammar score 3 + error density 4–8; moderate, pattern-based errors"
+      - value: high
+        meaning: "Grammar score 4–5 + error density < 4; accurate, controlled structures"
+    evidence_sources:
+      - grammar_accuracy_rubric_score
+      - error_density_per_100_words
+      - error_patterns
+      - sentence_complexity_score
+    interpretation_if_high: "strong linguistic accuracy"
+    interpretation_if_medium: "developing grammatical control"
+    interpretation_if_low: "persistent grammar difficulty"
+
+  lexical_state:
+    description: "Vocabulary range, academic word use, and lexical precision"
+    possible_states:
+      - value: low
+        meaning: "Lexical score 1–2 + TTR < 0.5; repetitive, basic vocabulary"
+      - value: medium
+        meaning: "Lexical score 3 + TTR 0.5–0.65; developing variety and precision"
+      - value: high
+        meaning: "Lexical score 4–5 + TTR > 0.65; varied, academic, precise vocabulary"
+    evidence_sources:
+      - lexical_resource_rubric_score
+      - type_token_ratio
+      - academic_word_list_coverage
+      - word_frequency_band_distribution
+    interpretation_if_high: "strong lexical competence"
+    interpretation_if_medium: "developing lexical precision"
+    interpretation_if_low: "restricted lexical repertoire"
+
+  # =========================
+  # LEARNER PROFILE OUTPUTS (Clustering)
+  # =========================
+  # These are derived from K-means or hierarchical clustering on process + product indicators
+  # Labels are operational categories, not theoretical constructs
+
+  learner_profile:
+    description: "High-level learner categorization from clustering analysis"
+    possible_states:
+      - value: strategic_writer
+        meaning: "High planning, high engagement, strong revision, strong product"
+      - value: engaged_but_developing
+        meaning: "High engagement and effort, but product quality is moderate; needs strategy"
+      - value: effortful_but_struggling
+        meaning: "Strong effort and engagement but weak product; strategy or knowledge gap"
+      - value: disengaged
+        meaning: "Low engagement, minimal revision, weak product; motivation/participation risk"
+      - value: fragile_regulator
+        meaning: "Inconsistent across phases; shows strength in some areas but weak control overall"
+    evidence_sources:
+      - cluster_membership
+      - profile_interpretation_rules
+    interpretation_by_profile:
+      strategic_writer: "strong self-regulation and competence across phases"
+      engaged_but_developing: "high motivation; needs targeted skill development"
+      effortful_but_struggling: "strong effort but weak strategy or control; needs explicit support"
+      disengaged: "participation and motivation risk requiring re-engagement"
+      fragile_regulator: "inconsistent control; needs meta-awareness development"
+
+  # =========================
+  # PREDICTIVE OUTPUTS (Random Forest)
+  # =========================
+  # From machine learning models; support prioritization and intensity of support
+
+  predicted_improvement:
+    description: "Likelihood of positive score gain from current intervention level"
+    possible_states:
+      - value: low
+        meaning: "Model predicts minimal score gain without intensive support"
+      - value: medium
+        meaning: "Model predicts moderate gain with standard feedback"
+      - value: high
+        meaning: "Model predicts strong gain with targeted feedback"
+    evidence_sources:
+      - random_forest_predicted_gain
+      - model_confidence_score
+    interpretation_if_low: "likely stagnation without strong support"
+    interpretation_if_medium: "responsive to targeted development feedback"
+    interpretation_if_high: "high potential; targeted feedback expected to accelerate"
+
+  predicted_score_gain:
+    description: "Numeric estimate of expected score gain (in rubric points)"
+    possible_states:
+      - value: numeric
+        meaning: "0.0 to 5.0 rubric points predicted gain"
+    evidence_sources:
+      - random_forest_regression_output
+
+  predictor_importance:
+    description: "Ranked list of which variables most strongly predict this learner's improvement"
+    possible_states:
+      - value: ranked_list
+        meaning: "Features ranked by importance weight in the RF model"
+    evidence_sources:
+      - random_forest_feature_importance
+
+  # =========================
+  # BAYESIAN COMPETENCE OUTPUTS
+  # =========================
+  # Probabilistic estimates of latent competence states under uncertainty
+  # Grounded in: Assessment inference frameworks
+
+  argument_competence_prob:
+    description: "Posterior probability distribution over argument competence levels"
+    possible_states:
+      - value: low
+        meaning: "Posterior mostly concentrates on low-competence states"
+      - value: medium
+        meaning: "Posterior spread across medium; unstable or developing"
+      - value: high
+        meaning: "Posterior mostly concentrates on high-competence states"
+    evidence_sources:
+      - bayesian_posterior_distribution
+      - argument_structure
+      - evidence_use
+      - explanation_depth
+    interpretation_if_low: "weak argument competence; development needed"
+    interpretation_if_medium: "developing but unstable argumentative competence"
+    interpretation_if_high: "stable, strong argument competence"
+
+  cohesion_competence_prob:
+    description: "Posterior probability distribution over discourse cohesion competence"
+    possible_states:
+      - value: low
+        meaning: "Posterior mostly on low; coherence control is weak"
+      - value: medium
+        meaning: "Posterior spread; transition and linking ability developing"
+      - value: high
+        meaning: "Posterior mostly on high; consistent discourse control"
+    evidence_sources:
+      - bayesian_posterior_distribution
+      - cohesion_index
+      - transition_use
+      - paragraph_unity
+
+  linguistic_competence_prob:
+    description: "Posterior probability distribution over grammatical competence"
+    possible_states:
+      - value: low
+        meaning: "Posterior on low; form control is weak"
+      - value: medium
+        meaning: "Posterior spread; accuracy is inconsistent"
+      - value: high
+        meaning: "Posterior on high; grammatical control is stable"
+    evidence_sources:
+      - bayesian_posterior_distribution
+      - error_density
+      - error_patterns
+
+  srl_revision_competence_prob:
+    description: "Posterior probability of strong self-regulated revision competence"
+    possible_states:
+      - value: low
+        meaning: "Posterior on low; driven revision is weak"
+      - value: medium
+        meaning: "Posterior spread; revision ability sometimes evident"
+      - value: high
+        meaning: "Posterior on high; strong self-direction in revision"
+    evidence_sources:
+      - bayesian_posterior_distribution
+      - revision_frequency
+      - feedback_alignment
+      - goal-directed revision evidence

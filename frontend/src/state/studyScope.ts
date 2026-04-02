@@ -62,7 +62,7 @@ export type StudyStationId =
 export interface StudyStationOption {
   id: StudyStationId;
   label: string;
-  group: 'input' | 'analytics' | 'decision' | 'action';
+  group: 'Descriptive' | 'Modeling' | 'Feedback' | 'Growth';
   description: string;
 }
 
@@ -88,6 +88,7 @@ export interface TeacherStudyCase {
     introGrade: string;
     finalWordCount: number;
     dominantNeed: string;
+    isVerified: boolean;
   };
   student: StudentRecord;
   workspace: WorkspaceStudent;
@@ -290,18 +291,18 @@ export const STUDY_VARIABLES: StudyVariableOption[] = [
 ];
 
 export const STUDY_STATIONS: StudyStationOption[] = [
-  { id: 1, label: 'Writing Task', group: 'input', description: 'Task framing and initial writing artefacts.' },
-  { id: 2, label: 'Data Integration', group: 'input', description: 'Workbook evidence, logs, and communication traces.' },
-  { id: 3, label: 'Submission Patterns', group: 'analytics', description: 'Temporal activity, sessions, and engagement traces.' },
-  { id: 4, label: 'Stylometric Analysis', group: 'analytics', description: 'Writing quality and textual feature signals.' },
-  { id: 5, label: 'Evidence Matrix', group: 'analytics', description: 'Alignment across behavioural and writing signals.' },
-  { id: 6, label: 'Cluster Mapping', group: 'analytics', description: 'Learner profile grouping shown in case-level mode first and upgraded to cohort-backed clustering when enough imported cases are available.' },
-  { id: 7, label: 'Predictive Model', group: 'analytics', description: 'Prediction support showing influential factors in case-level mode or verified cohort modelling when available.' },
-  { id: 8, label: 'Bayesian Synthesis', group: 'analytics', description: 'Latent competence inference drawn from the adaptive competence-state layer for the selected case.' },
-  { id: 9, label: 'Diagnostic Signals', group: 'decision', description: 'Rule-based signals for teacher interpretation rather than automatic pedagogical judgment.' },
-  { id: 10, label: 'Feedback Planning', group: 'decision', description: 'Feedback triggers and evidence organisation to support the teacher response.' },
-  { id: 11, label: 'Intervention Planning', group: 'action', description: 'Instructional action planning led by the teacher.' },
-  { id: 12, label: 'Revision Cycle', group: 'action', description: 'Observed uptake and revision-based growth cycle.' },
+  { id: 1, label: 'Writing Data (Descriptive)', group: 'Descriptive', description: 'Descriptive statistics of task lengths and initial writing artefacts.' },
+  { id: 2, label: 'Log Analysis (Descriptive)', group: 'Descriptive', description: 'Descriptive statistics of workbook evidence, logs, and communication traces.' },
+  { id: 3, label: 'Engagement (Descriptive)', group: 'Descriptive', description: 'Descriptive timelines, temporal activity, sessions, and engagement.' },
+  { id: 4, label: 'Stylometric Features', group: 'Descriptive', description: 'Descriptive profiling of writing quality and textual feature signals.' },
+  { id: 5, label: 'Correlation Matrix', group: 'Modeling', description: 'Statistical correlations and alignment across behavioural and writing variables.' },
+  { id: 6, label: 'Clustering', group: 'Modeling', description: 'Algorithmic learner profile grouping and archetype assignment.' },
+  { id: 7, label: 'Random Forest', group: 'Modeling', description: 'Predictive modeling showcasing feature importance and key classifiers.' },
+  { id: 8, label: 'Bayesian Inference', group: 'Modeling', description: 'Latent competence and causal inference drawn via Bayesian network modeling.' },
+  { id: 9, label: 'Diagnostic Signals', group: 'Feedback', description: 'Translating statistical modeling into rule-based foundations for intervention.' },
+  { id: 10, label: 'Adaptive Feedback', group: 'Feedback', description: 'Specialized generation of adaptive feedback triggered by the modeled evidence.' },
+  { id: 11, label: 'Teacher Intervention', group: 'Feedback', description: 'Instructional action and targeted intervention planning led by the teacher.' },
+  { id: 12, label: 'Growth Analysis', group: 'Growth', description: 'Longitudinal growth analysis based on observed uptake and revision cycles.' },
 ];
 
 const DEFAULT_VARIABLE_IDS: StudyVariableId[] = [
@@ -423,6 +424,7 @@ export function mapParsedCaseToStudyCase(parsed: ParsedWorkbookCaseResponse): Te
     feedbackViewedAt: parsed.meta.feedbackViewedAt,
     introGrade: parsed.meta.introGrade,
     finalWordCount: student.word_count,
+    isVerified: true,
     dominantNeed:
       student.argumentation < 3.8
         ? 'argument expansion and stronger evidence'
@@ -519,8 +521,16 @@ export function getSelectedTask(studyCase: TeacherStudyCase | null | undefined, 
   return studyCase.writing.artifacts.find((artifact) => artifact.id === taskId) ?? null;
 }
 
-export function getStudyCaseVariableValue(studyCase: TeacherStudyCase, variableId: StudyVariableId): string {
-  const { student, rubric, thresholds } = studyCase;
+export function getStudyCaseVariableValue(studyCase: TeacherStudyCase, variableId: StudyVariableId, taskId?: string): string {
+  const { student, rubric, thresholds, writing } = studyCase;
+
+  if (taskId && taskId !== 'case-overview') {
+    const artifact = writing.artifacts.find((a) => a.id === taskId);
+    if (artifact) {
+      if (variableId === 'word_count') return String(artifact.wordCount);
+      if (variableId === 'rubric' && (artifact as any).score !== undefined) return `${(artifact as any).score}%`;
+    }
+  }
 
   switch (variableId) {
     case 'assignment_views':
@@ -559,12 +569,14 @@ interface StudyScopeState {
   selectedVariableIds: StudyVariableId[];
   selectedStationIds: StudyStationId[];
   importCases: (cases: TeacherStudyCase[]) => void;
+  resetWorkspace: () => void;
   selectCase: (caseId: string) => void;
   selectTask: (taskId: string) => void;
   toggleVariable: (variableId: StudyVariableId) => void;
   setVariableSelection: (variableIds: StudyVariableId[]) => void;
   toggleStation: (stationId: StudyStationId) => void;
   setStationSelection: (stationIds: StudyStationId[]) => void;
+  updateCase: (updatedCase: TeacherStudyCase) => void;
 }
 
 export const useStudyScopeStore = create<StudyScopeState>()(
@@ -594,6 +606,14 @@ export const useStudyScopeStore = create<StudyScopeState>()(
               ...Object.fromEntries(incomingCases.map((studyCase) => [studyCase.id, 'case-overview'])),
             },
           };
+        }),
+      resetWorkspace: () =>
+        set({
+          cases: [],
+          selectedCaseId: '',
+          selectedTaskByCase: {},
+          selectedVariableIds: DEFAULT_VARIABLE_IDS,
+          selectedStationIds: DEFAULT_STATION_IDS,
         }),
       selectCase: (caseId) =>
         set((state) => ({
@@ -646,12 +666,15 @@ export const useStudyScopeStore = create<StudyScopeState>()(
         set({
           selectedStationIds: stationIds.length > 0 ? [...stationIds].sort((a, b) => a - b) : DEFAULT_STATION_IDS,
         }),
+      updateCase: (updatedCase) =>
+        set((state) => ({
+          cases: state.cases.map((c) => (c.id === updatedCase.id ? updatedCase : c)),
+        })),
     }),
     {
       name: 'writelens-study-scope',
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({
-        cases: state.cases,
         selectedCaseId: state.selectedCaseId,
         selectedTaskByCase: state.selectedTaskByCase,
         selectedVariableIds: state.selectedVariableIds,

@@ -1,51 +1,400 @@
-thresholds:
+# WriteLens Threshold Configuration (2026 Academic Edition)
+# Evidence-Centered Design: Observable indicators → Pedagogical bands (Low/Moderate/Strong)
+# References: Mislevy (2003); Weigle (2002); Siemens (2013); Zimmerman (2000)
+
+metadata:
+  title: "WriteLens Comprehensive Threshold Bands"
+  description: "Threshold bands classify raw indicators into pedagogically meaningful categories"
+  version: "2.0"
+  last_updated: "2026-04-02"
+  methodology: "Evidence-Centered Design coupled with Self-Regulated Learning theory"
+
+# ============================================================================
+# TEXTUAL PRODUCT INDICATORS (Writing Output Analysis)
+# ============================================================================
+
+textual_indicators:
+
   word_count:
-    low: [0, 79]
-    moderate: [80, 119]
-    strong: [120, 1000]
-
-  time_on_task:
-    low: [0, 14.99]
-    moderate: [15, 29.99]
-    strong: [30, 300]
-
-  rubric_views:
-    low: [0, 0]
-    moderate: [1, 1]
-    strong: [2, 100]
-
-  revision_frequency:
-    low: [0, 0]
-    moderate: [1, 1]
-    strong: [2, 100]
+    display_name: "Essay Length"
+    unit: "words"
+    low_threshold: 80
+    moderate_threshold: 150
+    bands:
+      low:
+        range: [0, 79]
+        label: "Severely Under-Length"
+        description: "Insufficient content for meaningful assessment"
+        pedagogical_implication: "Critical gap in ideation or planning; needs brainstorming support"
+        action_priority: "High"
+      moderate:
+        range: [80, 150]
+        label: "Adequate Length"
+        description: "Meets minimum length requirement"
+        pedagogical_implication: "Ideas present but may lack development; watch for elaboration quality"
+        action_priority: "Medium"
+      strong:
+        range: [151, 1000]
+        label: "Substantial Length"
+        description: "Rich content density supporting detailed analysis"
+        pedagogical_implication: "Sufficient ideation; focus on organization and argumentation depth"
+        action_priority: "Low"
 
   error_density:
-    high_risk: [8.01, 100]
-    watch: [4, 8]
-    low_risk: [0, 3.99]
+    display_name: "Error Frequency Per 100 Words"
+    unit: "errors per 100 words"
+    low_threshold: 4.0
+    moderate_threshold: 7.9
+    high_threshold: 8.0
+    bands:
+      low:
+        range: [0, 3.9]
+        label: "Strong Accuracy"
+        description: "Consistent grammatical and mechanical accuracy"
+        pedagogical_implication: "Accuracy strengths can support higher-order feedback focus"
+        action_priority: "Low"
+      moderate:
+        range: [4.0, 7.9]
+        label: "Moderate Accuracy"
+        description: "Occasional errors present but not pervasive"
+        pedagogical_implication: "Targeted error correction may improve clarity"
+        action_priority: "Medium"
+      high:
+        range: [8.0, 20.0]
+        label: "Frequent Errors"
+        description: "Recurring error patterns reduce clarity"
+        pedagogical_implication: "Direct error correction and rule-focused instruction needed"
+        action_priority: "High"
+
+  grammar_accuracy:
+    display_name: "Grammar & Mechanics Score (Rubric-Based)"
+    unit: "rubric points (1-5 scale)"
+    bands:
+      low:
+        range: [1, 2]
+        label: "Developing Accuracy"
+        description: "Multiple error types interfere with meaning"
+        pedagogical_implication: "Explicit grammar instruction and targeted practice required"
+        action_priority: "High"
+      moderate:
+        range: [3, 3]
+        label: "Emerging Accuracy"
+        description: "Occasional errors but generally accurate"
+        pedagogical_implication: "Refinement feedback on specific error patterns"
+        action_priority: "Medium"
+      strong:
+        range: [4, 5]
+        label: "Consistent Accuracy"
+        description: "Few errors; meaning is clear throughout"
+        pedagogical_implication: "Can shift focus to higher-order concerns"
+        action_priority: "Low"
+
+  organization_score:
+    display_name: "Organization & Development (Rubric-Based)"
+    unit: "rubric points (1-5 scale)"
+    bands:
+      low:
+        range: [1, 2]
+        label: "Weak Organization"
+        description: "Ideas lack clear structure or logical progression"
+        pedagogical_implication: "Paragraph structure and transition modeling needed"
+        action_priority: "High"
+      moderate:
+        range: [3, 3]
+        label: "Adequate Organization"
+        description: "Basic structure present but may have weak transitions"
+        pedagogical_implication: "Transition support and linking device practice"
+        action_priority: "Medium"
+      strong:
+        range: [4, 5]
+        label: "Clear Organization"
+        description: "Well-structured with clear transitions and development"
+        pedagogical_implication: "Can focus on argumentation and depth"
+        action_priority: "Low"
+
+  argumentation_score:
+    display_name: "Argumentation & Support (Rubric-Based)"
+    unit: "rubric points (1-5 scale)"
+    low_threshold: 2.3
+    moderate_threshold: 3.6
+    bands:
+      low:
+        range: [1, 2.3]
+        label: "Underdeveloped Argument"
+        description: "Claims lack adequate evidence or explanation"
+        pedagogical_implication: "Claim-evidence-reasoning structure modeling required"
+        action_priority: "High"
+      moderate:
+        range: [2.4, 3.6]
+        label: "Developing Argument"
+        description: "Basic claims with partial support"
+        pedagogical_implication: "Argument refinement and counter-argument introduction"
+        action_priority: "Medium"
+      strong:
+        range: [3.7, 5]
+        label: "Strong Argument"
+        description: "Clear claims well-supported with reasoning"
+        pedagogical_implication: "Can advance to rhetorical analysis and complex argumentation"
+        action_priority: "Low"
 
   cohesion_index:
-    low: [0, 1]
-    moderate: [2, 3]
-    strong: [4, 100]
+    display_name: "Cohesion Index (Lexical/Discourse Connectivity)"
+    unit: "numerical score (0-5 scale)"
+    low_threshold: 2.0
+    moderate_threshold: 3.5
+    bands:
+      low:
+        range: [0, 1.9]
+        label: "Weak Connectivity"
+        description: "Few connecting words; ideas seem disjointed"
+        pedagogical_implication: "Transition and linking device instruction required"
+        action_priority: "High"
+      moderate:
+        range: [2.0, 3.4]
+        label: "Adequate Connectivity"
+        description: "Some transitions and linking devices present"
+        pedagogical_implication: "Strengthen transition variety and sophistication"
+        action_priority: "Medium"
+      strong:
+        range: [3.5, 5.0]
+        label: "Strong Connectivity"
+        description: "Varied and appropriate transitional devices throughout"
+        pedagogical_implication: "Can focus on rhetorical sophistication"
+        action_priority: "Low"
 
-  criterion_score:
-    low: [1, 2]
-    moderate: [3, 3]
-    strong: [4, 5]
+  type_token_ratio:
+    display_name: "Lexical Diversity (Type-Token Ratio)"
+    unit: "ratio (0-1 scale, higher = more diverse)"
+    low_threshold: 0.45
+    strong_threshold: 0.55
+    bands:
+      low:
+        range: [0, 0.44]
+        label: "Restricted Vocabulary"
+        description: "Limited word variety; repetitive word choices"
+        pedagogical_implication: "Vocabulary development and synonym exploration required"
+        action_priority: "Medium"
+      moderate:
+        range: [0.45, 0.54]
+        label: "Adequate Variety"
+        description: "Reasonable word variation"
+        pedagogical_implication: "Continued vocabulary building for academic register"
+        action_priority: "Medium"
+      strong:
+        range: [0.55, 1.0]
+        label: "Rich Vocabulary"
+        description: "Diverse and appropriate word choices"
+        pedagogical_implication: "Can advance to stylistic refinement"
+        action_priority: "Low"
 
-  feedback_uptake:
-    none: [0, 0]
-    partial: [1, 1]
-    strong: [2, 100]
+  final_score:
+    display_name: "Overall Rubric Score (Paper Quality)"
+    unit: "points (weighted average of criteria)"
+    bands:
+      low:
+        range: [1, 2]
+        label: "Developing Writer"
+        description: "Paper demonstrates developing proficiency across criteria"
+        pedagogical_implication: "Comprehensive support across multiple dimensions needed"
+        action_priority: "High"
+      moderate:
+        range: [3, 3]
+        label: "Proficient Writer"
+        description: "Paper demonstrates proficient work on most criteria"
+        pedagogical_implication: "Targeted refinement on emerging areas"
+        action_priority: "Medium"
+      strong:
+        range: [4, 5]
+        label: "Advanced Writer"
+        description: "Paper demonstrates strong/advanced work across criteria"
+        pedagogical_implication: "Challenge activities and metacognitive reflection"
+        action_priority: "Low"
+
+# ============================================================================
+# LEARNING ANALYTICS INDICATORS (Behavioral/Process Data)
+# ============================================================================
+
+behavioral_indicators:
+
+  time_on_task:
+    display_name: "Total Time Spent on Assignment"
+    unit: "minutes"
+    low_threshold: 15
+    moderate_threshold: 45
+    bands:
+      low:
+        range: [0, 14]
+        label: "Minimal Engagement"
+        description: "Very limited time investment"
+        pedagogical_implication: "Indicates insufficient planning or procrastination; needs re-engagement"
+        action_priority: "High"
+      moderate:
+        range: [15, 44]
+        label: "Moderate Engagement"
+        description: "Reasonable time investment"
+        pedagogical_implication: "Adequate for initial draft; may indicate limited revision cycles"
+        action_priority: "Medium"
+      strong:
+        range: [45, 999]
+        label: "Sustained Engagement"
+        description: "Extended time investment indicating deep processing"
+        pedagogical_implication: "Likely includes planning, drafting, and revision cycles"
+        action_priority: "Low"
+
+  revision_frequency:
+    display_name: "Number of Revision Cycles"
+    unit: "number of revisions"
+    low_threshold: 1
+    strong_threshold: 3
+    bands:
+      low:
+        range: [0, 0]
+        label: "No Revision"
+        description: "Single draft submitted without revision"
+        pedagogical_implication: "Critical gap in self-regulated learning; needs revision training"
+        action_priority: "High"
+      moderate:
+        range: [1, 2]
+        label: "Limited Revision"
+        description: "One or two revision attempts"
+        pedagogical_implication: "Some revision behavior present but may be superficial"
+        action_priority: "Medium"
+      strong:
+        range: [3, 20]
+        label: "Extensive Revision"
+        description: "Multiple revision cycles indicating deliberate improvement"
+        pedagogical_implication: "Strong self-regulated learning; focus on revision quality"
+        action_priority: "Low"
+
+  rubric_views:
+    display_name: "Number of Times Rubric Was Consulted"
+    unit: "number of views"
+    low_threshold: 1
+    strong_threshold: 3
+    bands:
+      low:
+        range: [0, 0]
+        label: "No Rubric Consultation"
+        description: "Never accessed criteria"
+        pedagogical_implication: "Critical gap in assessment literacy; needs explicit rubric walkthrough"
+        action_priority: "High"
+      moderate:
+        range: [1, 2]
+        label: "Limited Rubric Consultation"
+        description: "Occasional reference to rubric"
+        pedagogical_implication: "Some criteria awareness but may not be deep"
+        action_priority: "Medium"
+      strong:
+        range: [3, 100]
+        label: "Frequent Rubric Consultation"
+        description: "Regular reference to criteria throughout process"
+        pedagogical_implication: "Strong assessment literacy; focus on quality of use"
+        action_priority: "Low"
+
+  feedback_views:
+    display_name: "Number of Times Feedback Was Viewed"
+    unit: "number of views"
+    low_threshold: 1
+    strong_threshold: 2
+    bands:
+      low:
+        range: [0, 0]
+        label: "No Feedback View"
+        description: "Never accessed teacher feedback"
+        pedagogical_implication: "Feedback not yet engaged; needs explicit linking to revision"
+        action_priority: "High"
+      moderate:
+        range: [1, 1]
+        label: "Single Feedback View"
+        description: "One viewing of feedback"
+        pedagogical_implication: "Initial feedback engagement; depth unknown"
+        action_priority: "Medium"
+      strong:
+        range: [2, 100]
+        label: "Multiple Feedback Views"
+        description: "Review of feedback multiple times"
+        pedagogical_implication: "Active feedback engagement; now examine quality of interpretation"
+        action_priority: "Low"
 
   help_seeking_messages:
-    none: [0, 0]
-    procedural: [1, 1]
-    adaptive: [2, 100]
+    display_name: "Help-Seeking Behavior (Messages Posted)"
+    unit: "number of messages"
+    bands:
+      none:
+        range: [0, 0]
+        label: "No Help Seeking"
+        description: "Never sought assistance"
+        pedagogical_implication: "Possible independence or reluctance; needs normalizing of help-seeking"
+        action_priority: "Medium"
+      present:
+        range: [1, 2]
+        label: "Passive Help Seeking"
+        description: "Occasional help requests"
+        pedagogical_implication: "Emerging help-seeking behavior; encourage strategic seeking"
+        action_priority: "Medium"
+      adaptive:
+        range: [3, 100]
+        label: "Adaptive Help Seeking"
+        description: "Strategic help-seeking with specific, focused questions"
+        pedagogical_implication: "Strong metacognitive self-regulation; reinforce pattern"
+        action_priority: "Low"
 
-  # Gap 5 fix: sentence length added as text feature
-  avg_sentence_length:
-    concise: [0, 20]
-    moderate: [21, 30]
-    complex: [31, 1000]
+  first_access_timing:
+    display_name: "First Access Time from Assignment Release"
+    unit: "hours"
+    bands:
+      immediate:
+        range: [0, 1]
+        label: "Very Early (Procrastination Risk)"
+        description: "Accessed immediately; may indicate procrastination-driven activity"
+        pedagogical_implication: "Monitor for quality of planning if early engagement"
+        action_priority: "Medium"
+      timely:
+        range: [2, 24]
+        label: "Timely Access"
+        description: "Accessed within a day"
+        pedagogical_implication: "Normal engagement pattern"
+        action_priority: "Low"
+      delayed:
+        range: [25, 999]
+        label: "Delayed Access"
+        description: "Accessed after significant delay"
+        pedagogical_implication: "May indicate procrastination; risk factor for quality"
+        action_priority: "High"
+
+# ============================================================================
+# COMPOSITE INDICATORS
+# ============================================================================
+
+composite_indicators:
+
+  score_improvement:
+    display_name: "Score Change Between Consecutive Submissions"
+    unit: "rubric points"
+    threshold_improvement: 1.0
+    threshold_decline: -0.5
+    bands:
+      declining:
+        range: [-5, -0.5]
+        label: "Performance Decline"
+        description: "Score decreased between submissions"
+        pedagogical_implication: "Current approach is not working; intervention strategy needed"
+        action_priority: "High"
+      minimal:
+        range: [-0.4, 0.9]
+        label: "Minimal Growth"
+        description: "Little change between submissions"
+        pedagogical_implication: "Revision efforts not yielding improvement; change approach"
+        action_priority: "High"
+      moderate:
+        range: [1.0, 1.9]
+        label: "Moderate Growth"
+        description: "Reasonable improvement trajectory"
+        pedagogical_implication: "Current approach working; reinforce and refine"
+        action_priority: "Medium"
+      strong:
+        range: [2.0, 10]
+        label: "Strong Growth"
+        description: "Significant improvement between submissions"
+        pedagogical_implication: "Positive momentum; advance to more complex challenges"
+        action_priority: "Low"

@@ -36,13 +36,16 @@ def run_clustering(n_clusters=4):
     X = df[features].fillna(0)
     scaler = StandardScaler()
     
-    if len(X) < n_clusters:
-        print(f"Not enough data to cluster {n_clusters} profiles.")
+    unique_rows = len(X.drop_duplicates())
+    cluster_count = min(n_clusters, max(1, unique_rows))
+
+    if len(X) < 2 or cluster_count < 2:
+        print("Not enough distinct data to build stable clusters.")
         df["cluster_id"] = -1
         df["learner_profile"] = "profile_unknown"
     else:
         X_scaled = scaler.fit_transform(X)
-        model = KMeans(n_clusters=n_clusters, random_state=42, n_init=10)
+        model = KMeans(n_clusters=cluster_count, random_state=42, n_init=10)
         df["cluster_id"] = model.fit_predict(X_scaled)
         df["learner_profile"] = df["cluster_id"].map(PROFILE_NAMES).fillna("profile_unknown")
 

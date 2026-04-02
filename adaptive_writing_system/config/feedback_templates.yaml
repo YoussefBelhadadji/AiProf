@@ -1,31 +1,52 @@
-{
-  "feedback_templates": {
-    "planning_scaffold": "Before rewriting, read the rubric carefully and make a short outline. Write your main claim, one supporting point, and one explanation before you begin drafting.",
-    "planning_prompt": "Your paragraph would improve with clearer planning. Before writing, note your topic sentence, one example, and the explanation you want to add.",
-    "elaboration_prompt": "Your paragraph is underdeveloped for this task. Add one supporting idea and one explanatory sentence to make the argument clearer.",
-    "motivational_reengagement": "Revisit the assignment instructions, rubric, and model examples before writing again. Focus on one clear step at a time so you can complete the task with confidence.",
-    "explicit_strategic_instruction": "You are making a clear effort, but your paragraph needs stronger structure and support. Focus on organizing your ideas and explaining how your evidence supports your argument.",
-    "metacognitive_prompt": "Before revising, ask yourself: What is the main weakness in my paragraph? What one change would improve it the most? Revise with that goal in mind.",
-    "argument_scaffold": "Your paragraph needs stronger argument development. Add one clear example and explain directly how it supports your main claim.",
-    "argument_expansion": "Your main idea is relevant, but it needs deeper explanation. After giving your example, explain why it proves your point.",
-    "metacognitive_extension": "Your argument is already strong. To make it more advanced, add a counter-argument or deepen your explanation of the issue.",
-    "cohesion_support": "Your ideas are relevant, but the paragraph needs better flow. Use linking words such as however, therefore, furthermore, or in addition to connect your ideas more clearly.",
-    "organization_support": "Your paragraph is generally organized, but the order of ideas can be clearer. Make sure each sentence supports the main point and follows a logical sequence.",
-    "direct_corrective_feedback": "Your writing contains repeated grammar problems that reduce clarity. Revise the highlighted errors and correct the same pattern throughout the paragraph.",
-    "metalinguistic_feedback": "Check the grammar pattern in the highlighted sentence. Think about the rule, then try correcting the sentence yourself before resubmitting.",
-    "fluency_extension": "Your language is accurate. Now focus on making your paragraph more fluent and academic by varying sentence structure and using more precise wording.",
-    "lexical_enrichment": "Your vocabulary is understandable, but it is too basic or repetitive for academic writing. Replace common words with more formal and precise academic alternatives.",
-    "lexical_refinement": "Your vocabulary is developing well, but some expressions can be more precise. Revise a few key words so your paragraph sounds more academic.",
-    "revision_prompt": "Revise your paragraph by improving one idea, one example, and one sentence pattern. Do not focus only on grammar; improve the meaning and support as well.",
-    "global_revision_feedback": "You revised your paragraph, but you still need to improve explanation, organization, and support. Go beyond sentence correction and strengthen the whole paragraph.",
-    "metacognitive_feedback": "Your revision shows real improvement. Reflect on what strategy helped you most so you can use it again in your next paragraph.",
-    "feedback_decoding": "You viewed the feedback, but your draft does not yet show enough change. Re-read the comments and apply at least one improvement to your ideas and one to your language.",
-    "feedforward_guidance": "You improved some parts of the paragraph. Now use the feedback to deepen your explanation and improve the structure of your ideas.",
-    "reinforcement_feedback": "You used the feedback effectively. Continue refining your paragraph by strengthening your argument and making your writing more precise.",
-    "dialogic_scaffolding": "Your question shows good engagement with the writing task. We will clarify the problem together and improve that part of the paragraph step by step.",
-    "intensive_support_plan": "You need more structured support to improve this paragraph. Focus first on your weakest area, then revise step by step with guidance.",
-    "targeted_development_feedback": "You are showing potential for improvement. Focus now on the one area that most limits your paragraph so your next revision becomes stronger.",
-    "argument_refinement": "Your argument is developing, but it still needs clearer support and fuller explanation. Strengthen the link between your evidence and your claim.",
-    "metacognitive_training": "Try to manage your writing process more actively: plan before writing, check your progress while drafting, and evaluate your paragraph after revising."
-  }
-}
+feedback_templates:
+  strategic_feedback: >
+    Your paragraph has a relevant idea, but its organization and cohesion need improvement.
+    Strengthen the topic sentence, develop one supporting point clearly, and use linking expressions
+    such as "furthermore", "in addition", or "as a result".
+
+  higher_order_feedback: >
+    Your paragraph needs stronger argument development.
+    Add one clear example or piece of evidence, then explain how it supports your claim.
+
+  direct_corrective_feedback: >
+    Your paragraph shows repeated grammatical difficulties.
+    Focus on tense consistency, article use, and sentence structure.
+    Revise the highlighted sentences and correct the repeated pattern.
+
+  metacognitive_prompt: >
+    Before revising, identify the main weakness in your paragraph.
+    Decide which one change would improve it most, then revise with that goal in mind.
+
+  criteria_referenced_feedback: >
+    Re-read the rubric before revising.
+    Focus especially on organization, argumentation, and cohesion so that your paragraph matches the task criteria.
+
+  feedforward_feedback: >
+    You viewed the feedback, but your text does not yet show sufficient revision.
+    Make at least one content-level change and one cohesion-level change before resubmitting.
+
+  dialogic_scaffolding: >
+    Your message shows active engagement with the writing task.
+    During the onsite session, we will clarify the feedback and revise one sentence together.
+
+  elaboration_feedback: >
+    Your paragraph is shorter than expected for this task.
+    Add one supporting detail and one explanatory sentence to develop the argument more fully.
+
+  motivational_reengagement: >
+    You need to re-engage more actively with the writing task.
+    Re-read the task prompt, reopen the rubric, and restart with one clear idea.
+
+  organization_support: >
+    Organize your ideas more clearly by using a stronger topic sentence and a more explicit sequence of supporting points.
+
+  lexical_enrichment: >
+    Expand your vocabulary by replacing repetitive words with more precise academic expressions.
+
+  feedforward_guidance: >
+    Use this feedback to plan the next draft.
+    Focus on one content change, one organization change, and one language improvement.
+
+  explicit_strategic_instruction: >
+    First plan, then draft, then revise with the rubric in mind.
+    Work step by step instead of changing everything at once.

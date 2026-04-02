@@ -1,248 +1,188 @@
-import { useState } from 'react';
-import { Menu, LayoutDashboard, Users, FileText, FileEdit, Lightbulb, Search, BookOpen, Workflow, ShieldAlert } from 'lucide-react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import clsx from 'clsx';
-import { GlassCard } from '../components/GlassCard';
-import { getSelectedStudyCase, getSelectedTask, getSelectedTaskId, useStudyScopeStore } from '../state/studyScope';
+import React, { useEffect, useMemo, type ReactNode } from 'react';
+import { BarChart3, Database, MessageSquareCheck, PlayCircle, RefreshCw, Users, ChevronRight } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { autoLoadCases } from '../services/casesApi';
+import { getTaskOptions, mapParsedCaseToStudyCase, useStudyScopeStore } from '../state/studyScope';
+import { useAuthStore } from '../state/authStore';
 
-export interface ResearchShellProps {
-  children: React.ReactNode;
+interface ResearchShellProps {
+  children: ReactNode;
 }
 
-function InterpretationPanel() {
-  const cases = useStudyScopeStore((state) => state.cases);
-  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
-  const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
-  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
-  const selectedTask = selectedCase
-    ? getSelectedTask(selectedCase, getSelectedTaskId({ selectedCaseId, selectedTaskByCase }))
-    : null;
-
-  return (
-    <div className="w-[320px] shrink-0 border-l border-[var(--border)] bg-[var(--bg-base)] hidden xl:flex flex-col h-full sticky top-[60px] overflow-y-auto">
-      <div className="p-6">
-        <h3 className="text-xs font-navigation uppercase tracking-widest text-[var(--text-sec)] mb-4 pb-2 border-b border-[var(--border)]">
-          Teaching Meaning
-        </h3>
-
-        <div className="flex flex-col gap-6">
-          <section>
-            <div className="flex items-center gap-2 mb-3 text-[var(--lav)] font-medium font-navigation">
-              <Lightbulb size={16} /> Quick Summary
-            </div>
-            <GlassCard className="p-4 text-sm leading-relaxed text-[var(--text-sec)]">
-              {selectedCase
-                ? `Current selection: ${selectedCase.meta.studentName}. ${selectedTask ? `Selected exercise: ${selectedTask.title}.` : 'Full case overview is active.'} Start with the highlighted scope, then move to the teacher report when you want a printable interpretation.`
-                : 'No verified workbook is loaded yet. Import a workbook first to unlock case-based reading, reporting, and notes.'}
-            </GlassCard>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-2 mb-3 text-[var(--teal)] font-medium font-navigation">
-              <Search size={16} /> What To Notice
-            </div>
-            <GlassCard className="p-4 text-sm text-[var(--text-primary)]">
-              <ul className="space-y-3">
-                <li className="flex gap-2 items-start">
-                  <span className="text-[var(--teal)] mt-0.5">*</span>
-                  Imported student cases in session: {cases.length}. {selectedCase ? `Active course: ${selectedCase.meta.courseTitle}.` : 'No active course yet.'}
-                </li>
-                <li className="flex gap-2 items-start">
-                  <span className="text-[var(--teal)] mt-0.5">*</span>
-                  Only workbook-derived evidence is treated as verified in the current interface state.
-                </li>
-                <li className="flex gap-2 items-start">
-                  <span className="text-[var(--teal)] mt-0.5">*</span>
-                  Use the top scope bar to confirm the active student, exercise, sections, and indicators before reading any chart or station.
-                </li>
-              </ul>
-            </GlassCard>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-2 mb-3 text-[var(--gold)] font-medium font-navigation">
-              <BookOpen size={16} /> Research Lens
-            </div>
-            <GlassCard className="p-4 text-xs text-[var(--text-sec)] font-forensic">
-              <p className="mb-2">Hattie (2009) - Visible Learning</p>
-              <p>Zimmerman (2002) - Self-regulation</p>
-            </GlassCard>
-          </section>
-
-          <section>
-            <div className="flex items-center gap-2 mb-3 text-[var(--red)] font-medium font-navigation">
-              <ShieldAlert size={16} /> Instructor Control
-            </div>
-            <GlassCard className="p-4 text-sm text-[var(--text-primary)]">
-              <p className="mb-3 text-[var(--text-sec)] text-xs font-body">The system automates diagnosis, but you still control:</p>
-              <ul className="space-y-2">
-                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Rubric scoring</li>
-                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Thresholds</li>
-                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Rules</li>
-                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Template wording</li>
-                <li className="flex gap-2 items-start text-xs"><span className="text-[var(--red)] mt-0.5">•</span> Final approval of feedback</li>
-              </ul>
-            </GlassCard>
-          </section>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function ResearchShell({ children }: ResearchShellProps) {
+export const ResearchShell: React.FC<ResearchShellProps> = ({ children }) => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { cases, importCases, selectedCaseId, selectCase, selectTask, selectedTaskByCase } = useStudyScopeStore();
+  const token = useAuthStore(state => state.token);
+  const user = useAuthStore(state => state.user);
 
-  const cases = useStudyScopeStore((state) => state.cases);
-  const selectedCaseId = useStudyScopeStore((state) => state.selectedCaseId);
-  const selectedTaskByCase = useStudyScopeStore((state) => state.selectedTaskByCase);
-  const selectedStationIds = useStudyScopeStore((state) => state.selectedStationIds);
-  const selectedVariableIds = useStudyScopeStore((state) => state.selectedVariableIds);
-  const selectedCase = getSelectedStudyCase({ cases, selectedCaseId });
-  const selectedTask = selectedCase
-    ? getSelectedTask(selectedCase, getSelectedTaskId({ selectedCaseId, selectedTaskByCase }))
-    : null;
-  const uniqueLearnerCount = new Set(cases.map((studyCase) => studyCase.meta.userId)).size;
-  const visibleStationCount = uniqueLearnerCount <= 1
-    ? selectedStationIds.filter((stationId) => ![6, 7, 8].includes(stationId)).length
-    : selectedStationIds.length;
+  useEffect(() => {
+    if (cases.length === 0 && token) {
+      autoLoadCases(token)
+        .then(parsed => {
+          if (parsed && parsed.length > 0) {
+            importCases(parsed.map(mapParsedCaseToStudyCase));
+          }
+        })
+        .catch(err => console.error('Failed to auto-load cases:', err));
+    }
+  }, [cases.length, token, importCases]);
+
+  const currentCase = useMemo(() => {
+    return cases.find((studyCase) => studyCase.id === selectedCaseId) ?? cases[0] ?? null;
+  }, [cases, selectedCaseId]);
+
+  const currentStudentId = currentCase?.student.student_id ?? '9263';
+  const currentTask = currentCase ? (selectedTaskByCase[currentCase.id] ?? 'case-overview') : 'case-overview';
+  const taskOptions = useMemo(() => getTaskOptions(currentCase), [currentCase]);
+  const pendingReviewCount = cases.filter((studyCase) => studyCase.meta.ungradedAssignments > 0).length;
+
+  const navItems = [
+    { label: 'Overview', path: '/dashboard', icon: BarChart3, detail: 'Cohort status' },
+    { label: 'Import Data', path: '/import', icon: Database, detail: 'Moodle and rubric files' },
+    { label: 'Run Pipeline', path: '/pipeline', icon: PlayCircle, detail: 'Launch analysis flow' },
+    { label: 'Students', path: '/students', icon: Users, detail: 'Learner profiles' },
+    { label: 'Review Feedback', path: `/teacher-decision/${currentStudentId}`, icon: MessageSquareCheck, detail: 'Approve AI drafts' },
+  ];
 
   return (
-    <div className="flex flex-col h-[100dvh] overflow-hidden bg-[var(--bg-deep)]">
-      <header className="h-[60px] shrink-0 z-50 bg-[var(--glass-bg)] backdrop-blur-[16px] border-b border-[var(--border)] px-4 lg:px-6 flex items-center justify-between">
-        <div className="flex items-center gap-6">
-          <button
-            className="text-[var(--text-sec)] hover:text-[var(--text-primary)] transition-colors xl:hidden"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          >
-            <Menu size={20} />
-          </button>
-          <div className="font-editorial italic text-lg text-[var(--lav)] font-medium">
-            WriteLens
-          </div>
-
-          <nav className="hidden md:flex items-center gap-1 font-navigation text-sm ml-4">
-            <NavItem to="/dashboard" icon={LayoutDashboard} label="Dashboard" active={location.pathname === '/dashboard' || location.pathname === '/'} />
-            <NavItem to="/students" icon={Users} label="Student Roster" active={location.pathname.startsWith('/students')} />
-            <NavItem to="/reports" icon={FileText} label="PDF Reports" active={location.pathname.startsWith('/reports')} />
-          </nav>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <button
-            className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation"
-            onClick={() => navigate('/pipeline/1')}
-          >
-            <Workflow size={16} />
-            <span className="hidden sm:inline">Run AI Assistant</span>
-          </button>
-          <button
-            className="text-[var(--text-sec)] hover:text-[var(--lav)] transition-colors flex items-center gap-2 text-sm font-navigation"
-            onClick={() => navigate('/notes')}
-          >
-            <FileEdit size={16} />
-            <span className="hidden sm:inline">Notes</span>
-          </button>
-          <div className="w-px h-6 bg-[var(--border)] hidden sm:block"></div>
-
-          <button
-            onClick={() => navigate('/settings')}
-            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition-opacity ml-2 bg-transparent border-none p-0"
-          >
-            <div className="w-8 h-8 rounded-full bg-[var(--lav-glow)] border border-[var(--lav-border)] flex items-center justify-center text-[var(--lav)] relative font-editorial font-bold text-sm">
-              {selectedCase?.meta.instructor?.charAt(0) ?? '?'}
-              <div className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 rounded-full bg-[var(--teal)] border-2 border-[var(--bg-base)]" />
+    <div className="min-h-screen bg-[var(--bg-deep)] text-[var(--text-primary)] font-body flex overflow-hidden">
+      <aside className="w-[19rem] bg-[var(--bg-sidebar)] border-r border-[var(--border)] flex flex-col z-20">
+        <div className="p-5 border-b border-[var(--border)]">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-10 h-10 rounded-2xl bg-[linear-gradient(135deg,var(--lav),var(--teal))] flex items-center justify-center shadow-[0_0_20px_var(--lav-glow)]">
+              <BarChart3 className="w-5 h-5 text-white" />
             </div>
-            <span className="text-sm font-medium text-[var(--text-primary)] hidden sm:inline">{selectedCase?.meta.instructor ?? 'Instructor'}</span>
-          </button>
-        </div>
-      </header>
-
-      {/* Mobile navigation menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden border-b border-[var(--border)] bg-[var(--bg-base)] px-4 py-3 space-y-1 animate-in slide-in-from-top-2 duration-200">
-          <Link to="/dashboard" className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-navigation text-[var(--text-sec)] hover:bg-[var(--bg-raised)]" onClick={() => setIsMobileMenuOpen(false)}>
-            <LayoutDashboard size={16} /> Overview
-          </Link>
-          <Link to="/students" className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-navigation text-[var(--text-sec)] hover:bg-[var(--bg-raised)]" onClick={() => setIsMobileMenuOpen(false)}>
-            <Users size={16} /> Student Roster
-          </Link>
-          <Link to="/reports" className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-navigation text-[var(--text-sec)] hover:bg-[var(--bg-raised)]" onClick={() => setIsMobileMenuOpen(false)}>
-            <FileText size={16} /> PDF Reports
-          </Link>
-          <Link to="/pipeline/1" className="flex items-center gap-2 px-3 py-2 rounded-md text-sm font-navigation text-[var(--text-sec)] hover:bg-[var(--bg-raised)]" onClick={() => setIsMobileMenuOpen(false)}>
-            <Workflow size={16} /> Run AI Assistant
-          </Link>
-        </div>
-      )}
-
-      <div className="shrink-0 border-b border-[var(--border)] bg-[var(--bg-base)]/90 backdrop-blur-[10px] px-4 lg:px-6 py-3">
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
-          <div className="min-w-0">
-            <p className="font-navigation text-[10px] uppercase tracking-widest text-[var(--text-muted)]">Current Teaching Scope</p>
-            <p className="font-body text-sm text-[var(--text-primary)] mt-1">
-              {selectedCase ? (
-                <>
-                  <span className="font-medium">{selectedCase.meta.studentName}</span>
-                  <span className="text-[var(--text-muted)]"> · </span>
-                  <span>{selectedTask ? selectedTask.title : 'Full case overview'}</span>
-                </>
-              ) : (
-                <span>No verified workbook loaded</span>
-              )}
-            </p>
+            <div>
+              <div className="font-navigation font-bold text-base tracking-tight text-white">WriteLens</div>
+              <div className="text-[10px] uppercase tracking-[0.24em] text-[var(--text-muted)]">Professor workflow</div>
+            </div>
           </div>
-          <div className="flex flex-wrap gap-2">
-            <span className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--teal)] bg-[var(--teal-dim)]">
-              {visibleStationCount} sections
-            </span>
-            <span className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)] bg-[var(--lav-glow)]">
-              {selectedVariableIds.length} indicators
-            </span>
-            <button
-              onClick={() => navigate('/reports')}
-              className="rounded-full border border-[var(--border)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--text-sec)] hover:text-[var(--text-primary)] hover:border-[var(--border-bright)] transition-colors"
-            >
-              Open teacher report
-            </button>
-            <button
-              onClick={() => navigate('/pipeline/1')}
-              className="rounded-full border border-[var(--lav-border)] bg-[var(--lav-glow)] px-3 py-1 font-navigation text-[10px] uppercase tracking-widest text-[var(--lav)] hover:text-[var(--text-primary)] hover:border-[var(--lav)] transition-colors"
-            >
-              Run AI Assistant
-            </button>
+
+          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-4 space-y-3">
+            <div className="flex items-center justify-between text-xs uppercase tracking-widest text-[var(--text-muted)] font-navigation">
+              <span>Workspace</span>
+              <span className="text-[var(--teal)]">Live</span>
+            </div>
+            <div className="text-sm font-semibold text-[var(--text-primary)]">{user?.displayName || 'Professor Workspace'}</div>
+            <div className="flex items-center justify-between text-xs text-[var(--text-sec)]">
+              <span>{cases.length} imported cases</span>
+              <span>{pendingReviewCount} pending review</span>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="flex flex-1 overflow-hidden relative">
-        <main className="flex-1 overflow-y-auto w-full">
-          <div className="animate-in fade-in fill-mode-both duration-300 min-h-full">
-            {children}
+        <nav className="flex-1 p-4 space-y-2">
+          <div className="px-3 pb-2 text-[10px] uppercase tracking-[0.28em] text-[var(--text-muted)] font-navigation">5-step workflow</div>
+          {navItems.map((item) => {
+            const Icon = item.icon;
+            const isActive = location.pathname.startsWith(item.path);
+            return (
+              <Link
+                key={item.path}
+                to={item.path}
+                className={`group flex items-center gap-3 rounded-2xl border px-3 py-3 transition-all ${
+                  isActive
+                    ? 'border-[var(--lav-border)] bg-[var(--lav-dim)] text-[var(--text-primary)]'
+                    : 'border-transparent text-[var(--text-sec)] hover:border-[var(--border)] hover:bg-[rgba(255,255,255,0.03)] hover:text-[var(--text-primary)]'
+                }`}
+              >
+                <span className={`flex h-9 w-9 items-center justify-center rounded-xl ${isActive ? 'bg-[var(--lav)] text-white' : 'bg-[rgba(255,255,255,0.04)] text-[var(--text-muted)] group-hover:text-[var(--lav)]'}`}>
+                  <Icon className="h-4 w-4" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-navigation text-sm font-semibold tracking-wide">{item.label}</span>
+                  <span className="block truncate text-xs text-[var(--text-muted)]">{item.detail}</span>
+                </span>
+                {isActive && <ChevronRight className="h-4 w-4 text-[var(--lav)]" />}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="p-4 border-t border-[var(--border)] space-y-3 bg-[rgba(0,0,0,0.18)]">
+          <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] p-4">
+            <div className="text-[10px] uppercase tracking-[0.26em] text-[var(--text-muted)] font-navigation mb-2">Selected case</div>
+            <div className="text-sm font-semibold truncate">{currentCase?.meta.studentName || 'No case selected'}</div>
+            <div className="mt-2 text-xs text-[var(--text-sec)]">{currentCase?.clusterName || 'Load data to see learner profiles'}</div>
           </div>
-        </main>
+          <Link
+            to={`/teacher-decision/${currentStudentId}`}
+            className="flex items-center justify-between rounded-2xl border border-[var(--lav-border)] bg-[var(--lav-dim)] px-4 py-3 text-sm text-[var(--text-primary)] transition-colors hover:bg-[var(--lav-border)]"
+          >
+            <span className="font-navigation font-semibold tracking-wide">Open feedback review</span>
+            <RefreshCw className="h-4 w-4 text-[var(--lav)]" />
+          </Link>
+        </div>
+      </aside>
 
-        <InterpretationPanel />
-      </div>
+      <main id="main-content" className="flex-1 flex flex-col relative overflow-hidden">
+        <header className="flex flex-col gap-4 border-b border-[var(--border)] bg-[rgba(2,6,23,0.86)] px-6 py-5 backdrop-blur-xl md:flex-row md:items-end md:justify-between md:px-8">
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[var(--text-muted)] font-navigation">
+              <span className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] px-3 py-1 text-[var(--teal)]">
+                <span className="h-1.5 w-1.5 rounded-full bg-[var(--teal)] animate-pulse" />
+                Professor workspace
+              </span>
+              <span>Linear analysis flow</span>
+            </div>
+            <div>
+              <h1 className="font-editorial text-3xl italic text-[var(--text-primary)] md:text-4xl">Student analysis, one clear path</h1>
+              <p className="mt-2 max-w-3xl text-sm text-[var(--text-sec)]">
+                Move from data import to model review, student profiles, feedback approval, and growth tracking without juggling scattered research pages.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-3">
+            <label className="min-w-[12rem] rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+              <span className="mb-1 block text-[10px] uppercase tracking-[0.24em] text-[var(--text-muted)] font-navigation">Current case</span>
+              <select
+                value={currentCase?.id ?? ''}
+                onChange={(event) => selectCase(event.target.value)}
+                aria-label="Select learner case"
+                className="w-full bg-transparent text-sm text-[var(--text-primary)] outline-none"
+              >
+                <option value="" disabled className="bg-[var(--bg-deep)]">Select a learner</option>
+                {cases.map((studyCase) => (
+                  <option key={studyCase.id} value={studyCase.id} className="bg-[var(--bg-deep)] text-white">
+                    {studyCase.meta.studentName}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="min-w-[12rem] rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-4 py-3">
+              <span className="mb-1 block text-[10px] uppercase tracking-[0.24em] text-[var(--text-muted)] font-navigation">Focused task</span>
+              <select
+                value={currentTask}
+                onChange={(event) => selectTask(event.target.value)}
+                aria-label="Select learner task"
+                className="w-full bg-transparent text-sm text-[var(--text-primary)] outline-none"
+                disabled={!currentCase}
+              >
+                {taskOptions.length > 0 ? (
+                  taskOptions.map((task) => (
+                    <option key={task.id} value={task.id} className="bg-[var(--bg-deep)] text-white">
+                      {task.label}
+                    </option>
+                  ))
+                ) : (
+                  <option value="case-overview" className="bg-[var(--bg-deep)] text-white">Full case overview</option>
+                )}
+              </select>
+            </label>
+
+            <div className="rounded-2xl border border-[var(--border)] bg-[rgba(255,255,255,0.03)] px-4 py-3 text-right">
+              <div className="text-[10px] uppercase tracking-[0.24em] text-[var(--text-muted)] font-navigation">Queue</div>
+              <div className="text-sm font-semibold text-[var(--text-primary)]">{pendingReviewCount} feedback items</div>
+            </div>
+          </div>
+        </header>
+
+        <div className="flex-1 overflow-y-auto p-5 md:p-8 custom-scrollbar">
+          {children}
+        </div>
+      </main>
     </div>
   );
-}
-
-function NavItem({ to, icon: Icon, label, active }: { to: string; icon: React.ElementType; label: string; active: boolean }) {
-  return (
-    <Link
-      to={to}
-      className={clsx(
-        'flex items-center gap-2 px-4 py-2 rounded-md transition-all',
-        active
-          ? 'bg-[var(--lav-glow)] text-[var(--lav)]'
-          : 'text-[var(--text-sec)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-raised)]'
-      )}
-    >
-      <Icon size={16} />
-      {label}
-    </Link>
-  );
-}
+};
