@@ -9,10 +9,18 @@
     "**/.*",
     "**/__pycache__",
     "**/node_modules",
+    ".venv",
+    ".claude",
+    "dist",
+    "build",
     "frontend",
     "node_modules",
+    "docs",
     "adaptive_writing_system/tests",
-    "adaptive_writing_system/test_system.py"
+    "adaptive_writing_system/test_system.py",
+    "adaptive_writing_system/outputs",
+    "adaptive_writing_system/data",
+    "AI_ANALYSIS_REPORTS"
   ],
   "extraPaths": [
     "C:/Program Files/WindowsApps/PythonSoftwareFoundation.Python.3.13_3.13.3312.0_x64__qbz5n2kfra8p0/Lib/site-packages",
