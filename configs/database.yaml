@@ -1,0 +1,31 @@
+# Database Configuration
+# =====================
+# 
+# All database settings are managed here
+# Secrets are provided via environment variables
+
+database:
+  # PostgreSQL Connection Settings
+  type: postgresql              # Database type (FIXED - no other options)
+  
+  # Connection Pool
+  pool:
+    min: 2                       # Minimum connections
+    max: 10                      # Maximum connections
+    idle_timeout_ms: 30000       # Timeout before closing idle connection
+  
+  # QueryTimeout
+  query_timeout_ms: 30000        # Max execution time per query
+
+# Environment Variables Required:
+# DB_USER       → postgres username
+# DB_PASSWORD   → postgres password  
+# DB_HOST       → database host (default: localhost)
+# DB_PORT       → database port (default: 5432)
+# DB_NAME       → database name (default: writelens)
+
+# Tables Expected:
+# - users (id, email, password_hash, role, created_at, updated_at)
+# - students (id, user_id, cohort_id, submission_count, last_activity, created_at, updated_at)
+# - assignments (id, student_id, submission_text, word_count, submitted_at, created_at)
+# - decisions (id, student_id, ai_decision_json, decision_timestamp, pipeline_version, created_at)

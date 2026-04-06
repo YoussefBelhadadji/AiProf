@@ -1,7 +1,0 @@
-student_id,task_id,draft_no,assignment_views,rubric_views,time_on_task,revision_frequency,feedback_views,first_access_delay_minutes,resource_access_count
-S01,T1,1,2,1,18,0,1,25,1
-S01,T1,2,3,2,32,1,1,5,2
-S02,T1,1,1,0,10,0,0,40,0
-S02,T1,2,2,1,22,1,1,15,1
-S03,T1,1,1,1,12,0,0,35,0
-S03,T1,2,2,1,28,1,1,10,1

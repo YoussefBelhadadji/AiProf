@@ -1,16 +1,16 @@
-﻿import React, { Suspense, type ReactNode } from 'react';
+import React, { Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { useAuthStore } from './state/authStore';
 import { ResearchShell } from './layouts/ResearchShell';
 
 // Initial route loads
-import { Login } from './pages/Login';
-import { Dashboard } from './pages/Dashboard.tsx';
+import { LabLogin as Login } from './pages/LabLogin';
+import { Dashboard } from './pages/LabDashboard';
 
 // Lazy loaded routes (Sprint 3: Performance)
 const LearnerRegistry = React.lazy(() => import('./pages/Students').then(module => ({ default: module.Students })));
-const StudentProfile = React.lazy(() => import('./pages/StudentProfile').then(module => ({ default: module.StudentProfile })));
+const StudentProfile = React.lazy(() => import('./pages/StudentLabView').then(m => ({ default: m.StudentLabView })));
 const Groups = React.lazy(() => import('./pages/Groups').then(module => ({ default: module.Groups })));
 const Tasks = React.lazy(() => import('./pages/Tasks').then(module => ({ default: module.Tasks })));
 const Reports = React.lazy(() => import('./pages/Reports').then(module => ({ default: module.Reports })));
@@ -20,8 +20,6 @@ const PipelinePage = React.lazy(() => import('./pages/PipelinePage').then(module
 const Settings = React.lazy(() => import('./pages/Settings').then(module => ({ default: module.Settings })));
 const NotFound = React.lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
 const StationRouter = React.lazy(() => import('./pages/StationRouter').then(module => ({ default: module.StationRouter })));
-const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword').then(module => ({ default: module.ForgotPassword })));
-const ResetPassword = React.lazy(() => import('./pages/ResetPassword').then(module => ({ default: module.ResetPassword })));
 const Thresholds = React.lazy(() => import('./pages/Thresholds').then(module => ({ default: module.Thresholds })));
 const AuditLogs = React.lazy(() => import('./pages/AuditLogs').then(module => ({ default: module.AuditLogs })));
 const Reliability = React.lazy(() => import('./pages/Reliability').then(module => ({ default: module.Reliability })));
@@ -29,6 +27,8 @@ const Diagnostics = React.lazy(() => import('./pages/Diagnostics').then(module =
 const TeacherDecisionPanel = React.lazy(() => import('./pages/TeacherDecisionPanel').then(module => ({ default: module.TeacherDecisionPanel })));
 const RuleManagement = React.lazy(() => import('./pages/RuleManagement').then(module => ({ default: module.RuleManagement })));
 const FeedbackTemplateManagement = React.lazy(() => import('./pages/FeedbackTemplateManagement').then(module => ({ default: module.FeedbackTemplateManagement })));
+const PortfolioPage = React.lazy(() => import('./pages/PortfolioPage').then(module => ({ default: module.PortfolioPage })));
+const FrameworkPage = React.lazy(() => import('./pages/FrameworkPage').then(module => ({ default: module.FrameworkPage })));
 
 // Loading fallback UI
 const PageLoader = () => (
@@ -51,10 +51,8 @@ function App() {
           <Routes>
             <Route path="/" element={<Navigate to="/login" replace />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
 
-            {/* Authenticated Research Space */}
+            {/* Authenticated Research Space - Teacher Only */}
             <Route path="/*" element={
               <ProtectedRoute>
                 <ResearchShell>
@@ -73,6 +71,12 @@ function App() {
                     <Route path="pipeline/:id" element={<StationRouter />} />
                     <Route path="teacher-decision/:studentId" element={<TeacherDecisionPanel />} />
                     
+                    {/* Portfolio Assessment Route (Hamp-Lyons & Condon, 2000) */}
+                    <Route path="portfolio/:id" element={<PortfolioPage />} />
+
+                    {/* Framework Architecture Overview */}
+                    <Route path="framework" element={<FrameworkPage />} />
+
                     {/* Management Routes */}
                     <Route path="thresholds" element={<Thresholds />} />
                     <Route path="rules" element={<RuleManagement />} />

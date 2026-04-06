@@ -1,5 +1,5 @@
 import React from 'react';
-import { Printer } from 'lucide-react';
+import { Printer, ExternalLink, TrendingUp } from 'lucide-react';
 
 interface AdaptiveFeedbackSheetProps {
   student: any;
@@ -270,6 +270,159 @@ export const AdaptiveFeedbackSheet: React.FC<AdaptiveFeedbackSheetProps> = ({ st
           </div>
 
           <p className="text-xs text-gray-600 mt-6 italic text-center">Process-oriented revision is widely recognized as a key mechanism in writing development within second language pedagogy (Hyland).</p>
+        </section>
+
+        {/* PHASE 4 — PORTFOLIO ASSESSMENT (Hamp-Lyons & Condon, 2000) */}
+        <section className="mb-4">
+          <h2 className="section-title text-lg font-bold bg-gray-800 text-white px-3 py-1 mb-4">
+            Phase 4 — Portfolio Assessment &amp; Correction
+            <span className="text-xs font-normal ml-2 opacity-70">(Hamp-Lyons &amp; Condon, 2000)</span>
+          </h2>
+
+          <div className="bg-blue-50 border border-blue-200 p-3 rounded mb-4 text-xs text-blue-800">
+            <strong>Delayed Evaluation Principle:</strong> This phase applies only after the student has
+            submitted a revised final version. The portfolio is judged as a body of evidence — not as a
+            single isolated text — covering collection, selection, reflection, and delayed scoring.{' '}
+            <a
+              href="https://www.hamptonpress.com/Merchant2/merchant.mvc?Screen=PROD&Product_Code=1-57273-169-X"
+              target="_blank"
+              rel="noreferrer"
+              className="underline text-blue-600 inline-flex items-center gap-0.5"
+            >
+              <ExternalLink size={9} /> Hamp-Lyons &amp; Condon (2000)
+            </a>
+          </div>
+
+          {/* 6-Step Correction Sequence */}
+          <table className="w-full border-collapse border border-gray-400 mb-4 text-sm">
+            <thead>
+              <tr className="bg-gray-200 text-gray-800">
+                <th className="border border-gray-400 px-3 py-2 text-center w-8">Step</th>
+                <th className="border border-gray-400 px-3 py-2 text-left w-1/3">What You Correct</th>
+                <th className="border border-gray-400 px-3 py-2 text-left">What You Look For</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { step: '1', what: 'Portfolio Contents', look: 'Draft 1 + Draft 2 + feedback record + reflection + final version all present?' },
+                { step: '2', what: 'Final Draft (Product Quality)', look: 'Score the final revised text with the analytic rubric (Phase 1 above). This is 70% of the portfolio score.' },
+                { step: '3', what: 'Draft Comparison', look: 'What improved from Draft 1 to final? What did not improve? Are weaknesses from Phase 1 addressed?' },
+                { step: '4', what: 'Feedback Uptake', look: 'Did the student apply the formative comments given in Phase 3? Evidence of targeted vs. surface revision?' },
+                { step: '5', what: 'Student Reflection', look: 'Does the reflection show awareness of strengths, weaknesses, revision choices, and next writing goals?' },
+                { step: '6', what: 'Final Portfolio Judgment', look: 'Combined decision: writing quality (70%) + writing development (30%) = portfolio score.' },
+              ].map((r) => (
+                <tr key={r.step}>
+                  <td className="border border-gray-400 px-3 py-2 text-center font-bold text-blue-700">{r.step}</td>
+                  <td className="border border-gray-400 px-3 py-2 font-semibold">{r.what}</td>
+                  <td className="border border-gray-400 px-3 py-2 text-gray-700">{r.look}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+
+          {/* Two-part scoring */}
+          <div className="phase3-rules border-l-4 border-blue-600 bg-gray-50 p-4 text-sm text-gray-900 mb-4">
+            <h3 className="font-bold border-b pb-1 mb-3 text-md mt-0 flex items-center gap-2">
+              <TrendingUp size={14} />
+              Two-Part Portfolio Scoring Model
+            </h3>
+
+            <div className="grid grid-cols-2 gap-4 mb-3">
+              <div className="border border-gray-300 rounded p-3 bg-white">
+                <p className="font-bold text-blue-700 mb-1">Product Component — 70%</p>
+                <p className="text-xs text-gray-600 mb-2">Quality of the final revised text (analytic rubric from Phase 1)</p>
+                <ul className="list-disc pl-4 text-xs space-y-1 text-gray-700">
+                  <li>Argumentation quality</li>
+                  <li>Text organization</li>
+                  <li>Cohesion &amp; transitions</li>
+                  <li>Lexical resource</li>
+                  <li>Grammatical accuracy</li>
+                  <li>Academic style</li>
+                </ul>
+                <p className="mt-2 font-bold text-blue-700 text-sm">
+                  Product score: {overallScore.toFixed(1)} / 5
+                </p>
+              </div>
+
+              <div className="border border-gray-300 rounded p-3 bg-white">
+                <p className="font-bold text-emerald-700 mb-1">Process Component — 30%</p>
+                <p className="text-xs text-gray-600 mb-2">Quality of the student's portfolio process</p>
+                <ul className="list-disc pl-4 text-xs space-y-1 text-gray-700">
+                  <li>Evidence of planning</li>
+                  <li>Revision depth</li>
+                  <li>Feedback uptake</li>
+                  <li>Reflection quality</li>
+                  <li>Strategic improvement</li>
+                </ul>
+                <p className="mt-2 font-bold text-emerald-700 text-sm">
+                  {bData.revisions > 1 ? 'Iterative revision detected' : bData.revisions === 1 ? 'Single revision documented' : 'No revision documented'}
+                </p>
+              </div>
+            </div>
+
+            {/* 5 Correction Questions */}
+            <h3 className="font-bold border-b pb-1 mb-3 text-md">5 Core Portfolio Correction Questions</h3>
+            <ol className="list-decimal pl-5 text-sm space-y-2 text-gray-800">
+              <li>
+                <strong>How strong is the final text?</strong>{' '}
+                <span className={overallScore >= 4 ? 'text-emerald-700' : overallScore >= 3 ? 'text-blue-700' : 'text-rose-700'}>
+                  {overallScore >= 4 ? 'Good — ' : overallScore >= 3 ? 'Developing — ' : 'Needs support — '}
+                  overall analytic score {overallScore.toFixed(1)}/5.
+                </span>
+              </li>
+              <li>
+                <strong>How much did the text improve from Draft 1 to the final version?</strong>{' '}
+                {bData.revisions > 0
+                  ? <span className="text-emerald-700">{bData.revisions} revision(s) documented. Compare Phase 1 scores with earlier draft scores.</span>
+                  : <span className="text-rose-700">No revision submitted. Development cannot be measured without a revised draft.</span>}
+              </li>
+              <li>
+                <strong>Did the student use feedback meaningfully?</strong>{' '}
+                {bData.engagement === 'High'
+                  ? <span className="text-emerald-700">Yes — high SRL self-reflection score indicates active feedback processing.</span>
+                  : bData.engagement === 'Medium'
+                  ? <span className="text-amber-700">Partially — surface uptake observed. Encourage deeper meaning-level revision.</span>
+                  : <span className="text-rose-700">Limited — feedback uptake not evident. Reinforce reflective practice.</span>}
+              </li>
+              <li>
+                <strong>Does the reflection show real awareness of writing problems and strategies?</strong>{' '}
+                {bData.engagement === 'High'
+                  ? <span className="text-emerald-700">Yes — student demonstrates metacognitive awareness.</span>
+                  : <span className="text-amber-700">Developing — encourage explicit statement of revision rationale in next cycle.</span>}
+              </li>
+              <li>
+                <strong>What is the student's next writing need?</strong>{' '}
+                <span className="text-blue-700">
+                  {scores.argumentation <= 2
+                    ? 'Deepen claim–evidence structure with more precise academic support.'
+                    : scores.cohesion <= 2
+                    ? 'Expand cohesive devices and inter-paragraph transitions.'
+                    : scores.organization <= 2
+                    ? 'Strengthen macro-structure: intro–body–conclusion logical flow.'
+                    : scores.lexical <= 2
+                    ? 'Diversify academic vocabulary and avoid basic repetition.'
+                    : scores.grammar <= 2
+                    ? 'Target high-frequency grammatical errors (tense, agreement, articles).'
+                    : 'Continue developing writing quality and reflective revision practice.'}
+                </span>
+              </li>
+            </ol>
+          </div>
+
+          <p className="text-xs text-gray-500 italic mt-2">
+            Portfolio assessment is implemented here as a delayed, criterion-based evaluation of both
+            final written performance and documented writing development, in line with the principles
+            of collection, selection, reflection, and delayed evaluation (Hamp-Lyons &amp; Condon, 2000).
+            See also:{' '}
+            <a
+              href="https://doi.org/10.1017/CBO9780511732997"
+              target="_blank"
+              rel="noreferrer"
+              className="underline text-blue-600"
+            >
+              Weigle (2002), Assessing Writing
+            </a>.
+          </p>
         </section>
 
       </div>

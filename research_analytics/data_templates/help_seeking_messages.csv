@@ -1,7 +1,0 @@
-student_id,task_id,draft_no,help_seeking_messages,message_text,message_type
-S01,T1,1,1,"How can I make my paragraph more connected?","feedback_clarification"
-S01,T1,2,1,"Is this revision better now?","feedback_followup"
-S02,T1,1,0,"",""
-S02,T1,2,0,"",""
-S03,T1,1,0,"",""
-S03,T1,2,1,"Should I add another example?","argument_support"

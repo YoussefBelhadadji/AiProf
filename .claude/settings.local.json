@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(node -e \"const Database=require\\('better-sqlite3'\\); const db=new Database\\('./data/writelens.db'\\); const users=db.prepare\\('SELECT id,username,email,role FROM users'\\).all\\(\\); console.log\\(JSON.stringify\\(users,null,2\\)\\); db.close\\(\\);\")",
-      "Bash(netstat -ano)"
-    ]
-  }
-}

@@ -95,6 +95,7 @@ pip-delete-this-directory.txt
 *~
 .~*
 *.temp
+pipeline_output.txt
 
 # Development tooling
 .pyre/
