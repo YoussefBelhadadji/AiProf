@@ -1,0 +1,51 @@
+rules:
+  - rule_id: A1
+    condition:
+      rubric_views: "==0"
+      first_access_delay_minutes: ">30"
+    ai_state_required: "Forethought risk = High"
+    interpretation: "Weak forethought regulation and low criteria awareness"
+    feedback_template: "planning_scaffold"
+    onsite_intervention: "rubric_walkthrough_and_outline_support"
+
+  - rule_id: B1
+    condition:
+      argumentation: "<=2"
+    ai_state_required: "Argumentation weakness = High"
+    interpretation: "Weak claim-evidence-reasoning structure"
+    feedback_template: "argument_scaffold"
+    onsite_intervention: "claim_evidence_explanation_modelling"
+
+  - rule_id: B4
+    condition:
+      organization: "<=2"
+      cohesion_index: "<2"
+    ai_state_required: "Discourse competence = Low"
+    interpretation: "Weak organization and cohesion"
+    feedback_template: "cohesion_support"
+    onsite_intervention: "paragraph_restructuring_with_model"
+
+  - rule_id: C1
+    condition:
+      revision_frequency: "==0"
+    ai_state_required: "Revision depth = Low"
+    interpretation: "Weak self-regulated revision"
+    feedback_template: "revision_prompt"
+    onsite_intervention: "guided_revision_checklist"
+
+  - rule_id: C4
+    condition:
+      feedback_views: ">=1"
+      revision_frequency: "==0"
+    ai_state_required: "Feedback uptake risk = High"
+    interpretation: "Feedback viewed but not used"
+    feedback_template: "feedback_decoding"
+    onsite_intervention: "feedback_interpretation_session"
+
+  - rule_id: D4
+    condition:
+      help_seeking_messages: ">=1"
+    ai_state_required: "Help-seeking regulation = Adaptive"
+    interpretation: "Active clarification-seeking"
+    feedback_template: "dialogic_scaffolding"
+    onsite_intervention: "short_clarification_conference"

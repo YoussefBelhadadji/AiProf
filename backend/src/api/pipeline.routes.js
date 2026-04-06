@@ -1,15 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const aiBridge = require('../services/aiBridge.service');
+const pipelineController = require('../controllers/pipeline.controller');
 
-// STRICT API ROUTE -> Call AI Engine Bridge -> Return Output.
-router.post('/api/pipeline/run', async (req, res) => {
-  try {
-    const output = await aiBridge.runAiPipeline(req.body);
-    res.json(output);
-  } catch (error) {
-    res.status(500).json({ error: error.toString() });
-  }
-});
+// STRICT API ROUTE -> Call Pipeline Controller -> Return Validated Output.
+// Removed the redundant '/api' prefix because app.js already mounts this router at '/api'
+router.post('/pipeline/run', pipelineController.runPipeline);
 
 module.exports = router;

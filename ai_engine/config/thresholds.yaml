@@ -1,0 +1,35 @@
+thresholds:
+  word_count:
+    low: [0, 79]
+    moderate: [80, 119]
+    strong: [120, 1000]
+
+  time_on_task:
+    low: [0, 14.99]
+    moderate: [15, 29.99]
+    strong: [30, 1000]
+
+  rubric_views:
+    low: [0, 0]
+    moderate: [1, 1]
+    strong: [2, 100]
+
+  revision_frequency:
+    low: [0, 0]
+    moderate: [1, 1]
+    strong: [2, 100]
+
+  error_density:
+    high_risk: [8.01, 100]
+    watch: [4, 8]
+    low_risk: [0, 3.99]
+
+  cohesion_index:
+    low: [0, 1]
+    moderate: [2, 3]
+    strong: [4, 100]
+
+  criterion_score:
+    low: [1, 2]
+    moderate: [3, 3]
+    strong: [4, 5]

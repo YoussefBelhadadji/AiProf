@@ -21,11 +21,22 @@ if __package__ is None or __package__ == "":
     sys.path.append(str(Path(__file__).resolve().parents[0]))
 
 try:
-    from pipeline.v1.orchestrator import run_orchestrator
-except ImportError:
+    from ai_engine.pipeline.v1.orchestrator import full_pipeline
+    
+    # Simple mock model placeholder since we haven't pickled a real model yet
+    class MockModel:
+        def predict(self, X):
+            return ["needs_support"] * len(X)
+            
+    mock_model = MockModel()
+
+    def run_orchestrator(data: Dict[str, Any]) -> Dict[str, Any]:
+        return full_pipeline(data, mock_model)
+        
+except ImportError as e:
     # Fallback for early stage
     def run_orchestrator(data: Dict[str, Any]) -> Dict[str, Any]:
-        return {"decision": "pending", "data": data}
+        return {"decision": "pending", "data": data, "error": str(e)}
 
 
 def run_pipeline(input_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -70,4 +81,3 @@ if __name__ == "__main__":
     except json.JSONDecodeError as e:
         print(json.dumps({"success": False, "error": f"Invalid JSON: {str(e)}"}, ensure_ascii=True))
         sys.exit(1)
-    main()
