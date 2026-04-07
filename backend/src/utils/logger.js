@@ -1,0 +1,16 @@
+/**
+ * Logger Utility
+ * Simple logging wrapper
+ */
+
+const log = (level, message, data = {}) => {
+  const timestamp = new Date().toISOString()
+  console.log(`[${timestamp}] [${level}] ${message}`, Object.keys(data).length > 0 ? data : '')
+}
+
+module.exports = {
+  info: (msg, data) => log('INFO', msg, data),
+  error: (msg, data) => log('ERROR', msg, data),
+  warn: (msg, data) => log('WARN', msg, data),
+  debug: (msg, data) => log('DEBUG', msg, data),
+}

@@ -13,10 +13,11 @@
 
 require('dotenv').config();
 const app = require('./src/app');
+const config = require('./src/config');
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '0.0.0.0';
-const NODE_ENV = process.env.NODE_ENV || 'development';
+const PORT = config.server.port || 3000;
+const HOST = config.server.host || '0.0.0.0';
+const NODE_ENV = config.environment;
 
 const server = app.listen(PORT, HOST, () => {
   console.log(`\n✅ WriteLens Backend Server Started`);
