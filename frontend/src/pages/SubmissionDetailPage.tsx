@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import { Loader2, AlertCircle } from 'lucide-react';
 import { getSubmissionDetail } from '../services/submissionService';
 import { SubmissionDetail } from '../components/submissions/SubmissionDetail';
-import type { SubmissionDetail as SubmissionDetailType } from '../../../shared/types';
+import type { SubmissionDetail as SubmissionDetailType } from '../../shared/types';
 
 export const SubmissionDetailPage: React.FC = () => {
   const { submissionId } = useParams<{ submissionId: string }>();

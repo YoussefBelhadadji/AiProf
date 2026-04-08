@@ -3,7 +3,7 @@ import type {
   ReportStationSummary,
   ReportStatus,
   PortfolioSummary,
-} from '../../../shared/types';
+} from '../../shared/types';
 import { listStudentSummaries } from './submissionService';
 import { getPortfolioSummary } from './portfolioService';
 

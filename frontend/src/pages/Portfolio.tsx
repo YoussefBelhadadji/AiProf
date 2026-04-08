@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { ChevronDown, Loader2, Search, TrendingUp, TrendingDown, Minus, BookOpen, Clock } from 'lucide-react';
 import { CircularProgress } from '../components/ui/CircularProgress';
 import { getPortfolioSummary, listPortfolioStudents } from '../services/portfolioService';
-import type { PortfolioSummary } from '../../../shared/types';
+import type { PortfolioSummary } from '../../shared/types';
 import {
   ResponsiveContainer,
   LineChart,

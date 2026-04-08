@@ -15,7 +15,7 @@ import {
   listSubmissions,
   type StudentSubmissionSummary,
 } from '../../services/submissionService';
-import type { Submission } from '../../../../shared/types';
+import type { Submission } from '../../../shared/types';
 
 const STATUS_STYLE: Record<string, string> = {
   submitted: 'bg-blue-50 text-blue-700 ring-blue-200',

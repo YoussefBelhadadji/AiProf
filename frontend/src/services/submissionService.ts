@@ -1,4 +1,4 @@
-import type { Submission, SubmissionDetail, AnalysisStation } from '../../../shared/types';
+import type { Submission, SubmissionDetail, AnalysisStation } from '../../shared/types';
 import { fetchLocalJourneyJson } from './localJourneyData';
 
 type StudentIndexRow = {

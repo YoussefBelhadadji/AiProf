@@ -14,7 +14,7 @@ import {
 import { CircularProgress } from '../ui/CircularProgress';
 import { listFinalReports } from '../../services/reportService';
 import { useReportStore } from '../../store/reportStore';
-import type { FinalReport, ReportStatus } from '../../../../shared/types';
+import type { FinalReport, ReportStatus } from '../../../shared/types';
 
 // ── Status config ─────────────────────────────────────────────────────────────
 

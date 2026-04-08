@@ -19,7 +19,7 @@ import {
   Loader,
 } from 'lucide-react';
 import { getDashboardStats } from '../services/dashboardService';
-import type { DashboardStats } from '../../../shared/types';
+import type { DashboardStats } from '../../shared/types';
 
 type RingProps = {
   pct: number;

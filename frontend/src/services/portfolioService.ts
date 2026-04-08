@@ -1,4 +1,4 @@
-import type { PortfolioSummary, Submission, AnalysisStation } from '../../../shared/types';
+import type { PortfolioSummary, Submission, AnalysisStation } from '../../shared/types';
 import { fetchLocalJourneyJson } from './localJourneyData';
 import { makeSubmissionId } from './submissionService';
 

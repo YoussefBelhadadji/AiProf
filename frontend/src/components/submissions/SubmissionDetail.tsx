@@ -17,7 +17,7 @@ import {
   Bar,
 } from 'recharts';
 import { CircularProgress } from '../ui/CircularProgress';
-import type { SubmissionDetail as SubmissionDetailType, AnalysisStation } from '../../../../shared/types';
+import type { SubmissionDetail as SubmissionDetailType, AnalysisStation } from '../../../shared/types';
 
 function colorForScore(p: number) {
   if (p >= 80) return '#10B981';

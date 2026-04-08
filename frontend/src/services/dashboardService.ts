@@ -23,7 +23,7 @@ import type {
   TrendPoint,
   RecentSubmission,
   ProgressTrends,
-} from '../../../shared/types';
+} from '../../shared/types';
 
 // ── Internal raw-data shapes ──────────────────────────────────────────────────
 
