@@ -308,7 +308,7 @@ export const Dashboard: React.FC = () => {
                     </td>
                   </tr>
                 ) : (
-                  dashboardStats.recentSubmissions.map((row) => (
+                  dashboardStats.recentSubmissions.map((row: any) => (
                     <tr key={`${row.studentId}-${row.submittedAt}-${row.assignmentName}`} className="border-b border-slate-50 last:border-0 hover:bg-slate-50/50">
                       <td className="px-4 py-3 font-medium text-slate-900 truncate">{row.studentName}</td>
                       <td className="max-w-50 truncate px-4 py-3 text-slate-600" title={row.assignmentName}>

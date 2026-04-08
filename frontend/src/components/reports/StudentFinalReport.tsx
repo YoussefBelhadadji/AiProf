@@ -705,7 +705,7 @@ export const StudentFinalReport: React.FC<Props> = ({ studentId }) => {
                 <p className="text-sm text-slate-400">No strengths data available.</p>
               ) : (
                 <ul className="space-y-2">
-                  {r.strengths.map((s, i) => (
+                  {r.strengths.map((s: string, i: number) => (
                     <li key={i} className="flex gap-2.5 text-sm text-slate-700">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-emerald-50 text-[10px] font-bold text-emerald-600">
                         {i + 1}
@@ -723,7 +723,7 @@ export const StudentFinalReport: React.FC<Props> = ({ studentId }) => {
                 <p className="text-sm text-slate-400">No improvement areas identified.</p>
               ) : (
                 <ul className="space-y-2">
-                  {r.areasForImprovement.map((a, i) => (
+                  {r.areasForImprovement.map((a: string, i: number) => (
                     <li key={i} className="flex gap-2.5 text-sm text-slate-700">
                       <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-amber-50 text-[10px] font-bold text-amber-600">
                         {i + 1}
@@ -741,7 +741,7 @@ export const StudentFinalReport: React.FC<Props> = ({ studentId }) => {
                 <p className="text-sm text-slate-400">No recommendations available.</p>
               ) : (
                 <ol className="space-y-3">
-                  {r.recommendations.map((rec, i) => (
+                  {r.recommendations.map((rec: string, i: number) => (
                     <li key={i} className="flex gap-3 text-sm">
                       <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-blue-50 text-[11px] font-bold text-blue-600">
                         {i + 1}
@@ -756,7 +756,7 @@ export const StudentFinalReport: React.FC<Props> = ({ studentId }) => {
             {/* Station quick scores */}
             <Section title="Station Score Summary">
               <div className="space-y-2.5">
-                {r.stationsSummary.map((s) => (
+                {r.stationsSummary.map((s: any) => (
                   <div key={s.id}>
                     <div className="mb-1 flex items-center justify-between text-xs">
                       <span className="font-medium text-slate-700">{s.name}</span>

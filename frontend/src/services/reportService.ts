@@ -133,8 +133,8 @@ function generateRecommendations(portfolio: PortfolioSummary): string[] {
   const stations = portfolio.stationsAverage;
 
   const weakStations = stations
-    .filter((s) => s.scorePct < 65)
-    .sort((a, b) => a.scorePct - b.scorePct)
+    .filter((s: any) => s.scorePct < 65)
+    .sort((a: any, b: any) => a.scorePct - b.scorePct)
     .slice(0, 4);
 
   const stationRec: Record<string, string> = {
@@ -185,7 +185,7 @@ function buildStationsSummary(portfolio: PortfolioSummary): ReportStationSummary
   const top = sorted[0]?.scorePct ?? 0;
   const bottom = sorted[sorted.length - 1]?.scorePct ?? 0;
 
-  return stations.map((s) => ({
+  return stations.map((s: any) => ({
     id: s.id,
     name: s.name,
     avgScorePct: s.scorePct,

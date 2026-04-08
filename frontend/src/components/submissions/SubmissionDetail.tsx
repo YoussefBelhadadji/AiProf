@@ -114,7 +114,7 @@ export const SubmissionDetail: React.FC<{ detail: SubmissionDetailType }> = ({ d
             </div>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {detail.stations.map((s) => (
+              {detail.stations.map((s: any) => (
                 <StationCard
                   key={s.id}
                   station={s}
@@ -203,7 +203,7 @@ export const SubmissionDetail: React.FC<{ detail: SubmissionDetailType }> = ({ d
               Logs
             </div>
             <div className="mt-3 space-y-2">
-              {detail.logs.slice(0, 6).map((l) => (
+              {detail.logs.slice(0, 6).map((l: any) => (
                 <div key={l.at} className="rounded-xl border border-slate-100 bg-slate-50 p-3">
                   <div className="flex items-center justify-between text-xs text-slate-500">
                     <span>{new Date(l.at).toLocaleString()}</span>

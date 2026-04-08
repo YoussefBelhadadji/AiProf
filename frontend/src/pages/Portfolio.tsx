@@ -211,7 +211,7 @@ export const Portfolio: React.FC = () => {
                   <div className="rounded-xl border border-slate-100 bg-slate-50 p-4 text-sm text-slate-600">
                     No recent submissions available.
                   </div>
-                ) : summary.recentSubmissions.map((s) => (
+                ) : summary.recentSubmissions.map((s: any) => (
                   <div key={s.id} className="flex items-center justify-between gap-3 rounded-xl border border-slate-100 bg-slate-50 p-3">
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-slate-900">{s.title}</p>
@@ -236,7 +236,7 @@ export const Portfolio: React.FC = () => {
               <div className="text-xs text-slate-400">clicking stations can be expanded later</div>
             </div>
             <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-              {summary.stationsAverage.map((st) => (
+              {summary.stationsAverage.map((st: any) => (
                 <div key={st.id} className="flex items-center justify-between rounded-2xl border border-slate-200/70 bg-white p-4 shadow-sm">
                   <div className="min-w-0">
                     <p className="truncate text-sm font-semibold text-slate-900">{st.name}</p>
