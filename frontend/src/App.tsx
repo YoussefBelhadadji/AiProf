@@ -1,11 +1,9 @@
 import React, { Suspense, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { useAuthStore } from './store/authStore';
 import { ResearchShell } from './layouts/ResearchShell';
 
 // Initial route loads
-import { Login } from './pages/Login';
 import { Dashboard } from './pages/Dashboard.tsx';
 
 // ── Learners feature (feature/learners) ──────────────────────────────────────
@@ -24,8 +22,6 @@ const PipelinePage = React.lazy(() => import('./pages/PipelinePage').then(module
 const Settings = React.lazy(() => import('./pages/Settings').then(module => ({ default: module.Settings })));
 const NotFound = React.lazy(() => import('./pages/NotFound').then(module => ({ default: module.NotFound })));
 const StationRouter = React.lazy(() => import('./pages/StationRouter').then(module => ({ default: module.StationRouter })));
-const ForgotPassword = React.lazy(() => import('./pages/ForgotPassword').then(module => ({ default: module.ForgotPassword })));
-const ResetPassword = React.lazy(() => import('./pages/ResetPassword').then(module => ({ default: module.ResetPassword })));
 const Thresholds = React.lazy(() => import('./pages/Thresholds').then(module => ({ default: module.Thresholds })));
 const AuditLogs = React.lazy(() => import('./pages/AuditLogs').then(module => ({ default: module.AuditLogs })));
 const Reliability = React.lazy(() => import('./pages/Reliability').then(module => ({ default: module.Reliability })));
@@ -59,10 +55,10 @@ function App() {
       <ErrorBoundary>
         <Suspense fallback={<PageLoader />}>
           <Routes>
-            <Route path="/" element={<Navigate to="/login" replace />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/login" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/forgot-password" element={<Navigate to="/dashboard" replace />} />
+            <Route path="/reset-password" element={<Navigate to="/dashboard" replace />} />
 
             {/* Authenticated Research Space */}
             <Route path="/*" element={
@@ -113,70 +109,14 @@ function App() {
 }
 
 function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { token, logout } = useAuthStore();
-  const [isValidating, setIsValidating] = React.useState(true);
-  const [isValid, setIsValid] = React.useState(false);
-
-  const hasWorkspaceAccess = typeof window !== 'undefined' && sessionStorage.getItem('writelens-research-access') === 'granted';
-  
+  // Allow direct access to dashboard without authentication
+  // Set workspace access flag if not already set
   React.useEffect(() => {
-    const validateToken = async () => {
-      if (!token) {
-        setIsValid(hasWorkspaceAccess);
-        setIsValidating(false);
-        return;
-      }
+    if (!sessionStorage.getItem('writelens-research-access')) {
+      sessionStorage.setItem('writelens-research-access', 'granted');
+    }
+  }, []);
 
-      try {
-        const apiBase = (import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://127.0.0.1:5000' : '')).replace(/\/$/, '');
-        const response = await fetch(`${apiBase}/api/auth/verify`, {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (response.ok) {
-          setIsValid(true);
-        } else if (response.status === 401) {
-          // Token expired, clear auth state
-          logout();
-          setIsValid(false);
-        } else {
-          setIsValid(false);
-        }
-      } catch (error) {
-        console.error('Token validation failed:', error);
-        setIsValid(false);
-      } finally {
-        setIsValidating(false);
-      }
-    };
-
-    validateToken();
-  }, [token, logout]);
-
-  if (isValidating) {
-    return (
-      <div className="flex items-center justify-center min-h-screen bg-[var(--bg-primary)]">
-        <div className="text-center">
-          <div className="w-8 h-8 border-2 border-[var(--lav)] border-t-transparent rounded-full animate-spin mx-auto mb-3" />
-          <p className="text-[var(--text-primary)]">Verifying session...</p>
-        </div>
-      </div>
-    );
-  }
-
-  // For the research study prototype, we also allow access if a session flag is present
-  if (!isValid && !token && !hasWorkspaceAccess) {
-    return <Navigate to="/login" replace />;
-  }
-
-  if (!isValid && token) {
-    return <Navigate to="/login" replace />;
-  }
-  
   return children;
 }
 
