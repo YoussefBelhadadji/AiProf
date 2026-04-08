@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "7994",
+    "student_name": "belmouedden nour"
+  },
+  "metrics": {
+    "risk_group": "High Risk - Urgent support needed",
+    "risk_score": 15,
+    "problem_group": "Planning and self-regulation",
+    "instructional_group": "High Risk - Urgent support needed | Planning and self-regulation",
+    "group_intervention_focus": "Guided planning workshop, outline modelling, staged drafting support",
+    "risk_group_order": 0
+  }
+}

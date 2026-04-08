@@ -1,4 +1,4 @@
-import { useAuthStore } from '../state/authStore';
+import { useAuthStore } from '../store/authStore';
 
 const _DEFAULT_EXPORT_BASE = import.meta.env.DEV ? 'http://127.0.0.1:5000' : '';
 export const EXPORT_API_URL = `${(import.meta.env.VITE_API_URL ?? _DEFAULT_EXPORT_BASE).replace(/\/$/, '')}/api/reports/export`;

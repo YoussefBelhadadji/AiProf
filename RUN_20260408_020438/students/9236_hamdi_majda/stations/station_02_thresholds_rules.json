@@ -1,0 +1,19 @@
+{
+  "station": {
+    "id": "station_02_thresholds_rules",
+    "title": "Thresholds and pedagogical rules",
+    "description": "Threshold levels, triggered rules, and decision logic.",
+    "order": 2
+  },
+  "student": {
+    "student_id": "9236",
+    "student_name": "hamdi majda"
+  },
+  "metrics": {
+    "word_count_level": "strong",
+    "error_density_level": "acceptable",
+    "quality_profile": "good",
+    "highest_priority": "critical",
+    "all_triggered_rule_ids": "R1; R7; B1; D1; CR2"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "station": {
+    "id": "station_03_clustering_profiles",
+    "title": "Learner clustering and profiles",
+    "description": "Learner profile assignment and cluster-level context.",
+    "order": 3
+  },
+  "student": {
+    "student_id": "9202",
+    "student_name": "derbal khouloud"
+  },
+  "metrics": {
+    "learner_profile": "Efficient Learners - Low effort, acceptable results",
+    "root_cause_count": 2,
+    "primary_issue": "DISCOURSE_ORGANIZATION",
+    "overall_engagement": 1.0,
+    "planning_index": 1.0,
+    "discourse_quality": 0.27222222222222214,
+    "argumentation_strength": 1.0,
+    "feedback_receptiveness": 0.7000000000000001
+  }
+}

@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Space+Grotesk:wght@300..700&family=Inter:wght@100..900&family=IBM+Plex+Mono:ital,wght@0,100..700;1,100..700&display=swap');
 @import "tailwindcss";
-@import "./tokens/colors.css";
 
 :root {
   /* ═══════════════════════════════════════════════════════════
@@ -156,6 +155,38 @@
   --duration-base: 0.3s;
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* WriteLens professor shell — light educational SaaS (overrides :root for subtree) */
+.writelens-shell {
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --text-sec: #475569;
+  --text-light: #0f172a;
+  --bg-primary: #f1f5f9;
+  --bg-deep: #f1f5f9;
+  --bg-sidebar: #f8f9fd;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-elevated: #ffffff;
+  --border: rgba(148, 163, 184, 0.22);
+  --border-base: rgba(148, 163, 184, 0.22);
+  --lav: #3b82f6;
+  --lav-border: rgba(59, 130, 246, 0.28);
+  --lav-dim: rgba(59, 130, 246, 0.1);
+  --lav-glow: rgba(59, 130, 246, 0.2);
+  --teal: #10b981;
+  --amber: #f97316;
+  --blue: #3b82f6;
+  --bg-high: #f1f5f9;
+  --bg-raised: #ffffff;
+  --bg-base: #ffffff;
+  --bg-elevated: #ffffff;
+  --green: #10b981;
+  --red-dim: rgba(239, 68, 68, 0.12);
+  --glass-bg: rgba(255, 255, 255, 0.92);
+  --surface-card: #ffffff;
 }
 
 /* ─────────────────────────────────────────────────────────────

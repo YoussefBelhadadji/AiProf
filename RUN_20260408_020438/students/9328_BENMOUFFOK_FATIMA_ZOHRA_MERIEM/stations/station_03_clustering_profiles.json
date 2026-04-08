@@ -1,0 +1,22 @@
+{
+  "station": {
+    "id": "station_03_clustering_profiles",
+    "title": "Learner clustering and profiles",
+    "description": "Learner profile assignment and cluster-level context.",
+    "order": 3
+  },
+  "student": {
+    "student_id": "9328",
+    "student_name": "BENMOUFFOK FATIMA ZOHRA MERIEM"
+  },
+  "metrics": {
+    "learner_profile": "Disengaged Students - Low participation",
+    "root_cause_count": 5,
+    "primary_issue": "PLANNING_ISSUE",
+    "overall_engagement": 0.0,
+    "planning_index": 0.0,
+    "discourse_quality": 0.0,
+    "argumentation_strength": 0.0,
+    "feedback_receptiveness": 0.30000000000000004
+  }
+}

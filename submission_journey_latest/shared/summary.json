@@ -1,0 +1,23 @@
+{
+  "students_total": 65,
+  "students_with_submissions": 58,
+  "ai_analysis_ready_students": 65,
+  "submissions_total": 503,
+  "non_empty_submissions_total": 307,
+  "graded_submissions_total": 38,
+  "average_submissions_per_student": 7.74,
+  "average_lessons_covered": 7.0,
+  "average_ai_data_confidence": 0.6694,
+  "stage_submission_totals": {
+    "body_development": 205,
+    "diagnostic": 50,
+    "introduction": 160,
+    "lesson_activity": 88
+  },
+  "progress_trends": {
+    "insufficient_data": 13,
+    "stable": 31,
+    "improving": 13,
+    "declining": 8
+  }
+}

@@ -4,10 +4,5 @@
  */
 
 export { useAuthStore } from './authStore'
-export { useStudyScope } from './studyScope'
-
-// Student store (if exists)
-// export { useStudentStore } from './studentStore'
-
-// Pipeline store (if exists)
-// export { usePipelineStore } from './pipelineStore'
+export { useStudyScopeStore } from './studyScope'
+export { useSubmissionStore } from './submissionStore'

@@ -1,0 +1,33 @@
+{
+  "student": {
+    "student_id": "11043",
+    "student_name": "MESSAOUDI Nouria",
+    "portfolio_slug": "MESSAOUDI_Nouria"
+  },
+  "phase_summary": [],
+  "lesson_progress": [],
+  "narrative": {
+    "start_point": {
+      "stage": "Unknown start",
+      "quality_score": 0.0,
+      "word_count": 0,
+      "error_density": 0.0
+    },
+    "end_point": {
+      "quality_score": 0.0,
+      "word_count": 0,
+      "error_density": 0.0,
+      "performance_level": "Needs Improvement",
+      "competence_level": "Beginning"
+    },
+    "progress_interpretation": {
+      "trend": "insufficient_data",
+      "trend_score": 0.0,
+      "quality_delta": 0.0,
+      "word_count_delta": 0,
+      "error_density_delta": 0.0,
+      "revised_lessons_count": 0,
+      "full_learning_path_detected": false
+    }
+  }
+}

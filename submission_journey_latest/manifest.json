@@ -1,0 +1,10 @@
+{
+  "run_timestamp": "20260408_032145",
+  "generated_at": "2026-04-08T03:21:48.892934",
+  "description": "Submission-centric outputs only.",
+  "entry_points": {
+    "students_index": "students/index.json",
+    "students_index_by_id": "students/index_by_id.json",
+    "summary": "shared/summary.json"
+  }
+}

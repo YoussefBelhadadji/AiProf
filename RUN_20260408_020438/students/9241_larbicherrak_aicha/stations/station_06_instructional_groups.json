@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "9241",
+    "student_name": "larbicherrak aicha"
+  },
+  "metrics": {
+    "risk_group": "Low Risk - Maintain and enrich",
+    "risk_score": 1,
+    "problem_group": "Enrichment and extension",
+    "instructional_group": "Low Risk - Maintain and enrich | Enrichment and extension",
+    "group_intervention_focus": "Advanced writing challenge, deeper analysis task, peer modelling role",
+    "risk_group_order": 3
+  }
+}

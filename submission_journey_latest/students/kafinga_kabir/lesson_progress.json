@@ -1,0 +1,168 @@
+{
+  "student": {
+    "student_id": "9169",
+    "student_name": "kafinga kabir",
+    "portfolio_slug": "kafinga_kabir"
+  },
+  "phase_summary": [
+    {
+      "phase_id": "introduction",
+      "phase_title": "Introduction and orientation",
+      "phase_order": 1,
+      "assignments_count": 1,
+      "submissions_count": 1,
+      "non_empty_submissions": 1,
+      "avg_quality_score": 0.7417,
+      "avg_error_density": 0.0,
+      "avg_word_count": 115.0
+    },
+    {
+      "phase_id": "diagnostic",
+      "phase_title": "Diagnostic baseline",
+      "phase_order": 2,
+      "assignments_count": 1,
+      "submissions_count": 1,
+      "non_empty_submissions": 0,
+      "avg_quality_score": 0.0,
+      "avg_error_density": 0.0,
+      "avg_word_count": 0.0
+    },
+    {
+      "phase_id": "body_development",
+      "phase_title": "Body paragraph development",
+      "phase_order": 5,
+      "assignments_count": 3,
+      "submissions_count": 4,
+      "non_empty_submissions": 3,
+      "avg_quality_score": 0.8116,
+      "avg_error_density": 0.0,
+      "avg_word_count": 167.0
+    }
+  ],
+  "lesson_progress": [
+    {
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "253",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "submissions_count": 2,
+      "revisions_count": 1,
+      "first_submission_at": "2026-03-06T22:50:09+00:00",
+      "last_submission_at": "2026-03-07T16:59:09+00:00",
+      "start_quality_score": 0.8334,
+      "end_quality_score": 0.8334,
+      "quality_delta": 0.0,
+      "start_word_count": 206,
+      "end_word_count": 206,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative body paragraphs : First paragraph",
+      "assignment_id": "225",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-15T13:54:39+00:00",
+      "last_submission_at": "2026-02-15T16:33:15+00:00",
+      "start_quality_score": 0.8692,
+      "end_quality_score": 0.8692,
+      "quality_delta": 0.0,
+      "start_word_count": 179,
+      "end_word_count": 179,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Writing Progress Reflection",
+      "assignment_id": "258",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-03-15T23:08:15+00:00",
+      "last_submission_at": "2026-03-15T23:21:28+00:00",
+      "start_quality_score": 0.7321,
+      "end_quality_score": 0.7321,
+      "quality_delta": 0.0,
+      "start_word_count": 116,
+      "end_word_count": 116,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Diagnostic Writing Tasks",
+      "assignment_id": "217",
+      "assignment_section": "Academic Writing",
+      "stage_label": "diagnostic",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-07T19:41:30+00:00",
+      "last_submission_at": "2026-02-07T19:41:30+00:00",
+      "start_quality_score": 0.0,
+      "end_quality_score": 0.0,
+      "quality_delta": 0.0,
+      "start_word_count": 0,
+      "end_word_count": 0,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-14T12:56:02+00:00",
+      "last_submission_at": "2026-02-14T13:06:22+00:00",
+      "start_quality_score": 0.7417,
+      "end_quality_score": 0.7417,
+      "quality_delta": 0.0,
+      "start_word_count": 115,
+      "end_word_count": 115,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    }
+  ],
+  "narrative": {
+    "start_point": {
+      "stage": "Diagnostic baseline",
+      "quality_score": 0.7417,
+      "word_count": 115,
+      "error_density": 0.0
+    },
+    "end_point": {
+      "quality_score": 0.7321,
+      "word_count": 116,
+      "error_density": 0.0,
+      "performance_level": "Good",
+      "competence_level": "Developing"
+    },
+    "progress_interpretation": {
+      "trend": "stable",
+      "trend_score": -0.0053,
+      "quality_delta": -0.0096,
+      "word_count_delta": 1,
+      "error_density_delta": 0.0,
+      "revised_lessons_count": 1,
+      "full_learning_path_detected": false
+    }
+  }
+}

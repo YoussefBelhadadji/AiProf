@@ -1,0 +1,29 @@
+{
+  "station": {
+    "id": "station_07_teacher_actions",
+    "title": "Teacher action layer",
+    "description": "Priority decisions and teacher-facing intervention actions.",
+    "order": 7
+  },
+  "student": {
+    "student_id": "11813",
+    "student_name": "Fatima GUERCH"
+  },
+  "metrics": {
+    "highest_priority": "critical",
+    "competence_level": "Developing",
+    "performance_level": "Strong",
+    "group_intervention_focus": "Guided planning workshop, outline modelling, staged drafting support",
+    "all_triggered_rule_ids": "R1; R2; R7; B1; B2; C3; D1; CR2",
+    "triggered_rules": [
+      "R1",
+      "R2",
+      "R7",
+      "B1",
+      "B2",
+      "C3",
+      "D1",
+      "CR2"
+    ]
+  }
+}

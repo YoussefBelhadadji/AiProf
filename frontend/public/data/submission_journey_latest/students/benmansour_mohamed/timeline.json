@@ -1,0 +1,69 @@
+{
+  "student": {
+    "student_id": "9253",
+    "student_name": "benmansour mohamed",
+    "portfolio_slug": "benmansour_mohamed"
+  },
+  "overview": {
+    "submissions_total": 2,
+    "lessons_covered": 2,
+    "non_empty_submissions": 1,
+    "graded_submissions": 0,
+    "first_submission_at": "2026-02-13T18:59:06+00:00",
+    "last_submission_at": "2026-02-14T10:55:16+00:00",
+    "active_span_days": 0.66,
+    "lesson_sequence": [
+      "Argumentative essay Introduction",
+      "Argumentative Essay – Writing an Effective Introduction."
+    ],
+    "stage_path": [
+      "introduction"
+    ]
+  },
+  "timeline": [
+    {
+      "sequence_index": 1,
+      "assignment_name": "Argumentative essay Introduction",
+      "assignment_id": "222",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-13T18:59:06+00:00",
+      "time_modified_at": "2026-02-13T20:09:13+00:00",
+      "duration_minutes": 70,
+      "has_text": true,
+      "word_count": 100,
+      "sentence_count": 4,
+      "ttr": 0.76,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.7167,
+      "text_preview": "Introduction Imagine writing an essay and having an AI tool that can finish your sentences or even write whole paragraphs for you. Many university students today use artificial intelligence to help with their studies and assignments. While some teachers see AI as a helpful tool, others worry that students are using it"
+    },
+    {
+      "sequence_index": 2,
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "new",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-14T10:55:16+00:00",
+      "time_modified_at": "2026-02-14T10:55:16+00:00",
+      "duration_minutes": 0,
+      "has_text": false,
+      "word_count": 0,
+      "sentence_count": 0,
+      "ttr": 0.0,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.0,
+      "text_preview": ""
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "student": {
+    "student_id": "9388",
+    "student_name": "benchiha mourad",
+    "portfolio_slug": "benchiha_mourad"
+  },
+  "overview": {
+    "submissions_total": 0,
+    "lessons_covered": 0,
+    "non_empty_submissions": 0,
+    "graded_submissions": 0,
+    "first_submission_at": null,
+    "last_submission_at": null,
+    "active_span_days": 0.0,
+    "lesson_sequence": [],
+    "stage_path": []
+  },
+  "timeline": []
+}

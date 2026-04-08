@@ -1,0 +1,811 @@
+{
+  "student": {
+    "student_id": "9206",
+    "student_name": "belhosseine kaoutar",
+    "portfolio_slug": "belhosseine_kaoutar"
+  },
+  "overview": {
+    "submissions_total": 10,
+    "lessons_covered": 9,
+    "non_empty_submissions": 8,
+    "graded_submissions": 2,
+    "first_submission_at": "2025-11-19T15:23:17+00:00",
+    "last_submission_at": "2026-03-14T08:56:40+00:00",
+    "active_span_days": 114.73,
+    "lesson_sequence": [
+      "Welcome & Instructions.",
+      "test",
+      "Identifying Paragraph Patterns",
+      "Diagnostic Writing Tasks",
+      "Argumentative Essay – Writing an Effective Introduction.",
+      "Argumentative essay Introduction",
+      "Argumentative body paragraphs : First paragraph",
+      "Argumentative Essay :Second Body Paragraph.",
+      "Writing Progress Reflection"
+    ],
+    "stage_path": [
+      "introduction",
+      "lesson_activity",
+      "diagnostic",
+      "body_development"
+    ]
+  },
+  "portfolio_score": {
+    "portfolio_score": 64.09,
+    "portfolio_level": "moderate_progress",
+    "score_components": {
+      "evidence_trend": 0.511,
+      "quality_gain": 0.5104,
+      "error_reduction": 1.0,
+      "revision_coverage": 0.1111,
+      "performance_state": 1.0,
+      "competence_state": 0.7,
+      "risk_protection": 1.0
+    }
+  },
+  "narrative": {
+    "start_point": {
+      "stage": "Introduction and orientation",
+      "quality_score": 0.6833,
+      "word_count": 80,
+      "error_density": 0.0
+    },
+    "end_point": {
+      "quality_score": 0.6916,
+      "word_count": 92,
+      "error_density": 0.0,
+      "performance_level": "Strong",
+      "competence_level": "Developing"
+    },
+    "progress_interpretation": {
+      "trend": "stable",
+      "trend_score": 0.011,
+      "quality_delta": 0.0083,
+      "word_count_delta": 12,
+      "error_density_delta": 0.0,
+      "revised_lessons_count": 1,
+      "full_learning_path_detected": false
+    }
+  },
+  "phase_summary": [
+    {
+      "phase_id": "introduction",
+      "phase_title": "Introduction and orientation",
+      "phase_order": 1,
+      "assignments_count": 3,
+      "submissions_count": 3,
+      "non_empty_submissions": 2,
+      "avg_quality_score": 0.6983,
+      "avg_error_density": 0.0,
+      "avg_word_count": 89.0
+    },
+    {
+      "phase_id": "diagnostic",
+      "phase_title": "Diagnostic baseline",
+      "phase_order": 2,
+      "assignments_count": 1,
+      "submissions_count": 1,
+      "non_empty_submissions": 1,
+      "avg_quality_score": 0.8429,
+      "avg_error_density": 0.0,
+      "avg_word_count": 200.0
+    },
+    {
+      "phase_id": "lesson_activity",
+      "phase_title": "Lesson activity and practice",
+      "phase_order": 3,
+      "assignments_count": 2,
+      "submissions_count": 2,
+      "non_empty_submissions": 1,
+      "avg_quality_score": 0.6817,
+      "avg_error_density": 0.0,
+      "avg_word_count": 79.0
+    },
+    {
+      "phase_id": "body_development",
+      "phase_title": "Body paragraph development",
+      "phase_order": 5,
+      "assignments_count": 3,
+      "submissions_count": 4,
+      "non_empty_submissions": 4,
+      "avg_quality_score": 0.823,
+      "avg_error_density": 0.0,
+      "avg_word_count": 155.25
+    }
+  ],
+  "lesson_progress": [
+    {
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "238",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "submissions_count": 2,
+      "revisions_count": 1,
+      "first_submission_at": "2026-02-22T21:39:16+00:00",
+      "last_submission_at": "2026-03-07T01:19:56+00:00",
+      "start_quality_score": 0.8562,
+      "end_quality_score": 0.8629,
+      "quality_delta": 0.0067,
+      "start_word_count": 165,
+      "end_word_count": 177,
+      "word_count_delta": 12,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative body paragraphs : First paragraph",
+      "assignment_id": "225",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-15T18:17:52+00:00",
+      "last_submission_at": "2026-02-15T21:02:04+00:00",
+      "start_quality_score": 0.8813,
+      "end_quality_score": 0.8813,
+      "quality_delta": 0.0,
+      "start_word_count": 187,
+      "end_word_count": 187,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Writing Progress Reflection",
+      "assignment_id": "258",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-03-14T00:36:00+00:00",
+      "last_submission_at": "2026-03-14T08:56:40+00:00",
+      "start_quality_score": 0.6916,
+      "end_quality_score": 0.6916,
+      "quality_delta": 0.0,
+      "start_word_count": 92,
+      "end_word_count": 92,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Diagnostic Writing Tasks",
+      "assignment_id": "217",
+      "assignment_section": "Academic Writing",
+      "stage_label": "diagnostic",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-01-24T16:36:10+00:00",
+      "last_submission_at": "2026-01-24T18:35:38+00:00",
+      "start_quality_score": 0.8429,
+      "end_quality_score": 0.8429,
+      "quality_delta": 0.0,
+      "start_word_count": 200,
+      "end_word_count": 200,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-02T22:37:59+00:00",
+      "last_submission_at": "2026-02-03T16:59:15+00:00",
+      "start_quality_score": 0.7133,
+      "end_quality_score": 0.7133,
+      "quality_delta": 0.0,
+      "start_word_count": 98,
+      "end_word_count": 98,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative essay Introduction",
+      "assignment_id": "222",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-11T21:00:50+00:00",
+      "last_submission_at": "2026-02-11T21:33:08+00:00",
+      "start_quality_score": 0.0,
+      "end_quality_score": 0.0,
+      "quality_delta": 0.0,
+      "start_word_count": 0,
+      "end_word_count": 0,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Welcome & Instructions.",
+      "assignment_id": "146",
+      "assignment_section": "Academic Writing",
+      "stage_label": "introduction",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2025-11-19T15:23:17+00:00",
+      "last_submission_at": "2025-11-19T15:31:13+00:00",
+      "start_quality_score": 0.6833,
+      "end_quality_score": 0.6833,
+      "quality_delta": 0.0,
+      "start_word_count": 80,
+      "end_word_count": 80,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Identifying Paragraph Patterns",
+      "assignment_id": "161",
+      "assignment_section": "Academic Writing",
+      "stage_label": "lesson_activity",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2025-11-29T20:01:58+00:00",
+      "last_submission_at": "2025-11-30T23:36:02+00:00",
+      "start_quality_score": 0.6817,
+      "end_quality_score": 0.6817,
+      "quality_delta": 0.0,
+      "start_word_count": 79,
+      "end_word_count": 79,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "test",
+      "assignment_id": "143",
+      "assignment_section": "Clarity and Formality",
+      "stage_label": "lesson_activity",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2025-11-19T15:31:25+00:00",
+      "last_submission_at": "2025-12-04T16:54:15+00:00",
+      "start_quality_score": 0.0,
+      "end_quality_score": 0.0,
+      "quality_delta": 0.0,
+      "start_word_count": 0,
+      "end_word_count": 0,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    }
+  ],
+  "ai_analysis": {
+    "analysis_metadata": {
+      "engine": "WriteLens Deterministic AI Analysis",
+      "analysis_version": "3.0",
+      "generated_at": "2026-04-08T03:21:46.259782",
+      "method": "rule-guided scoring + longitudinal submission evidence",
+      "data_confidence_score": 0.8967,
+      "data_confidence_band": "very_strong"
+    },
+    "student_snapshot": {
+      "student_id": "9206",
+      "student_name": "belhosseine kaoutar",
+      "learner_profile": "Strategic Learners - High engagement + good writing",
+      "risk_group": "Low Risk - Maintain and enrich",
+      "problem_group": "Time management and drafting pace",
+      "instructional_group": "Low Risk - Maintain and enrich | Time management and drafting pace",
+      "competence_level": "Developing",
+      "performance_level": "Strong",
+      "primary_issue": "RUSHED_WRITING"
+    },
+    "trajectory_analysis": {
+      "trend": "stable",
+      "trend_score": 0.011,
+      "quality_delta": 0.0083,
+      "word_count_delta": 12,
+      "error_density_delta": 0.0,
+      "submissions_total": 10,
+      "non_empty_submissions": 8,
+      "lessons_covered": 9,
+      "revised_lessons_count": 1,
+      "submission_coverage_ratio": 0.8,
+      "revision_coverage_ratio": 0.1111,
+      "phase_summary": [
+        {
+          "phase_id": "introduction",
+          "phase_title": "Introduction and orientation",
+          "phase_order": 1,
+          "assignments_count": 3,
+          "submissions_count": 3,
+          "non_empty_submissions": 2,
+          "avg_quality_score": 0.6983,
+          "avg_error_density": 0.0,
+          "avg_word_count": 89.0
+        },
+        {
+          "phase_id": "diagnostic",
+          "phase_title": "Diagnostic baseline",
+          "phase_order": 2,
+          "assignments_count": 1,
+          "submissions_count": 1,
+          "non_empty_submissions": 1,
+          "avg_quality_score": 0.8429,
+          "avg_error_density": 0.0,
+          "avg_word_count": 200.0
+        },
+        {
+          "phase_id": "lesson_activity",
+          "phase_title": "Lesson activity and practice",
+          "phase_order": 3,
+          "assignments_count": 2,
+          "submissions_count": 2,
+          "non_empty_submissions": 1,
+          "avg_quality_score": 0.6817,
+          "avg_error_density": 0.0,
+          "avg_word_count": 79.0
+        },
+        {
+          "phase_id": "body_development",
+          "phase_title": "Body paragraph development",
+          "phase_order": 5,
+          "assignments_count": 3,
+          "submissions_count": 4,
+          "non_empty_submissions": 4,
+          "avg_quality_score": 0.823,
+          "avg_error_density": 0.0,
+          "avg_word_count": 155.25
+        }
+      ],
+      "top_improving_lessons": [
+        {
+          "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+          "assignment_id": "238",
+          "assignment_section": "Argumentative Essays",
+          "stage_label": "body_development",
+          "submissions_count": 2,
+          "revisions_count": 1,
+          "first_submission_at": "2026-02-22T21:39:16+00:00",
+          "last_submission_at": "2026-03-07T01:19:56+00:00",
+          "start_quality_score": 0.8562,
+          "end_quality_score": 0.8629,
+          "quality_delta": 0.0067,
+          "start_word_count": 165,
+          "end_word_count": 177,
+          "word_count_delta": 12,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        },
+        {
+          "assignment_name": "Argumentative body paragraphs : First paragraph",
+          "assignment_id": "225",
+          "assignment_section": "Argumentative Essays",
+          "stage_label": "body_development",
+          "submissions_count": 1,
+          "revisions_count": 0,
+          "first_submission_at": "2026-02-15T18:17:52+00:00",
+          "last_submission_at": "2026-02-15T21:02:04+00:00",
+          "start_quality_score": 0.8813,
+          "end_quality_score": 0.8813,
+          "quality_delta": 0.0,
+          "start_word_count": 187,
+          "end_word_count": 187,
+          "word_count_delta": 0,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        },
+        {
+          "assignment_name": "Writing Progress Reflection",
+          "assignment_id": "258",
+          "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+          "stage_label": "body_development",
+          "submissions_count": 1,
+          "revisions_count": 0,
+          "first_submission_at": "2026-03-14T00:36:00+00:00",
+          "last_submission_at": "2026-03-14T08:56:40+00:00",
+          "start_quality_score": 0.6916,
+          "end_quality_score": 0.6916,
+          "quality_delta": 0.0,
+          "start_word_count": 92,
+          "end_word_count": 92,
+          "word_count_delta": 0,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        }
+      ],
+      "declining_lessons": []
+    },
+    "skill_domain_diagnosis": {
+      "overall_writing_quality": {
+        "score": 0.8542,
+        "band": "very_strong",
+        "raw_value": 3.4167
+      },
+      "organization": {
+        "score": 0.5625,
+        "band": "developing",
+        "raw_value": 2.25
+      },
+      "argumentation": {
+        "score": 1.0,
+        "band": "very_strong",
+        "raw_value": 4.0
+      },
+      "lexical_resource": {
+        "score": 0.8375,
+        "band": "strong",
+        "raw_value": 3.35
+      },
+      "grammar_accuracy": {
+        "score": 1.0,
+        "band": "very_strong",
+        "raw_value": 4.0
+      },
+      "self_regulation": {
+        "score": 0.925,
+        "band": "very_strong",
+        "signals": {
+          "planning_index": 1.0,
+          "revision_frequency": 9,
+          "feedback_receptiveness": 0.7
+        }
+      },
+      "engagement": {
+        "score": 0.97,
+        "band": "very_strong",
+        "signals": {
+          "overall_engagement": 1.0,
+          "assignment_views": 10,
+          "time_on_task": 10000,
+          "submission_coverage_ratio": 0.8
+        }
+      },
+      "teacher_interaction_signal": {
+        "score": 0.355,
+        "band": "critical_support",
+        "signals": {
+          "help_seeking_messages": 3,
+          "message_interactions_count": 1,
+          "feedback_views": 1,
+          "rubric_views": 1
+        }
+      }
+    },
+    "strengths": [
+      {
+        "title": "High overall writing quality",
+        "evidence": {
+          "overall_writing_quality": 3.417,
+          "performance_level": "Strong"
+        },
+        "impact": "Current writing quality can support advanced tasks and peer-model roles."
+      },
+      {
+        "title": "Strong feedback uptake",
+        "evidence": {
+          "feedback_receptiveness": 0.7,
+          "feedback_views": 1,
+          "rubric_views": 1
+        },
+        "impact": "Student is likely to convert teacher comments into actionable revisions."
+      },
+      {
+        "title": "Positive or stable trajectory",
+        "evidence": {
+          "trend": "stable",
+          "trend_score": 0.011,
+          "quality_delta": 0.0083,
+          "word_count_delta": 12
+        },
+        "impact": "Trajectory supports sustained progression with consistent coaching."
+      }
+    ],
+    "priority_needs": [
+      {
+        "priority": "medium",
+        "focus": "Revision depth across lessons",
+        "evidence": {
+          "revised_lessons_count": 1,
+          "lessons_covered": 9,
+          "revision_coverage_ratio": 0.1111
+        }
+      },
+      {
+        "priority": "medium",
+        "focus": "Root cause: RUSHED_WRITING",
+        "evidence": {
+          "primary_issue": "RUSHED_WRITING",
+          "root_cause": "RUSHED_WRITING"
+        }
+      }
+    ],
+    "causal_hypotheses": [],
+    "teacher_interaction_impact": {
+      "impact_score": 0.355,
+      "impact_band": "critical_support",
+      "help_seeking_summary": "",
+      "help_seeking_category_counts": {
+        "GENERAL_MESSAGE": 1
+      },
+      "interpretation": "Teacher communication signal is present but currently limited in measurable revision impact."
+    },
+    "personalized_intervention_plan": {
+      "immediate_actions_1_to_2_weeks": [
+        "Distribute drafting into staged checkpoints with enforced draft spacing."
+      ],
+      "mid_term_actions_3_to_6_weeks": [
+        "Track lesson-level trend after each new submission and flag early decline.",
+        "Set one measurable writing target per assignment (quality delta or error reduction).",
+        "Review rubric alignment before submission and after feedback reception."
+      ],
+      "monitoring_indicators": [
+        "quality_delta",
+        "error_density_delta",
+        "revision_coverage_ratio",
+        "feedback_receptiveness",
+        "teacher_interaction_signal"
+      ],
+      "existing_recommendations": [
+        "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+      ]
+    },
+    "predictive_outlook": {
+      "next_period_risk_level": "moderate",
+      "portfolio_score": 64.09,
+      "portfolio_level": "moderate_progress",
+      "expected_outlook": "Close monitoring needed; trajectory may flatten or decline without targeted intervention."
+    },
+    "executive_summary_ar": "الطالب يظهر مستوى 'Strong' مع اتجاه تطور 'stable'. عدد الدروس المغطاة 9 بعدد submissions إجمالي 10. فرق الجودة عبر المسار يساوي 0.0083 وفرق الأخطاء 0.0. أولوية التدخل الحالية: Low Risk - Maintain and enrich مع تركيز على Time management and drafting pace"
+  },
+  "timeline": [
+    {
+      "sequence_index": 1,
+      "assignment_name": "Welcome & Instructions.",
+      "assignment_id": "146",
+      "assignment_section": "Academic Writing",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2025-11-19T15:23:17+00:00",
+      "time_modified_at": "2025-11-19T15:31:13+00:00",
+      "duration_minutes": 7,
+      "has_text": true,
+      "word_count": 80,
+      "sentence_count": 5,
+      "ttr": 0.8125,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.6833,
+      "text_preview": "Reading plays an important role in academic development because it helps students understand their lessons more clearly. When we read often, we learn new words, improve concentration, and become better at explaining ideas. Reading also gives us examples of how to write well, which supports our work in different school"
+    },
+    {
+      "sequence_index": 2,
+      "assignment_name": "test",
+      "assignment_id": "143",
+      "assignment_section": "Clarity and Formality",
+      "stage_label": "lesson_activity",
+      "stage_title": "Lesson activity and practice",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2025-11-19T15:31:25+00:00",
+      "time_modified_at": "2025-12-04T16:54:15+00:00",
+      "duration_minutes": 21682,
+      "has_text": false,
+      "word_count": 0,
+      "sentence_count": 0,
+      "ttr": 0.0,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.0,
+      "text_preview": ""
+    },
+    {
+      "sequence_index": 3,
+      "assignment_name": "Identifying Paragraph Patterns",
+      "assignment_id": "161",
+      "assignment_section": "Academic Writing",
+      "stage_label": "lesson_activity",
+      "stage_title": "Lesson activity and practice",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2025-11-29T20:01:58+00:00",
+      "time_modified_at": "2025-11-30T23:36:02+00:00",
+      "duration_minutes": 1654,
+      "has_text": true,
+      "word_count": 79,
+      "sentence_count": 5,
+      "ttr": 0.8354,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.6817,
+      "text_preview": "Cause–Effect paragraph: Pollution is a major problem today because people rely too much on cars, factories, and plastic products. When cars release smoke and factories burn fuel, harmful gases fill the air and make breathing difficult. Plastic waste also reaches the oceans and puts sea animals in danger. As a result, m"
+    },
+    {
+      "sequence_index": 4,
+      "assignment_name": "Diagnostic Writing Tasks",
+      "assignment_id": "217",
+      "assignment_section": "Academic Writing",
+      "stage_label": "diagnostic",
+      "stage_title": "Diagnostic baseline",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "graded",
+      "time_created_at": "2026-01-24T16:36:10+00:00",
+      "time_modified_at": "2026-01-24T18:35:38+00:00",
+      "duration_minutes": 119,
+      "has_text": true,
+      "word_count": 200,
+      "sentence_count": 14,
+      "ttr": 0.585,
+      "error_density": 0.0,
+      "transition_count": 2,
+      "quality_score": 0.8429,
+      "text_preview": "A Day without phone Today, it is hard to imagine life without a phone. But one day, my phone ran out of battery, and I had to spend the whole day without it. Usually, I spend many hours checking messages, scrolling social media, and playing games. I often forget to notice the world around me. That day helped me see the"
+    },
+    {
+      "sequence_index": 5,
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-02T22:37:59+00:00",
+      "time_modified_at": "2026-02-03T16:59:15+00:00",
+      "duration_minutes": 1101,
+      "has_text": true,
+      "word_count": 98,
+      "sentence_count": 5,
+      "ttr": 0.7551,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.7133,
+      "text_preview": "The rise of technology has transformed education and challenged traditional classroom learning. In recent years, online learning has become an important alternative to onsite education, offering students new ways to access knowledge. Traditionally, classrooms were the main environment for learning, with fixed schedules"
+    },
+    {
+      "sequence_index": 6,
+      "assignment_name": "Argumentative essay Introduction",
+      "assignment_id": "222",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "graded",
+      "time_created_at": "2026-02-11T21:00:50+00:00",
+      "time_modified_at": "2026-02-11T21:33:08+00:00",
+      "duration_minutes": 32,
+      "has_text": false,
+      "word_count": 0,
+      "sentence_count": 0,
+      "ttr": 0.0,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.0,
+      "text_preview": ""
+    },
+    {
+      "sequence_index": 7,
+      "assignment_name": "Argumentative body paragraphs : First paragraph",
+      "assignment_id": "225",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-15T18:17:52+00:00",
+      "time_modified_at": "2026-02-15T21:02:04+00:00",
+      "duration_minutes": 164,
+      "has_text": true,
+      "word_count": 187,
+      "sentence_count": 8,
+      "ttr": 0.6631,
+      "error_density": 0.0,
+      "transition_count": 2,
+      "quality_score": 0.8813,
+      "text_preview": "One of the most serious consequences of relying too much on artificial intelligence in university studies is the gradual weakening of students’ independent critical thinking skills. To begin with, critical thinking means the ability to analyze, evaluate, and understand information carefully in order to form logical opi"
+    },
+    {
+      "sequence_index": 8,
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "238",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-22T21:39:16+00:00",
+      "time_modified_at": "2026-02-22T22:39:56+00:00",
+      "duration_minutes": 60,
+      "has_text": true,
+      "word_count": 165,
+      "sentence_count": 8,
+      "ttr": 0.7091,
+      "error_density": 0.0,
+      "transition_count": 2,
+      "quality_score": 0.8562,
+      "text_preview": "In addition to weakening critical thinking, another important consequence of excessive reliance on artificial intelligence in university studies is the reduction of students creativity. Creativity is essential in higher education because it allows students to develop original ideas and approach problems from different"
+    },
+    {
+      "sequence_index": 9,
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "253",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-03-07T00:26:02+00:00",
+      "time_modified_at": "2026-03-07T01:19:56+00:00",
+      "duration_minutes": 53,
+      "has_text": true,
+      "word_count": 177,
+      "sentence_count": 7,
+      "ttr": 0.661,
+      "error_density": 0.0,
+      "transition_count": 1,
+      "quality_score": 0.8629,
+      "text_preview": "Secondly, overattachment an artificial intelligence can reduce students’ creativity and originality in academic work. Although AI tools can quickly generate ideas, the responses they provide are often similar and predictable, which leaves less opportunity for students to develop their own perspectives. For instance, a"
+    },
+    {
+      "sequence_index": 10,
+      "assignment_name": "Writing Progress Reflection",
+      "assignment_id": "258",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-03-14T00:36:00+00:00",
+      "time_modified_at": "2026-03-14T08:56:40+00:00",
+      "duration_minutes": 500,
+      "has_text": true,
+      "word_count": 92,
+      "sentence_count": 6,
+      "ttr": 0.6196,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.6916,
+      "text_preview": "I/ I have learned how to organize my ideas more clearly and write a well-developed paragraph. I also learned how to use topic sentences, supporting details, transitions, and a more academic style. 2/My writing has improved in clarity, organization, and development. I can now explain my ideas better, support them with e"
+    }
+  ],
+  "routes": {
+    "profile_path": "students/belhosseine_kaoutar/profile.json",
+    "stations_base_path": "students/belhosseine_kaoutar/stations/",
+    "portfolio_json_path": "students/belhosseine_kaoutar/portfolio/portfolio_full.json",
+    "portfolio_markdown_path": "students/belhosseine_kaoutar/portfolio/portfolio_full.md",
+    "ai_analysis_path": "students/belhosseine_kaoutar/portfolio/ai_analysis.json"
+  }
+}

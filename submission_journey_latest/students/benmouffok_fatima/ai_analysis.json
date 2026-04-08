@@ -1,0 +1,259 @@
+{
+  "analysis_metadata": {
+    "engine": "WriteLens Deterministic AI Analysis",
+    "analysis_version": "3.0",
+    "generated_at": "2026-04-08T03:21:46.585152",
+    "method": "rule-guided scoring + longitudinal submission evidence",
+    "data_confidence_score": 0.5021,
+    "data_confidence_band": "needs_support"
+  },
+  "student_snapshot": {
+    "student_id": "9074",
+    "student_name": "benmouffok fatima",
+    "learner_profile": "Efficient Learners - Low effort, acceptable results",
+    "risk_group": "Moderate Risk - Targeted support needed",
+    "problem_group": "Planning and self-regulation",
+    "instructional_group": "Moderate Risk - Targeted support needed | Planning and self-regulation",
+    "competence_level": "Developing",
+    "performance_level": "Developing",
+    "primary_issue": "PLANNING_ISSUE"
+  },
+  "trajectory_analysis": {
+    "trend": "stable",
+    "trend_score": -0.0127,
+    "quality_delta": -0.012,
+    "word_count_delta": -11,
+    "error_density_delta": 0.0,
+    "submissions_total": 3,
+    "non_empty_submissions": 2,
+    "lessons_covered": 3,
+    "revised_lessons_count": 0,
+    "submission_coverage_ratio": 0.6667,
+    "revision_coverage_ratio": 0.0,
+    "phase_summary": [
+      {
+        "phase_id": "introduction",
+        "phase_title": "Introduction and orientation",
+        "phase_order": 1,
+        "assignments_count": 2,
+        "submissions_count": 2,
+        "non_empty_submissions": 2,
+        "avg_quality_score": 0.7223,
+        "avg_error_density": 0.0,
+        "avg_word_count": 86.5
+      },
+      {
+        "phase_id": "body_development",
+        "phase_title": "Body paragraph development",
+        "phase_order": 5,
+        "assignments_count": 1,
+        "submissions_count": 1,
+        "non_empty_submissions": 0,
+        "avg_quality_score": 0.0,
+        "avg_error_density": 0.0,
+        "avg_word_count": 0.0
+      }
+    ],
+    "top_improving_lessons": [
+      {
+        "assignment_name": "Argumentative body paragraphs : First paragraph",
+        "assignment_id": "225",
+        "assignment_section": "Argumentative Essays",
+        "stage_label": "body_development",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-02-15T13:36:52+00:00",
+        "last_submission_at": "2026-02-15T13:36:52+00:00",
+        "start_quality_score": 0.0,
+        "end_quality_score": 0.0,
+        "quality_delta": 0.0,
+        "start_word_count": 0,
+        "end_word_count": 0,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      },
+      {
+        "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+        "assignment_id": "221",
+        "assignment_section": "Argumentative Essays",
+        "stage_label": "introduction",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-02-08T12:22:42+00:00",
+        "last_submission_at": "2026-02-13T14:28:04+00:00",
+        "start_quality_score": 0.7283,
+        "end_quality_score": 0.7283,
+        "quality_delta": 0.0,
+        "start_word_count": 92,
+        "end_word_count": 92,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      },
+      {
+        "assignment_name": "Argumentative essay Introduction",
+        "assignment_id": "222",
+        "assignment_section": "Argumentative Essays",
+        "stage_label": "introduction",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-02-13T14:04:23+00:00",
+        "last_submission_at": "2026-02-13T14:26:03+00:00",
+        "start_quality_score": 0.7163,
+        "end_quality_score": 0.7163,
+        "quality_delta": 0.0,
+        "start_word_count": 81,
+        "end_word_count": 81,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      }
+    ],
+    "declining_lessons": []
+  },
+  "skill_domain_diagnosis": {
+    "overall_writing_quality": {
+      "score": 0.7008,
+      "band": "strong",
+      "raw_value": 2.8033
+    },
+    "organization": {
+      "score": 0.3025,
+      "band": "critical_support",
+      "raw_value": 1.21
+    },
+    "argumentation": {
+      "score": 0.8,
+      "band": "strong",
+      "raw_value": 3.2
+    },
+    "lexical_resource": {
+      "score": 0.9725,
+      "band": "very_strong",
+      "raw_value": 3.89
+    },
+    "grammar_accuracy": {
+      "score": 1.0,
+      "band": "very_strong",
+      "raw_value": 4.0
+    },
+    "self_regulation": {
+      "score": 0.2417,
+      "band": "critical_support",
+      "signals": {
+        "planning_index": 0.0,
+        "revision_frequency": 2,
+        "feedback_receptiveness": 0.5667
+      }
+    },
+    "engagement": {
+      "score": 0.81,
+      "band": "strong",
+      "signals": {
+        "overall_engagement": 1.0,
+        "assignment_views": 3,
+        "time_on_task": 7347,
+        "submission_coverage_ratio": 0.6667
+      }
+    },
+    "teacher_interaction_signal": {
+      "score": 0.33,
+      "band": "critical_support",
+      "signals": {
+        "help_seeking_messages": 3,
+        "message_interactions_count": 0,
+        "feedback_views": 1,
+        "rubric_views": 1
+      }
+    }
+  },
+  "strengths": [],
+  "priority_needs": [
+    {
+      "priority": "medium",
+      "focus": "Revision depth across lessons",
+      "evidence": {
+        "revised_lessons_count": 0,
+        "lessons_covered": 3,
+        "revision_coverage_ratio": 0.0
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Planning and forethought",
+      "evidence": {
+        "planning_index": 0.0,
+        "primary_issue": "PLANNING_ISSUE"
+      }
+    },
+    {
+      "priority": "high",
+      "focus": "Root cause: PLANNING_ISSUE",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "PLANNING_ISSUE"
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Root cause: RUSHED_WRITING",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "RUSHED_WRITING"
+      }
+    }
+  ],
+  "causal_hypotheses": [
+    {
+      "hypothesis": "Weak planning reduces coherence and consistency across submissions.",
+      "evidence": {
+        "planning_index": 0.0,
+        "organization_score": 1.21
+      },
+      "confidence": 0.74
+    }
+  ],
+  "teacher_interaction_impact": {
+    "impact_score": 0.33,
+    "impact_band": "critical_support",
+    "help_seeking_summary": "",
+    "help_seeking_category_counts": {},
+    "interpretation": "Teacher communication signal is present but currently limited in measurable revision impact."
+  },
+  "personalized_intervention_plan": {
+    "immediate_actions_1_to_2_weeks": [
+      "Use a mandatory pre-writing outline and thesis check before each submission.",
+      "Distribute drafting into staged checkpoints with enforced draft spacing."
+    ],
+    "mid_term_actions_3_to_6_weeks": [
+      "Track lesson-level trend after each new submission and flag early decline.",
+      "Set one measurable writing target per assignment (quality delta or error reduction).",
+      "Review rubric alignment before submission and after feedback reception."
+    ],
+    "monitoring_indicators": [
+      "quality_delta",
+      "error_density_delta",
+      "revision_coverage_ratio",
+      "feedback_receptiveness",
+      "teacher_interaction_signal"
+    ],
+    "existing_recommendations": [
+      "RECOMMEND_BRAINSTORM: Student should spend time planning before writing",
+      "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+    ]
+  },
+  "predictive_outlook": {
+    "next_period_risk_level": "moderate",
+    "portfolio_score": 51.05,
+    "portfolio_level": "moderate_progress",
+    "expected_outlook": "Close monitoring needed; trajectory may flatten or decline without targeted intervention."
+  },
+  "executive_summary_ar": "الطالب يظهر مستوى 'Developing' مع اتجاه تطور 'stable'. عدد الدروس المغطاة 3 بعدد submissions إجمالي 3. فرق الجودة عبر المسار يساوي -0.012 وفرق الأخطاء 0.0. أولوية التدخل الحالية: Moderate Risk - Targeted support needed مع تركيز على Planning and self-regulation"
+}

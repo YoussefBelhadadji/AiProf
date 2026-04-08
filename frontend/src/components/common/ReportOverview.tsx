@@ -1,7 +1,7 @@
 ﻿import React from 'react';
 import { Download, Printer, LayoutGrid, Target, Activity, Zap, ShieldCheck } from 'lucide-react';
-import { STUDY_STATIONS } from '../../state/studyScope';
-import type { TeacherStudyCase } from '../../state/studyScope';
+import { STUDY_STATIONS } from '../../store/studyScope';
+import type { TeacherStudyCase } from '../../store/studyScope';
 import type { ReportSelectedTask, ReportStationAvailability } from './reportTypes';
 
 interface ReportOverviewProps {

@@ -1,4 +1,4 @@
-import type { TeacherStudyCase, StudyVariableId } from '../../state/studyScope';
+import type { TeacherStudyCase, StudyVariableId } from '../../store/studyScope';
 
 export type ReportSelectedTask = TeacherStudyCase['writing']['artifacts'][number] | null;
 export type ReportRuleMatch = NonNullable<TeacherStudyCase['student']['rule_matches']>[number];

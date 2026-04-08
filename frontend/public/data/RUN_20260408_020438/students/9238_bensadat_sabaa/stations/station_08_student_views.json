@@ -1,0 +1,34 @@
+{
+  "station": {
+    "id": "station_08_student_views",
+    "title": "Student feedback layer",
+    "description": "Student-facing root causes, recommendations, and feedback text.",
+    "order": 8
+  },
+  "student": {
+    "student_id": "9238",
+    "student_name": "bensadat sabaa"
+  },
+  "metrics": {
+    "primary_issue": "RUSHED_WRITING",
+    "adaptive_feedback": "=== ROOT CAUSES OF YOUR PERFORMANCE ===\n\nTime Management (Priority: HIGH)\nYou appear to have written under time pressure. Start assignments early to allow time for revision and improvement.\n\n=== FOR YOUR PROFILE (Strategic Learners - High engagement + good writing) ===\nFocus on consistent effort and reflection on your writing.\n\n=== SPECIFIC ACTIONS YOU SHOULD TAKE ===\n1. RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort\n\n=== KEY INSIGHT ===\nTime pressure is affecting your writing quality.\n\n=== RULE-BASED DIAGNOSTIC FEEDBACK ===\nExcellent! Seeking assistance demonstrates awareness of your learning needs and a strong commitment to improvement.\nDialogic scaffolding\n\n=== RECOMMENDED INTERVENTIONS ===\nتقديم إثراء إضافي; جلسة حوار توضيحي; تشجيع وتعزيز السلوك الإيجابي\nClarification conference\nمواد متقدمة وتحديات إضافية\nتعزيز وإثراء",
+    "help_seeking_summary": "HS1_clarification_request, HS2_procedural_question, HS4_linguistic_support",
+    "help_seeking_category_counts": {
+      "HS1_clarification_request": 2,
+      "HS2_procedural_question": 1,
+      "GENERAL_MESSAGE": 1,
+      "HS4_linguistic_support": 1
+    },
+    "help_seeking_examples": [
+      "Shall I rewrite my introduction here or in the comments section, Miss?.",
+      "Done. I've submitted it in the comments section.",
+      "Saha ftourek Miss. While writing my paragraph, I had some difficulty organizing the evidence and the example clearly. In the sentence “Research on educational technology suggests that students who use AI-assisted learning tools tend to locate and process academic sources more quickly,” I was unsure if the evidence was strong enough. I tried to solve this by adding the example about a student researching climate change to make the idea clearer and more concrete. However, I am not sure if the connection between the evidence and the example is strong enough. Should I add another sentence to explain the link more clearly?."
+    ],
+    "root_causes": [
+      "RUSHED_WRITING"
+    ],
+    "recommendations": [
+      "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+    ]
+  }
+}

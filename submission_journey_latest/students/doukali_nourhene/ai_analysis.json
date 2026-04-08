@@ -1,0 +1,296 @@
+{
+  "analysis_metadata": {
+    "engine": "WriteLens Deterministic AI Analysis",
+    "analysis_version": "3.0",
+    "generated_at": "2026-04-08T03:21:47.543508",
+    "method": "rule-guided scoring + longitudinal submission evidence",
+    "data_confidence_score": 0.7933,
+    "data_confidence_band": "strong"
+  },
+  "student_snapshot": {
+    "student_id": "9276",
+    "student_name": "doukali nourhene",
+    "learner_profile": "Efficient Learners - Low effort, acceptable results",
+    "risk_group": "Moderate Risk - Targeted support needed",
+    "problem_group": "Organization and cohesion",
+    "instructional_group": "Moderate Risk - Targeted support needed | Organization and cohesion",
+    "competence_level": "Developing",
+    "performance_level": "Strong",
+    "primary_issue": "DISCOURSE_ORGANIZATION"
+  },
+  "trajectory_analysis": {
+    "trend": "declining",
+    "trend_score": -0.096,
+    "quality_delta": -0.1066,
+    "word_count_delta": -64,
+    "error_density_delta": 0.0,
+    "submissions_total": 10,
+    "non_empty_submissions": 6,
+    "lessons_covered": 9,
+    "revised_lessons_count": 1,
+    "submission_coverage_ratio": 0.6,
+    "revision_coverage_ratio": 0.1111,
+    "phase_summary": [
+      {
+        "phase_id": "introduction",
+        "phase_title": "Introduction and orientation",
+        "phase_order": 1,
+        "assignments_count": 3,
+        "submissions_count": 3,
+        "non_empty_submissions": 2,
+        "avg_quality_score": 0.7091,
+        "avg_error_density": 0.0,
+        "avg_word_count": 95.5
+      },
+      {
+        "phase_id": "diagnostic",
+        "phase_title": "Diagnostic baseline",
+        "phase_order": 2,
+        "assignments_count": 1,
+        "submissions_count": 1,
+        "non_empty_submissions": 0,
+        "avg_quality_score": 0.0,
+        "avg_error_density": 0.0,
+        "avg_word_count": 0.0
+      },
+      {
+        "phase_id": "lesson_activity",
+        "phase_title": "Lesson activity and practice",
+        "phase_order": 3,
+        "assignments_count": 2,
+        "submissions_count": 2,
+        "non_empty_submissions": 0,
+        "avg_quality_score": 0.0,
+        "avg_error_density": 0.0,
+        "avg_word_count": 0.0
+      },
+      {
+        "phase_id": "body_development",
+        "phase_title": "Body paragraph development",
+        "phase_order": 5,
+        "assignments_count": 3,
+        "submissions_count": 4,
+        "non_empty_submissions": 4,
+        "avg_quality_score": 0.7765,
+        "avg_error_density": 0.0,
+        "avg_word_count": 142.5
+      }
+    ],
+    "top_improving_lessons": [
+      {
+        "assignment_name": "Argumentative body paragraphs : First paragraph",
+        "assignment_id": "225",
+        "assignment_section": "Argumentative Essays",
+        "stage_label": "body_development",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-02-15T20:20:14+00:00",
+        "last_submission_at": "2026-02-15T21:10:21+00:00",
+        "start_quality_score": 0.8118,
+        "end_quality_score": 0.8118,
+        "quality_delta": 0.0,
+        "start_word_count": 178,
+        "end_word_count": 178,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      },
+      {
+        "assignment_name": "Writing Progress Reflection",
+        "assignment_id": "258",
+        "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+        "stage_label": "body_development",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-03-14T13:41:38+00:00",
+        "last_submission_at": "2026-03-14T13:46:05+00:00",
+        "start_quality_score": 0.6117,
+        "end_quality_score": 0.6117,
+        "quality_delta": 0.0,
+        "start_word_count": 37,
+        "end_word_count": 37,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      },
+      {
+        "assignment_name": "Diagnostic Writing Tasks",
+        "assignment_id": "217",
+        "assignment_section": "Academic Writing",
+        "stage_label": "diagnostic",
+        "submissions_count": 1,
+        "revisions_count": 0,
+        "first_submission_at": "2026-01-28T14:09:09+00:00",
+        "last_submission_at": "2026-01-28T14:23:24+00:00",
+        "start_quality_score": 0.0,
+        "end_quality_score": 0.0,
+        "quality_delta": 0.0,
+        "start_word_count": 0,
+        "end_word_count": 0,
+        "word_count_delta": 0,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "stable"
+      }
+    ],
+    "declining_lessons": [
+      {
+        "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+        "assignment_id": "238",
+        "assignment_section": "Argumentative Essays",
+        "stage_label": "body_development",
+        "submissions_count": 2,
+        "revisions_count": 1,
+        "first_submission_at": "2026-02-23T16:46:39+00:00",
+        "last_submission_at": "2026-03-06T21:34:32+00:00",
+        "start_quality_score": 0.8708,
+        "end_quality_score": 0.8117,
+        "quality_delta": -0.0591,
+        "start_word_count": 198,
+        "end_word_count": 157,
+        "word_count_delta": -41,
+        "start_error_density": 0.0,
+        "end_error_density": 0.0,
+        "error_density_delta": 0.0,
+        "lesson_trend": "declining"
+      }
+    ]
+  },
+  "skill_domain_diagnosis": {
+    "overall_writing_quality": {
+      "score": 0.7483,
+      "band": "strong",
+      "raw_value": 2.9933
+    },
+    "organization": {
+      "score": 0.245,
+      "band": "critical_support",
+      "raw_value": 0.98
+    },
+    "argumentation": {
+      "score": 1.0,
+      "band": "very_strong",
+      "raw_value": 4.0
+    },
+    "lexical_resource": {
+      "score": 0.9325,
+      "band": "very_strong",
+      "raw_value": 3.73
+    },
+    "grammar_accuracy": {
+      "score": 1.0,
+      "band": "very_strong",
+      "raw_value": 4.0
+    },
+    "self_regulation": {
+      "score": 0.775,
+      "band": "strong",
+      "signals": {
+        "planning_index": 0.6667,
+        "revision_frequency": 9,
+        "feedback_receptiveness": 0.7
+      }
+    },
+    "engagement": {
+      "score": 0.94,
+      "band": "very_strong",
+      "signals": {
+        "overall_engagement": 1.0,
+        "assignment_views": 10,
+        "time_on_task": 3080,
+        "submission_coverage_ratio": 0.6
+      }
+    },
+    "teacher_interaction_signal": {
+      "score": 0.355,
+      "band": "critical_support",
+      "signals": {
+        "help_seeking_messages": 3,
+        "message_interactions_count": 1,
+        "feedback_views": 1,
+        "rubric_views": 1
+      }
+    }
+  },
+  "strengths": [
+    {
+      "title": "Strong feedback uptake",
+      "evidence": {
+        "feedback_receptiveness": 0.7,
+        "feedback_views": 1,
+        "rubric_views": 1
+      },
+      "impact": "Student is likely to convert teacher comments into actionable revisions."
+    }
+  ],
+  "priority_needs": [
+    {
+      "priority": "high",
+      "focus": "Trajectory stabilization",
+      "evidence": {
+        "trend": "declining",
+        "trend_score": -0.096,
+        "quality_delta": -0.1066
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Revision depth across lessons",
+      "evidence": {
+        "revised_lessons_count": 1,
+        "lessons_covered": 9,
+        "revision_coverage_ratio": 0.1111
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Root cause: DISCOURSE_ORGANIZATION",
+      "evidence": {
+        "primary_issue": "DISCOURSE_ORGANIZATION",
+        "root_cause": "DISCOURSE_ORGANIZATION"
+      }
+    }
+  ],
+  "causal_hypotheses": [],
+  "teacher_interaction_impact": {
+    "impact_score": 0.355,
+    "impact_band": "critical_support",
+    "help_seeking_summary": "",
+    "help_seeking_category_counts": {
+      "NON_HELP_SOCIAL": 1
+    },
+    "interpretation": "Teacher communication signal is present but currently limited in measurable revision impact."
+  },
+  "personalized_intervention_plan": {
+    "immediate_actions_1_to_2_weeks": [
+      "Apply paragraph architecture drill (topic sentence, evidence, explanation, link)."
+    ],
+    "mid_term_actions_3_to_6_weeks": [
+      "Track lesson-level trend after each new submission and flag early decline.",
+      "Set one measurable writing target per assignment (quality delta or error reduction).",
+      "Review rubric alignment before submission and after feedback reception."
+    ],
+    "monitoring_indicators": [
+      "quality_delta",
+      "error_density_delta",
+      "revision_coverage_ratio",
+      "feedback_receptiveness",
+      "teacher_interaction_signal"
+    ],
+    "existing_recommendations": [
+      "RECOMMEND_STRUCTURE_TRAINING: Focus on essay structure (intro/body/conclusion)"
+    ]
+  },
+  "predictive_outlook": {
+    "next_period_risk_level": "high",
+    "portfolio_score": 54.68,
+    "portfolio_level": "moderate_progress",
+    "expected_outlook": "Close monitoring needed; trajectory may flatten or decline without targeted intervention."
+  },
+  "executive_summary_ar": "الطالب يظهر مستوى 'Strong' مع اتجاه تطور 'declining'. عدد الدروس المغطاة 9 بعدد submissions إجمالي 10. فرق الجودة عبر المسار يساوي -0.1066 وفرق الأخطاء 0.0. أولوية التدخل الحالية: Moderate Risk - Targeted support needed مع تركيز على Organization and cohesion"
+}

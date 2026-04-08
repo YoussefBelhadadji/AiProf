@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "9254",
+    "student_name": "hachimi ibtissem"
+  },
+  "metrics": {
+    "risk_group": "Lower Risk - Monitor and coach",
+    "risk_score": 2,
+    "problem_group": "Time management and drafting pace",
+    "instructional_group": "Lower Risk - Monitor and coach | Time management and drafting pace",
+    "group_intervention_focus": "Distributed drafting plan, deadline scaffolds, pacing reminders",
+    "risk_group_order": 2
+  }
+}

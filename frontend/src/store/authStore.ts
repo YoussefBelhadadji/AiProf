@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { loginUser } from '../services/authApi';
+import { normalizeTeacherDisplayName } from '../utils/teacherDisplay';
 
 export interface User {
   id: string;
@@ -36,7 +37,11 @@ export const useAuthStore = create<AuthState>()(
             id: response.user.id,
             username: response.user.username,
             role: response.user.role as 'student' | 'teacher' | 'researcher' | 'admin',
-            displayName: response.user.displayName,
+            displayName: normalizeTeacherDisplayName(
+              response.user.displayName,
+              response.user.username,
+              response.user.role
+            ),
           };
           set({ token: response.token, user, isLoading: false });
           sessionStorage.setItem('writelens-auth-token', response.token);
@@ -49,7 +54,11 @@ export const useAuthStore = create<AuthState>()(
       },
 
       setAuthData: (token, user) => {
-        set({ token, user });
+        const normalized: User = {
+          ...user,
+          displayName: normalizeTeacherDisplayName(user.displayName, user.username, user.role),
+        };
+        set({ token, user: normalized });
         sessionStorage.setItem('writelens-auth-token', token);
       },
 
@@ -63,6 +72,24 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'writelens-auth',
+      version: 1,
+      migrate: (persisted: unknown) => {
+        const s = persisted as { user?: User | null; token?: string | null } | null;
+        if (s?.user) {
+          return {
+            ...s,
+            user: {
+              ...s.user,
+              displayName: normalizeTeacherDisplayName(
+                s.user.displayName,
+                s.user.username,
+                s.user.role
+              ),
+            },
+          };
+        }
+        return persisted;
+      },
       storage: createJSONStorage(() => sessionStorage),
     }
   )

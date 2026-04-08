@@ -1,0 +1,39 @@
+{
+  "students_total": 65,
+  "risk_distribution": {
+    "Low Risk - Maintain and enrich": 32,
+    "Moderate Risk - Targeted support needed": 15,
+    "High Risk - Urgent support needed": 12,
+    "Lower Risk - Monitor and coach": 6
+  },
+  "problem_distribution": {
+    "Time management and drafting pace": 28,
+    "Planning and self-regulation": 20,
+    "Enrichment and extension": 13,
+    "Organization and cohesion": 4
+  },
+  "learner_profiles": {
+    "Strategic Learners - High engagement + good writing": 27,
+    "Efficient Learners - Low effort, acceptable results": 21,
+    "Engaged but Weak Writers - Good effort, needs support": 9,
+    "Disengaged Students - Low participation": 8
+  },
+  "competence_levels": {
+    "Developing": 51,
+    "Beginning": 7,
+    "Advanced": 7
+  },
+  "quality_profiles": {
+    "good": 45,
+    "poor": 9,
+    "excellent": 9,
+    "satisfactory": 2
+  },
+  "primary_issues": {
+    "RUSHED_WRITING": 28,
+    "PLANNING_ISSUE": 20,
+    "NO_ISSUES": 13,
+    "DISCOURSE_ORGANIZATION": 4
+  },
+  "feedback_coverage": 65
+}

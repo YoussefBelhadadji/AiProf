@@ -1,0 +1,633 @@
+{
+  "student": {
+    "student_id": "9169",
+    "student_name": "kafinga kabir",
+    "portfolio_slug": "kafinga_kabir"
+  },
+  "overview": {
+    "submissions_total": 6,
+    "lessons_covered": 5,
+    "non_empty_submissions": 4,
+    "graded_submissions": 0,
+    "first_submission_at": "2026-02-07T19:41:30+00:00",
+    "last_submission_at": "2026-03-15T23:21:28+00:00",
+    "active_span_days": 36.15,
+    "lesson_sequence": [
+      "Diagnostic Writing Tasks",
+      "Argumentative Essay – Writing an Effective Introduction.",
+      "Argumentative body paragraphs : First paragraph",
+      "Argumentative Essay :Second Body Paragraph.",
+      "Writing Progress Reflection"
+    ],
+    "stage_path": [
+      "diagnostic",
+      "introduction",
+      "body_development"
+    ]
+  },
+  "portfolio_score": {
+    "portfolio_score": 57.85,
+    "portfolio_level": "moderate_progress",
+    "score_components": {
+      "evidence_trend": 0.4947,
+      "quality_gain": 0.488,
+      "error_reduction": 1.0,
+      "revision_coverage": 0.2,
+      "performance_state": 0.8,
+      "competence_state": 0.7,
+      "risk_protection": 0.45
+    }
+  },
+  "narrative": {
+    "start_point": {
+      "stage": "Diagnostic baseline",
+      "quality_score": 0.7417,
+      "word_count": 115,
+      "error_density": 0.0
+    },
+    "end_point": {
+      "quality_score": 0.7321,
+      "word_count": 116,
+      "error_density": 0.0,
+      "performance_level": "Good",
+      "competence_level": "Developing"
+    },
+    "progress_interpretation": {
+      "trend": "stable",
+      "trend_score": -0.0053,
+      "quality_delta": -0.0096,
+      "word_count_delta": 1,
+      "error_density_delta": 0.0,
+      "revised_lessons_count": 1,
+      "full_learning_path_detected": false
+    }
+  },
+  "phase_summary": [
+    {
+      "phase_id": "introduction",
+      "phase_title": "Introduction and orientation",
+      "phase_order": 1,
+      "assignments_count": 1,
+      "submissions_count": 1,
+      "non_empty_submissions": 1,
+      "avg_quality_score": 0.7417,
+      "avg_error_density": 0.0,
+      "avg_word_count": 115.0
+    },
+    {
+      "phase_id": "diagnostic",
+      "phase_title": "Diagnostic baseline",
+      "phase_order": 2,
+      "assignments_count": 1,
+      "submissions_count": 1,
+      "non_empty_submissions": 0,
+      "avg_quality_score": 0.0,
+      "avg_error_density": 0.0,
+      "avg_word_count": 0.0
+    },
+    {
+      "phase_id": "body_development",
+      "phase_title": "Body paragraph development",
+      "phase_order": 5,
+      "assignments_count": 3,
+      "submissions_count": 4,
+      "non_empty_submissions": 3,
+      "avg_quality_score": 0.8116,
+      "avg_error_density": 0.0,
+      "avg_word_count": 167.0
+    }
+  ],
+  "lesson_progress": [
+    {
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "253",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "submissions_count": 2,
+      "revisions_count": 1,
+      "first_submission_at": "2026-03-06T22:50:09+00:00",
+      "last_submission_at": "2026-03-07T16:59:09+00:00",
+      "start_quality_score": 0.8334,
+      "end_quality_score": 0.8334,
+      "quality_delta": 0.0,
+      "start_word_count": 206,
+      "end_word_count": 206,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative body paragraphs : First paragraph",
+      "assignment_id": "225",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-15T13:54:39+00:00",
+      "last_submission_at": "2026-02-15T16:33:15+00:00",
+      "start_quality_score": 0.8692,
+      "end_quality_score": 0.8692,
+      "quality_delta": 0.0,
+      "start_word_count": 179,
+      "end_word_count": 179,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Writing Progress Reflection",
+      "assignment_id": "258",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-03-15T23:08:15+00:00",
+      "last_submission_at": "2026-03-15T23:21:28+00:00",
+      "start_quality_score": 0.7321,
+      "end_quality_score": 0.7321,
+      "quality_delta": 0.0,
+      "start_word_count": 116,
+      "end_word_count": 116,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Diagnostic Writing Tasks",
+      "assignment_id": "217",
+      "assignment_section": "Academic Writing",
+      "stage_label": "diagnostic",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-07T19:41:30+00:00",
+      "last_submission_at": "2026-02-07T19:41:30+00:00",
+      "start_quality_score": 0.0,
+      "end_quality_score": 0.0,
+      "quality_delta": 0.0,
+      "start_word_count": 0,
+      "end_word_count": 0,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    },
+    {
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "submissions_count": 1,
+      "revisions_count": 0,
+      "first_submission_at": "2026-02-14T12:56:02+00:00",
+      "last_submission_at": "2026-02-14T13:06:22+00:00",
+      "start_quality_score": 0.7417,
+      "end_quality_score": 0.7417,
+      "quality_delta": 0.0,
+      "start_word_count": 115,
+      "end_word_count": 115,
+      "word_count_delta": 0,
+      "start_error_density": 0.0,
+      "end_error_density": 0.0,
+      "error_density_delta": 0.0,
+      "lesson_trend": "stable"
+    }
+  ],
+  "ai_analysis": {
+    "analysis_metadata": {
+      "engine": "WriteLens Deterministic AI Analysis",
+      "analysis_version": "3.0",
+      "generated_at": "2026-04-08T03:21:48.188519",
+      "method": "rule-guided scoring + longitudinal submission evidence",
+      "data_confidence_score": 0.6396,
+      "data_confidence_band": "developing"
+    },
+    "student_snapshot": {
+      "student_id": "9169",
+      "student_name": "kafinga kabir",
+      "learner_profile": "Efficient Learners - Low effort, acceptable results",
+      "risk_group": "Moderate Risk - Targeted support needed",
+      "problem_group": "Planning and self-regulation",
+      "instructional_group": "Moderate Risk - Targeted support needed | Planning and self-regulation",
+      "competence_level": "Developing",
+      "performance_level": "Good",
+      "primary_issue": "PLANNING_ISSUE"
+    },
+    "trajectory_analysis": {
+      "trend": "stable",
+      "trend_score": -0.0053,
+      "quality_delta": -0.0096,
+      "word_count_delta": 1,
+      "error_density_delta": 0.0,
+      "submissions_total": 6,
+      "non_empty_submissions": 4,
+      "lessons_covered": 5,
+      "revised_lessons_count": 1,
+      "submission_coverage_ratio": 0.6667,
+      "revision_coverage_ratio": 0.2,
+      "phase_summary": [
+        {
+          "phase_id": "introduction",
+          "phase_title": "Introduction and orientation",
+          "phase_order": 1,
+          "assignments_count": 1,
+          "submissions_count": 1,
+          "non_empty_submissions": 1,
+          "avg_quality_score": 0.7417,
+          "avg_error_density": 0.0,
+          "avg_word_count": 115.0
+        },
+        {
+          "phase_id": "diagnostic",
+          "phase_title": "Diagnostic baseline",
+          "phase_order": 2,
+          "assignments_count": 1,
+          "submissions_count": 1,
+          "non_empty_submissions": 0,
+          "avg_quality_score": 0.0,
+          "avg_error_density": 0.0,
+          "avg_word_count": 0.0
+        },
+        {
+          "phase_id": "body_development",
+          "phase_title": "Body paragraph development",
+          "phase_order": 5,
+          "assignments_count": 3,
+          "submissions_count": 4,
+          "non_empty_submissions": 3,
+          "avg_quality_score": 0.8116,
+          "avg_error_density": 0.0,
+          "avg_word_count": 167.0
+        }
+      ],
+      "top_improving_lessons": [
+        {
+          "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+          "assignment_id": "253",
+          "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+          "stage_label": "body_development",
+          "submissions_count": 2,
+          "revisions_count": 1,
+          "first_submission_at": "2026-03-06T22:50:09+00:00",
+          "last_submission_at": "2026-03-07T16:59:09+00:00",
+          "start_quality_score": 0.8334,
+          "end_quality_score": 0.8334,
+          "quality_delta": 0.0,
+          "start_word_count": 206,
+          "end_word_count": 206,
+          "word_count_delta": 0,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        },
+        {
+          "assignment_name": "Argumentative body paragraphs : First paragraph",
+          "assignment_id": "225",
+          "assignment_section": "Argumentative Essays",
+          "stage_label": "body_development",
+          "submissions_count": 1,
+          "revisions_count": 0,
+          "first_submission_at": "2026-02-15T13:54:39+00:00",
+          "last_submission_at": "2026-02-15T16:33:15+00:00",
+          "start_quality_score": 0.8692,
+          "end_quality_score": 0.8692,
+          "quality_delta": 0.0,
+          "start_word_count": 179,
+          "end_word_count": 179,
+          "word_count_delta": 0,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        },
+        {
+          "assignment_name": "Writing Progress Reflection",
+          "assignment_id": "258",
+          "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+          "stage_label": "body_development",
+          "submissions_count": 1,
+          "revisions_count": 0,
+          "first_submission_at": "2026-03-15T23:08:15+00:00",
+          "last_submission_at": "2026-03-15T23:21:28+00:00",
+          "start_quality_score": 0.7321,
+          "end_quality_score": 0.7321,
+          "quality_delta": 0.0,
+          "start_word_count": 116,
+          "end_word_count": 116,
+          "word_count_delta": 0,
+          "start_error_density": 0.0,
+          "end_error_density": 0.0,
+          "error_density_delta": 0.0,
+          "lesson_trend": "stable"
+        }
+      ],
+      "declining_lessons": []
+    },
+    "skill_domain_diagnosis": {
+      "overall_writing_quality": {
+        "score": 0.7433,
+        "band": "strong",
+        "raw_value": 2.9733
+      },
+      "organization": {
+        "score": 0.23,
+        "band": "critical_support",
+        "raw_value": 0.92
+      },
+      "argumentation": {
+        "score": 1.0,
+        "band": "very_strong",
+        "raw_value": 4.0
+      },
+      "lexical_resource": {
+        "score": 0.9725,
+        "band": "very_strong",
+        "raw_value": 3.89
+      },
+      "grammar_accuracy": {
+        "score": 1.0,
+        "band": "very_strong",
+        "raw_value": 4.0
+      },
+      "self_regulation": {
+        "score": 0.575,
+        "band": "developing",
+        "signals": {
+          "planning_index": 0.3333,
+          "revision_frequency": 5,
+          "feedback_receptiveness": 0.7
+        }
+      },
+      "engagement": {
+        "score": 0.776,
+        "band": "strong",
+        "signals": {
+          "overall_engagement": 1.0,
+          "assignment_views": 6,
+          "time_on_task": 1272,
+          "submission_coverage_ratio": 0.6667
+        }
+      },
+      "teacher_interaction_signal": {
+        "score": 0.33,
+        "band": "critical_support",
+        "signals": {
+          "help_seeking_messages": 3,
+          "message_interactions_count": 0,
+          "feedback_views": 1,
+          "rubric_views": 1
+        }
+      }
+    },
+    "strengths": [
+      {
+        "title": "Strong feedback uptake",
+        "evidence": {
+          "feedback_receptiveness": 0.7,
+          "feedback_views": 1,
+          "rubric_views": 1
+        },
+        "impact": "Student is likely to convert teacher comments into actionable revisions."
+      }
+    ],
+    "priority_needs": [
+      {
+        "priority": "medium",
+        "focus": "Revision depth across lessons",
+        "evidence": {
+          "revised_lessons_count": 1,
+          "lessons_covered": 5,
+          "revision_coverage_ratio": 0.2
+        }
+      },
+      {
+        "priority": "medium",
+        "focus": "Planning and forethought",
+        "evidence": {
+          "planning_index": 0.3333,
+          "primary_issue": "PLANNING_ISSUE"
+        }
+      },
+      {
+        "priority": "high",
+        "focus": "Root cause: PLANNING_ISSUE",
+        "evidence": {
+          "primary_issue": "PLANNING_ISSUE",
+          "root_cause": "PLANNING_ISSUE"
+        }
+      },
+      {
+        "priority": "medium",
+        "focus": "Root cause: DISCOURSE_ORGANIZATION",
+        "evidence": {
+          "primary_issue": "PLANNING_ISSUE",
+          "root_cause": "DISCOURSE_ORGANIZATION"
+        }
+      },
+      {
+        "priority": "medium",
+        "focus": "Root cause: RUSHED_WRITING",
+        "evidence": {
+          "primary_issue": "PLANNING_ISSUE",
+          "root_cause": "RUSHED_WRITING"
+        }
+      }
+    ],
+    "causal_hypotheses": [
+      {
+        "hypothesis": "Weak planning reduces coherence and consistency across submissions.",
+        "evidence": {
+          "planning_index": 0.3333,
+          "organization_score": 0.92
+        },
+        "confidence": 0.74
+      }
+    ],
+    "teacher_interaction_impact": {
+      "impact_score": 0.33,
+      "impact_band": "critical_support",
+      "help_seeking_summary": "",
+      "help_seeking_category_counts": {},
+      "interpretation": "Teacher communication signal is present but currently limited in measurable revision impact."
+    },
+    "personalized_intervention_plan": {
+      "immediate_actions_1_to_2_weeks": [
+        "Use a mandatory pre-writing outline and thesis check before each submission.",
+        "Apply paragraph architecture drill (topic sentence, evidence, explanation, link).",
+        "Distribute drafting into staged checkpoints with enforced draft spacing."
+      ],
+      "mid_term_actions_3_to_6_weeks": [
+        "Track lesson-level trend after each new submission and flag early decline.",
+        "Set one measurable writing target per assignment (quality delta or error reduction).",
+        "Review rubric alignment before submission and after feedback reception."
+      ],
+      "monitoring_indicators": [
+        "quality_delta",
+        "error_density_delta",
+        "revision_coverage_ratio",
+        "feedback_receptiveness",
+        "teacher_interaction_signal"
+      ],
+      "existing_recommendations": [
+        "RECOMMEND_BRAINSTORM: Student should spend time planning before writing",
+        "RECOMMEND_STRUCTURE_TRAINING: Focus on essay structure (intro/body/conclusion)",
+        "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+      ]
+    },
+    "predictive_outlook": {
+      "next_period_risk_level": "moderate",
+      "portfolio_score": 57.85,
+      "portfolio_level": "moderate_progress",
+      "expected_outlook": "Close monitoring needed; trajectory may flatten or decline without targeted intervention."
+    },
+    "executive_summary_ar": "الطالب يظهر مستوى 'Good' مع اتجاه تطور 'stable'. عدد الدروس المغطاة 5 بعدد submissions إجمالي 6. فرق الجودة عبر المسار يساوي -0.0096 وفرق الأخطاء 0.0. أولوية التدخل الحالية: Moderate Risk - Targeted support needed مع تركيز على Planning and self-regulation"
+  },
+  "timeline": [
+    {
+      "sequence_index": 1,
+      "assignment_name": "Diagnostic Writing Tasks",
+      "assignment_id": "217",
+      "assignment_section": "Academic Writing",
+      "stage_label": "diagnostic",
+      "stage_title": "Diagnostic baseline",
+      "attempt_number": 0,
+      "status": "new",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-07T19:41:30+00:00",
+      "time_modified_at": "2026-02-07T19:41:30+00:00",
+      "duration_minutes": 0,
+      "has_text": false,
+      "word_count": 0,
+      "sentence_count": 0,
+      "ttr": 0.0,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.0,
+      "text_preview": ""
+    },
+    {
+      "sequence_index": 2,
+      "assignment_name": "Argumentative Essay – Writing an Effective Introduction.",
+      "assignment_id": "221",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "introduction",
+      "stage_title": "Introduction and orientation",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-14T12:56:02+00:00",
+      "time_modified_at": "2026-02-14T13:06:22+00:00",
+      "duration_minutes": 10,
+      "has_text": true,
+      "word_count": 115,
+      "sentence_count": 5,
+      "ttr": 0.8,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.7417,
+      "text_preview": "Have you ever considered that the very digital tools designed to connect us might be the primary architects of our modern isolation? As social media platforms become the central square for human interaction, the quality of our relationships is undergoing a fundamental shift from depth to surface-level engagement. While"
+    },
+    {
+      "sequence_index": 3,
+      "assignment_name": "Argumentative body paragraphs : First paragraph",
+      "assignment_id": "225",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-15T13:54:39+00:00",
+      "time_modified_at": "2026-02-15T16:33:15+00:00",
+      "duration_minutes": 158,
+      "has_text": true,
+      "word_count": 179,
+      "sentence_count": 6,
+      "ttr": 0.7542,
+      "error_density": 0.0,
+      "transition_count": 1,
+      "quality_score": 0.8692,
+      "text_preview": "Building upon the necessity of preserving human connection, the strategic integration of Artificial Intelligence (AI) offers a sophisticated solution to the communicative decay currently witnessed in digital spaces. While critics fear that AI might further dehumanize interaction, it actually serves as a catalytic agent"
+    },
+    {
+      "sequence_index": 4,
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "238",
+      "assignment_section": "Argumentative Essays",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "new",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-02-24T07:05:31+00:00",
+      "time_modified_at": "2026-02-24T07:05:31+00:00",
+      "duration_minutes": 0,
+      "has_text": false,
+      "word_count": 0,
+      "sentence_count": 0,
+      "ttr": 0.0,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.0,
+      "text_preview": ""
+    },
+    {
+      "sequence_index": 5,
+      "assignment_name": "Argumentative Essay :Second Body Paragraph.",
+      "assignment_id": "253",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-03-06T22:50:09+00:00",
+      "time_modified_at": "2026-03-07T16:59:09+00:00",
+      "duration_minutes": 1089,
+      "has_text": true,
+      "word_count": 206,
+      "sentence_count": 9,
+      "ttr": 0.6068,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.8334,
+      "text_preview": "The major problems of using artificial intelligence in our written of assignments is that it can cause academic writing integrity and reduce our levels of responsibility as students in our work. when you rely heavily on AI systems or apps to generate content, your writing may no longer matter to your knowledge ideas of"
+    },
+    {
+      "sequence_index": 6,
+      "assignment_name": "Writing Progress Reflection",
+      "assignment_id": "258",
+      "assignment_section": "Argumentative Essay :Second Body Paragraph.",
+      "stage_label": "body_development",
+      "stage_title": "Body paragraph development",
+      "attempt_number": 0,
+      "status": "submitted",
+      "grading_status": "notgraded",
+      "time_created_at": "2026-03-15T23:08:15+00:00",
+      "time_modified_at": "2026-03-15T23:21:28+00:00",
+      "duration_minutes": 13,
+      "has_text": true,
+      "word_count": 116,
+      "sentence_count": 6,
+      "ttr": 0.6207,
+      "error_density": 0.0,
+      "transition_count": 0,
+      "quality_score": 0.7321,
+      "text_preview": "1.So far, I have learnt the use of transitional pharses to incorporate my writing of essay and the use of punctuation marks and capitalization were necessary in my essay writing. 2.the issues with critical thinking about what I need to write in my essay writing on any topics been given to me to brainstorm and compose i"
+    }
+  ],
+  "routes": {
+    "profile_path": "students/kafinga_kabir/profile.json",
+    "stations_base_path": "students/kafinga_kabir/stations/",
+    "portfolio_json_path": "students/kafinga_kabir/portfolio/portfolio_full.json",
+    "portfolio_markdown_path": "students/kafinga_kabir/portfolio/portfolio_full.md",
+    "ai_analysis_path": "students/kafinga_kabir/portfolio/ai_analysis.json"
+  }
+}

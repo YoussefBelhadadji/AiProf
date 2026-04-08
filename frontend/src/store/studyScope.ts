@@ -2,6 +2,8 @@ import { create } from 'zustand';
 import { createJSONStorage, persist } from 'zustand/middleware';
 import { clamp } from '../utils/utils';
 import {
+  getStudentClusterName,
+  getStudentRiskLevel,
   type ActivityItem,
   type ComparisonMetric,
   type DialogueMessage,
@@ -13,18 +15,6 @@ import {
   type WorkspaceStudent,
   type WritingArtifact,
 } from '../data/diagnostic';
-
-function resolveRiskLevel(student: StudentRecord): 'low' | 'monitor' | 'critical' {
-  const fromServer = String((student as any)?.risk_level || '').toLowerCase();
-  if (fromServer === 'low') return 'low';
-  if (fromServer === 'high' || fromServer === 'critical') return 'critical';
-  if (fromServer === 'monitor' || fromServer === 'moderate') return 'monitor';
-  return 'monitor';
-}
-
-function resolveClusterName(student: StudentRecord): string {
-  return student.learner_profile || student.cluster_profile || student.clustering_output || 'Engaged or strategic writer';
-}
 
 export type StudyVariableId =
   | 'assignment_views'
@@ -362,7 +352,7 @@ function deriveWorkspaceStudent(student: StudentRecord, meta: TeacherStudyCase['
           : student.cluster_label === 2
             ? 'struggling'
             : 'engaged-developing',
-    risk: resolveRiskLevel(student),
+    risk: getStudentRiskLevel(student),
     preScore,
     postScore: Number(postScore.toFixed(1)),
     gain: Number((postScore - preScore).toFixed(1)),
@@ -461,8 +451,8 @@ export function mapParsedCaseToStudyCase(parsed: ParsedWorkbookCaseResponse): Te
     meta,
     student,
     workspace: deriveWorkspaceStudent(student, meta),
-    clusterName: resolveClusterName(student),
-    riskLevel: resolveRiskLevel(student),
+    clusterName: getStudentClusterName(student),
+    riskLevel: getStudentRiskLevel(student),
     rubric: parsed.rubric ?? {
       totalMaxPoints: 0,
       criteria: [],

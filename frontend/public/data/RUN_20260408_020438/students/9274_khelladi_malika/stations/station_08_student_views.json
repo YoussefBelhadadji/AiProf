@@ -1,0 +1,33 @@
+{
+  "station": {
+    "id": "station_08_student_views",
+    "title": "Student feedback layer",
+    "description": "Student-facing root causes, recommendations, and feedback text.",
+    "order": 8
+  },
+  "student": {
+    "student_id": "9274",
+    "student_name": "khelladi malika"
+  },
+  "metrics": {
+    "primary_issue": "NO_ISSUES",
+    "adaptive_feedback": "=== FOR YOUR PROFILE (Engaged but Weak Writers - Good effort, needs support) ===\nFocus on consistent effort and reflection on your writing.\n\n=== KEY INSIGHT ===\nNo critical writing issue detected right now. Focus on enrichment and consistency in future tasks.\n\n=== RULE-BASED DIAGNOSTIC FEEDBACK ===\nExcellent! Seeking assistance demonstrates awareness of your learning needs and a strong commitment to improvement.\nDialogic scaffolding\n\n=== RECOMMENDED INTERVENTIONS ===\nتقديم إثراء إضافي; جلسة حوار توضيحي; تشجيع وتعزيز السلوك الإيجابي\nClarification conference\nمواد متقدمة وتحديات إضافية\nتعزيز وإثراء",
+    "help_seeking_summary": "HS2_procedural_question, HS3_conceptual_support, HS5_feedback_interpretation, HS1_clarification_request, HS4_linguistic_support",
+    "help_seeking_category_counts": {
+      "HS2_procedural_question": 1,
+      "HS3_conceptual_support": 3,
+      "GENERAL_MESSAGE": 3,
+      "HS5_feedback_interpretation": 1,
+      "NON_HELP_SOCIAL": 1,
+      "HS1_clarification_request": 1,
+      "HS4_linguistic_support": 1
+    },
+    "help_seeking_examples": [
+      "Miss I did my homework hours ago!!! I corrected my introduction at 7pm",
+      "You told me to focus on the depth of the arguments and I did, what's the issue now that you gave me 4 miss!!!",
+      "Here's my introduction Miss since I was out of topic: In recent decades, technological advancement has transformed the way societies function, reshaping communication, education, healthcare, and nearly every aspect of daily life. Among these developments, Artificial Intelligence has emerged as one of the most influential and debated innovations of the modern era. While some individuals express concerns about its rapid expansion and potential risks, others recognize its remarkable ability to improve efficiency and support human performance. As AI continues to evolve and integrate into professional and academic environments, it becomes essential to evaluate its actual impact on society. Although fears surrounding technological dependency persist, the integration of Artificial Intelligence offers significant benefits by enhancing productivity, improving accuracy, and expanding accessibility across key sectors such as education and healthcare. Thank you so much and my apologies 🤍"
+    ],
+    "root_causes": [],
+    "recommendations": []
+  }
+}

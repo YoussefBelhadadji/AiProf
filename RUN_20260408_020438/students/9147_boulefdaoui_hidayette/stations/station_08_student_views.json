@@ -1,0 +1,35 @@
+{
+  "station": {
+    "id": "station_08_student_views",
+    "title": "Student feedback layer",
+    "description": "Student-facing root causes, recommendations, and feedback text.",
+    "order": 8
+  },
+  "student": {
+    "student_id": "9147",
+    "student_name": "boulefdaoui hidayette"
+  },
+  "metrics": {
+    "primary_issue": "RUSHED_WRITING",
+    "adaptive_feedback": "=== ROOT CAUSES OF YOUR PERFORMANCE ===\n\nTime Management (Priority: HIGH)\nYou appear to have written under time pressure. Start assignments early to allow time for revision and improvement.\n\n=== FOR YOUR PROFILE (Engaged but Weak Writers - Good effort, needs support) ===\nFocus on consistent effort and reflection on your writing.\n\n=== SPECIFIC ACTIONS YOU SHOULD TAKE ===\n1. RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort\n\n=== KEY INSIGHT ===\nTime pressure is affecting your writing quality.\n\n=== RULE-BASED DIAGNOSTIC FEEDBACK ===\nExcellent! Seeking assistance demonstrates awareness of your learning needs and a strong commitment to improvement.\nDialogic scaffolding\n\n=== RECOMMENDED INTERVENTIONS ===\nتقديم إثراء إضافي; جلسة حوار توضيحي; تشجيع وتعزيز السلوك الإيجابي\nClarification conference\nمواد متقدمة وتحديات إضافية\nتعزيز وإثراء",
+    "help_seeking_summary": "HS1_clarification_request, HS2_procedural_question, HS5_feedback_interpretation, HS3_conceptual_support",
+    "help_seeking_category_counts": {
+      "HS1_clarification_request": 2,
+      "HS2_procedural_question": 2,
+      "HS5_feedback_interpretation": 3,
+      "HS3_conceptual_support": 3,
+      "GENERAL_MESSAGE": 1
+    },
+    "help_seeking_examples": [
+      "Salem Alikoum miss , I hope you're doing well today. I would like to clarify and confirm an issue regarding the homework. There was a mistake in the correction, as the name of another student( El moukefess hanen) was written instead of my friend’s name. It should have been my friend who is with me( Bennacer Fatima) so that I could evaluate her work. As a result, I am now required to evaluate the work of another student. Therefore, I kindly ask you to correct this mistake and assign my friend to me so that I can properly evaluate her work. Thank you.",
+      "We supposed to have ready for a review the lesson, continue with the argumentative essay, correct homework.",
+      "Hello Miss. I hope you are doing well, I am contacting you regarding the questions that you gave us to answer them. so firstly I face one difficulty while writing which is lack of ideas. Secondly, I tried to see in my previous essays that have near ideas about the title to gather some. And could you please Miss tell me if i have to write more arguments. And if my body paragraph is clear and well organized????"
+    ],
+    "root_causes": [
+      "RUSHED_WRITING"
+    ],
+    "recommendations": [
+      "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+    ]
+  }
+}

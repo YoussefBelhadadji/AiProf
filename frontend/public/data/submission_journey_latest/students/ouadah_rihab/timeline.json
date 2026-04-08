@@ -1,0 +1,19 @@
+{
+  "student": {
+    "student_id": "9273",
+    "student_name": "ouadah rihab",
+    "portfolio_slug": "ouadah_rihab"
+  },
+  "overview": {
+    "submissions_total": 0,
+    "lessons_covered": 0,
+    "non_empty_submissions": 0,
+    "graded_submissions": 0,
+    "first_submission_at": null,
+    "last_submission_at": null,
+    "active_span_days": 0.0,
+    "lesson_sequence": [],
+    "stage_path": []
+  },
+  "timeline": []
+}

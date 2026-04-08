@@ -1,0 +1,21 @@
+{
+  "station": {
+    "id": "station_05_competence_inference",
+    "title": "Bayesian competence inference",
+    "description": "Competence probabilities and competence level.",
+    "order": 5
+  },
+  "student": {
+    "student_id": "9074",
+    "student_name": "benmouffok fatima"
+  },
+  "metrics": {
+    "argument_competence": 0.77055,
+    "cohesion_competence": 0.233,
+    "linguistic_competence": 0.933,
+    "self_regulation_competence": 0.483,
+    "avg_competence": 0.6048875,
+    "competence_level": "Developing",
+    "competence_probability_state": "developing"
+  }
+}

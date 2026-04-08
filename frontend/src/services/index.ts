@@ -9,5 +9,6 @@ export * from './casesApi'
 export * from './exportApi'
 export * from './workbookApi'
 
-// Additional service exports
-export * from './studentService'
+// Feature services
+export * from './submissionService'
+export * from './portfolioService'

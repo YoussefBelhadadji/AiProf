@@ -1,0 +1,215 @@
+{
+  "analysis_metadata": {
+    "engine": "WriteLens Deterministic AI Analysis",
+    "analysis_version": "3.0",
+    "generated_at": "2026-04-08T03:21:46.074922",
+    "method": "rule-guided scoring + longitudinal submission evidence",
+    "data_confidence_score": 0.0,
+    "data_confidence_band": "critical_support"
+  },
+  "student_snapshot": {
+    "student_id": "9328",
+    "student_name": "BENMOUFFOK FATIMA ZOHRA MERIEM",
+    "learner_profile": "Disengaged Students - Low participation",
+    "risk_group": "High Risk - Urgent support needed",
+    "problem_group": "Planning and self-regulation",
+    "instructional_group": "High Risk - Urgent support needed | Planning and self-regulation",
+    "competence_level": "Beginning",
+    "performance_level": "Needs Improvement",
+    "primary_issue": "PLANNING_ISSUE"
+  },
+  "trajectory_analysis": {
+    "trend": "insufficient_data",
+    "trend_score": 0.0,
+    "quality_delta": 0.0,
+    "word_count_delta": 0,
+    "error_density_delta": 0.0,
+    "submissions_total": 0,
+    "non_empty_submissions": 0,
+    "lessons_covered": 0,
+    "revised_lessons_count": 0,
+    "submission_coverage_ratio": 0.0,
+    "revision_coverage_ratio": 0.0,
+    "phase_summary": [],
+    "top_improving_lessons": [],
+    "declining_lessons": []
+  },
+  "skill_domain_diagnosis": {
+    "overall_writing_quality": {
+      "score": 0.3333,
+      "band": "critical_support",
+      "raw_value": 1.3333
+    },
+    "organization": {
+      "score": 0.0,
+      "band": "critical_support",
+      "raw_value": 0.0
+    },
+    "argumentation": {
+      "score": 0.0,
+      "band": "critical_support",
+      "raw_value": 0.0
+    },
+    "lexical_resource": {
+      "score": 0.0,
+      "band": "critical_support",
+      "raw_value": 0.0
+    },
+    "grammar_accuracy": {
+      "score": 1.0,
+      "band": "very_strong",
+      "raw_value": 4.0
+    },
+    "self_regulation": {
+      "score": 0.075,
+      "band": "critical_support",
+      "signals": {
+        "planning_index": 0.0,
+        "revision_frequency": 0,
+        "feedback_receptiveness": 0.3
+      }
+    },
+    "engagement": {
+      "score": 0.0,
+      "band": "critical_support",
+      "signals": {
+        "overall_engagement": 0.0,
+        "assignment_views": 0,
+        "time_on_task": 0,
+        "submission_coverage_ratio": 0.0
+      }
+    },
+    "teacher_interaction_signal": {
+      "score": 0.33,
+      "band": "critical_support",
+      "signals": {
+        "help_seeking_messages": 3,
+        "message_interactions_count": 0,
+        "feedback_views": 1,
+        "rubric_views": 1
+      }
+    }
+  },
+  "strengths": [],
+  "priority_needs": [
+    {
+      "priority": "medium",
+      "focus": "Planning and forethought",
+      "evidence": {
+        "planning_index": 0.0,
+        "primary_issue": "PLANNING_ISSUE"
+      }
+    },
+    {
+      "priority": "high",
+      "focus": "Root cause: PLANNING_ISSUE",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "PLANNING_ISSUE"
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Root cause: CRITERIA_UNAWARENESS",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "CRITERIA_UNAWARENESS"
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Root cause: DISCOURSE_ORGANIZATION",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "DISCOURSE_ORGANIZATION"
+      }
+    },
+    {
+      "priority": "medium",
+      "focus": "Root cause: WEAK_ARGUMENTATION",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "WEAK_ARGUMENTATION"
+      }
+    },
+    {
+      "priority": "high",
+      "focus": "Root cause: LOW_ENGAGEMENT",
+      "evidence": {
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause": "LOW_ENGAGEMENT"
+      }
+    }
+  ],
+  "causal_hypotheses": [
+    {
+      "hypothesis": "Weak planning reduces coherence and consistency across submissions.",
+      "evidence": {
+        "planning_index": 0.0,
+        "organization_score": 0.0
+      },
+      "confidence": 0.74
+    },
+    {
+      "hypothesis": "Limited uptake of teacher feedback slows revision gains.",
+      "evidence": {
+        "feedback_receptiveness": 0.3,
+        "feedback_views": 1,
+        "revision_frequency": 0
+      },
+      "confidence": 0.69
+    },
+    {
+      "hypothesis": "Sparse non-empty submissions reduce observable growth signals.",
+      "evidence": {
+        "non_empty_submissions": 0,
+        "submissions_total": 0,
+        "submission_coverage_ratio": 0.0
+      },
+      "confidence": 0.71
+    }
+  ],
+  "teacher_interaction_impact": {
+    "impact_score": 0.33,
+    "impact_band": "critical_support",
+    "help_seeking_summary": "",
+    "help_seeking_category_counts": {},
+    "interpretation": "Teacher communication signal is present but currently limited in measurable revision impact."
+  },
+  "personalized_intervention_plan": {
+    "immediate_actions_1_to_2_weeks": [
+      "Use a mandatory pre-writing outline and thesis check before each submission.",
+      "Run rubric decoding mini-session and map rubric criteria to a checklist.",
+      "Apply paragraph architecture drill (topic sentence, evidence, explanation, link).",
+      "Use claim-evidence-reasoning frames and require source-linked examples.",
+      "Set short milestone deadlines and monitor weekly completion signals."
+    ],
+    "mid_term_actions_3_to_6_weeks": [
+      "Track lesson-level trend after each new submission and flag early decline.",
+      "Set one measurable writing target per assignment (quality delta or error reduction).",
+      "Review rubric alignment before submission and after feedback reception."
+    ],
+    "monitoring_indicators": [
+      "quality_delta",
+      "error_density_delta",
+      "revision_coverage_ratio",
+      "feedback_receptiveness",
+      "teacher_interaction_signal"
+    ],
+    "existing_recommendations": [
+      "RECOMMEND_BRAINSTORM: Student should spend time planning before writing",
+      "RECOMMEND_RUBRIC_REVIEW: Ensure student understanding of rubric criteria",
+      "RECOMMEND_STRUCTURE_TRAINING: Focus on essay structure (intro/body/conclusion)",
+      "RECOMMEND_EVIDENCE_BUILDING: Teach use of evidence and reasoning",
+      "ACTION_EARLY_INTERVENTION: Contact and encourage participation",
+      "ACTION_SCAFFOLDING: Provide additional support materials"
+    ]
+  },
+  "predictive_outlook": {
+    "next_period_risk_level": "high",
+    "portfolio_score": 42.0,
+    "portfolio_level": "limited_progress",
+    "expected_outlook": "Close monitoring needed; trajectory may flatten or decline without targeted intervention."
+  },
+  "executive_summary_ar": "الطالب يظهر مستوى 'Needs Improvement' مع اتجاه تطور 'insufficient_data'. عدد الدروس المغطاة 0 بعدد submissions إجمالي 0. فرق الجودة عبر المسار يساوي 0.0 وفرق الأخطاء 0.0. أولوية التدخل الحالية: High Risk - Urgent support needed مع تركيز على Planning and self-regulation"
+}

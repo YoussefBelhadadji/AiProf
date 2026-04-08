@@ -14,7 +14,7 @@ import {
   useStudyScopeStore,
   type StudyStationId,
   type StudyVariableId,
-} from '../state/studyScope';
+} from '../store/studyScope';
 
 interface StudyScopePanelProps {
   title?: string;

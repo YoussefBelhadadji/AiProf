@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "9178",
+    "student_name": "hadjadj mohamed"
+  },
+  "metrics": {
+    "risk_group": "Moderate Risk - Targeted support needed",
+    "risk_score": 4,
+    "problem_group": "Time management and drafting pace",
+    "instructional_group": "Moderate Risk - Targeted support needed | Time management and drafting pace",
+    "group_intervention_focus": "Distributed drafting plan, deadline scaffolds, pacing reminders",
+    "risk_group_order": 1
+  }
+}
