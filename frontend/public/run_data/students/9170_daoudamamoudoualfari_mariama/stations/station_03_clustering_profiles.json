@@ -1,0 +1,22 @@
+{
+  "station": {
+    "id": "station_03_clustering_profiles",
+    "title": "Learner clustering and profiles",
+    "description": "Learner profile assignment and cluster-level context.",
+    "order": 3
+  },
+  "student": {
+    "student_id": "9170",
+    "student_name": "daoudamamoudoualfari mariama"
+  },
+  "metrics": {
+    "learner_profile": "Engaged but Weak Writers - Good effort, needs support",
+    "root_cause_count": 1,
+    "primary_issue": "RUSHED_WRITING",
+    "overall_engagement": 1.0,
+    "planning_index": 1.0,
+    "discourse_quality": 0.7813253012048194,
+    "argumentation_strength": 1.0,
+    "feedback_receptiveness": 0.7000000000000001
+  }
+}

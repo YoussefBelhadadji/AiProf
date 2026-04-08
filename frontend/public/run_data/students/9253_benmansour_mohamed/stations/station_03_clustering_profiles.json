@@ -1,0 +1,22 @@
+{
+  "station": {
+    "id": "station_03_clustering_profiles",
+    "title": "Learner clustering and profiles",
+    "description": "Learner profile assignment and cluster-level context.",
+    "order": 3
+  },
+  "student": {
+    "student_id": "9253",
+    "student_name": "benmansour mohamed"
+  },
+  "metrics": {
+    "learner_profile": "Efficient Learners - Low effort, acceptable results",
+    "root_cause_count": 3,
+    "primary_issue": "PLANNING_ISSUE",
+    "overall_engagement": 0.31833333333333336,
+    "planning_index": 0.3333333333333333,
+    "discourse_quality": 0.35,
+    "argumentation_strength": 0.4,
+    "feedback_receptiveness": 0.43333333333333335
+  }
+}

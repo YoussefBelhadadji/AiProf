@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "9278",
+    "student_name": "homani leila"
+  },
+  "metrics": {
+    "risk_group": "Lower Risk - Monitor and coach",
+    "risk_score": 2,
+    "problem_group": "Organization and cohesion",
+    "instructional_group": "Lower Risk - Monitor and coach | Organization and cohesion",
+    "group_intervention_focus": "Paragraph restructuring, connector modelling, model paragraph analysis",
+    "risk_group_order": 2
+  }
+}

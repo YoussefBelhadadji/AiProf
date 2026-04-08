@@ -1,0 +1,25 @@
+{
+  "station": {
+    "id": "station_09_run_validation",
+    "title": "Run validation",
+    "description": "Run-level validation status and output coverage checks.",
+    "order": 9
+  },
+  "student": {
+    "student_id": "9302",
+    "student_name": "bouchiba nihad"
+  },
+  "metrics": {
+    "students_total": 65,
+    "adaptive_feedback_coverage": 65,
+    "adaptive_feedback_full_coverage": true,
+    "rule_stats_present": true,
+    "rf_metrics_present": true,
+    "instructional_group_summary_present": true,
+    "requirements_compliance_report_present": true,
+    "student_has_prediction": true,
+    "student_has_competence": true,
+    "student_has_group_assignment": true,
+    "student_has_feedback": true
+  }
+}

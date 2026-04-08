@@ -1,0 +1,26 @@
+{
+  "station": {
+    "id": "station_01_data_intake",
+    "title": "Data intake and preparation",
+    "description": "Raw indicators and behavioral signals used as input.",
+    "order": 1
+  },
+  "student": {
+    "student_id": "9167",
+    "student_name": "sharifjibril usman"
+  },
+  "metrics": {
+    "assignment_views": 10,
+    "resource_access_count": 6,
+    "time_on_task": 10000,
+    "revision_frequency": 9,
+    "feedback_views": 1,
+    "rubric_views": 1,
+    "help_seeking_messages": 3,
+    "message_interactions_count": 0,
+    "word_count": 715,
+    "error_density": 0.0,
+    "cohesion_index": 1.0227272727272727,
+    "ttr": 0.551048951048951
+  }
+}
