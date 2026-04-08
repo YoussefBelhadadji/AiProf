@@ -1,7 +1,0 @@
-log_id,student_id,task_id,draft_no,activity,timestamp,duration_minutes,details
-1,asmaa_lahmarabbou,task_1,1,Course accessed,2026-04-03T21:49:39.831215,25,User performed course accessed
-2,asmaa_lahmarabbou,task_2,1,Lesson viewed,2026-04-03T21:49:39.831373,54,User performed lesson viewed
-3,asmaa_lahmarabbou,task_3,1,Quiz attempted,2026-04-03T21:49:39.831398,21,User performed quiz attempted
-4,asmaa_lahmarabbou,task_4,1,Forum post,2026-04-03T21:49:39.831413,50,User performed forum post
-5,asmaa_lahmarabbou,task_5,1,Assignment submitted,2026-04-03T21:49:39.831428,27,User performed assignment submitted
-6,asmaa_lahmarabbou,task_6,1,Resource downloaded,2026-04-03T21:49:39.831443,51,User performed resource downloaded
