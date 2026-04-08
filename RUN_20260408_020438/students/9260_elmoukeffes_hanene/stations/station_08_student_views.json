@@ -1,0 +1,35 @@
+{
+  "station": {
+    "id": "station_08_student_views",
+    "title": "Student feedback layer",
+    "description": "Student-facing root causes, recommendations, and feedback text.",
+    "order": 8
+  },
+  "student": {
+    "student_id": "9260",
+    "student_name": "elmoukeffes hanene"
+  },
+  "metrics": {
+    "primary_issue": "PLANNING_ISSUE",
+    "adaptive_feedback": "=== ROOT CAUSES OF YOUR PERFORMANCE ===\n\nPlanning & Preparation (Priority: HIGH)\nYour essay would benefit from pre-writing planning. Try: 1) Write thesis first, 2) Create outline, 3) Gather evidence, 4) Write draft, 5) Revise\n\nTime Management (Priority: HIGH)\nYou appear to have written under time pressure. Start assignments early to allow time for revision and improvement.\n\n=== FOR YOUR PROFILE (Engaged but Weak Writers - Good effort, needs support) ===\nFocus on consistent effort and reflection on your writing.\n\n=== SPECIFIC ACTIONS YOU SHOULD TAKE ===\n1. RECOMMEND_BRAINSTORM: Student should spend time planning before writing\n2. RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort\n\n=== KEY INSIGHT ===\nYour main challenge is organizing thoughts before writing.\n\n=== RULE-BASED DIAGNOSTIC FEEDBACK ===\nThe essay's organization requires significant improvement. Cohesion between ideas is weak.; Excellent! Seeking assistance demonstrates awareness of your learning needs and a strong commitment to improvement.\nStrategic feedback on structure; Dialogic scaffolding\n\n=== RECOMMENDED INTERVENTIONS ===\nتوفير قالب تنظيم الفقرات; تقديم أمثلة لفقرات منظمة جيداً; تمرين توصيل الأفكار; تقديم إثراء إضافي; جلسة حوار توضيحي; تشجيع وتعزيز السلوك الإيجابي\nParagraph restructuring with model; Clarification conference\nمواد متقدمة وتحديات إضافية\nتعزيز وإثراء",
+    "help_seeking_summary": "HS3_conceptual_support, HS1_clarification_request",
+    "help_seeking_category_counts": {
+      "GENERAL_MESSAGE": 2,
+      "HS3_conceptual_support": 3,
+      "HS1_clarification_request": 2
+    },
+    "help_seeking_examples": [
+      "Asslamualikm, these are the questions related to my second body paragraph: The main difficulty I faced was organizing my ideas into the specific 6 part structure (claim, Explanation, Evidence, Example, Analysis, and Mini-conclusion) without making the transitions feel forced or repetitive. To solve this I drafted each section as a separate point and then focused on using transition words like \"For example\" and \"So\" to blend them into one cohesive paragraph. As for my question I'm wondering if in an argumentative essay, should the thesis statement clearly list the 3 main points we plan to talk about or should it stay general and let the body paragraphs introduce each point on their own?",
+      "And should the body includ 3 paragraphs or we can use only 2 ? رسائل الطالب (kafinga kabir):",
+      "Body paragraphs and the conclusion tasks"
+    ],
+    "root_causes": [
+      "PLANNING_ISSUE",
+      "RUSHED_WRITING"
+    ],
+    "recommendations": [
+      "RECOMMEND_BRAINSTORM: Student should spend time planning before writing",
+      "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+    ]
+  }
+}

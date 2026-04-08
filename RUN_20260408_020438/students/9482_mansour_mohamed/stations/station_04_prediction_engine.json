@@ -1,0 +1,25 @@
+{
+  "station": {
+    "id": "station_04_prediction_engine",
+    "title": "Random Forest prediction",
+    "description": "Prediction outputs and model-level metrics.",
+    "order": 4
+  },
+  "student": {
+    "student_id": "9482",
+    "student_name": "mansour mohamed"
+  },
+  "metrics": {
+    "predicted_score_gain_proxy": 4.369250000000006,
+    "predicted_performance_score": 4.369250000000006,
+    "performance_level": "Strong",
+    "predicted_improvement_state": "strong",
+    "model_metrics": {
+      "target_used": "score_gain_proxy",
+      "target_is_proxy": true,
+      "r2": 0.9421037027346761,
+      "mae": 0.2422235014985042,
+      "rmse": 0.30306127738641375
+    }
+  }
+}

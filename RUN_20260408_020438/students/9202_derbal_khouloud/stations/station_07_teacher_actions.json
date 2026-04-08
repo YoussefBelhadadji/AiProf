@@ -1,0 +1,24 @@
+{
+  "station": {
+    "id": "station_07_teacher_actions",
+    "title": "Teacher action layer",
+    "description": "Priority decisions and teacher-facing intervention actions.",
+    "order": 7
+  },
+  "student": {
+    "student_id": "9202",
+    "student_name": "derbal khouloud"
+  },
+  "metrics": {
+    "highest_priority": "LOW",
+    "competence_level": "Advanced",
+    "performance_level": "Strong",
+    "group_intervention_focus": "Paragraph restructuring, connector modelling, model paragraph analysis",
+    "all_triggered_rule_ids": "R7; D1; CR2",
+    "triggered_rules": [
+      "R7",
+      "D1",
+      "CR2"
+    ]
+  }
+}

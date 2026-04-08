@@ -1,0 +1,137 @@
+{
+  "student": {
+    "student_id": "9260",
+    "student_name": "elmoukeffes hanene",
+    "email": "hanene.elmoukeffes@student.univ-temouchent.edu.dz"
+  },
+  "summary": {
+    "learner_profile": "Engaged but Weak Writers - Good effort, needs support",
+    "risk_group": "Moderate Risk - Targeted support needed",
+    "instructional_group": "Moderate Risk - Targeted support needed | Planning and self-regulation",
+    "problem_group": "Planning and self-regulation",
+    "quality_profile": "good",
+    "competence_level": "Developing",
+    "performance_level": "Strong",
+    "primary_issue": "PLANNING_ISSUE",
+    "root_causes": [
+      "PLANNING_ISSUE",
+      "RUSHED_WRITING"
+    ],
+    "recommendations": [
+      "RECOMMEND_BRAINSTORM: Student should spend time planning before writing",
+      "RECOMMEND_TIME_MANAGEMENT: Encourage early start and distributed effort"
+    ]
+  },
+  "station_cards": [
+    {
+      "station_id": "station_01_data_intake",
+      "title": "Data intake and preparation",
+      "order": 1,
+      "status": "ready",
+      "highlights": {
+        "word_count": 450,
+        "time_on_task": 10000,
+        "revision_frequency": 9
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_01_data_intake.json"
+    },
+    {
+      "station_id": "station_02_thresholds_rules",
+      "title": "Thresholds and pedagogical rules",
+      "order": 2,
+      "status": "ready",
+      "highlights": {
+        "quality_profile": "good",
+        "word_count_level": "strong",
+        "highest_priority": "critical"
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_02_thresholds_rules.json"
+    },
+    {
+      "station_id": "station_03_clustering_profiles",
+      "title": "Learner clustering and profiles",
+      "order": 3,
+      "status": "ready",
+      "highlights": {
+        "learner_profile": "Engaged but Weak Writers - Good effort, needs support",
+        "primary_issue": "PLANNING_ISSUE",
+        "root_cause_count": 2
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_03_clustering_profiles.json"
+    },
+    {
+      "station_id": "station_04_prediction_engine",
+      "title": "Random Forest prediction",
+      "order": 4,
+      "status": "ready",
+      "highlights": {
+        "performance_level": "Strong",
+        "predicted_improvement_state": "strong",
+        "predicted_performance_score": 4.829948412698427
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_04_prediction_engine.json"
+    },
+    {
+      "station_id": "station_05_competence_inference",
+      "title": "Bayesian competence inference",
+      "order": 5,
+      "status": "ready",
+      "highlights": {
+        "competence_level": "Developing",
+        "avg_competence": 0.6926071428571429,
+        "competence_probability_state": "developing"
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_05_competence_inference.json"
+    },
+    {
+      "station_id": "station_06_instructional_groups",
+      "title": "Risk and instructional groups",
+      "order": 6,
+      "status": "ready",
+      "highlights": {
+        "risk_group": "Moderate Risk - Targeted support needed",
+        "problem_group": "Planning and self-regulation",
+        "instructional_group": "Moderate Risk - Targeted support needed | Planning and self-regulation"
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_06_instructional_groups.json"
+    },
+    {
+      "station_id": "station_07_teacher_actions",
+      "title": "Teacher action layer",
+      "order": 7,
+      "status": "ready",
+      "highlights": {
+        "highest_priority": "critical",
+        "competence_level": "Developing",
+        "performance_level": "Strong"
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_07_teacher_actions.json"
+    },
+    {
+      "station_id": "station_08_student_views",
+      "title": "Student feedback layer",
+      "order": 8,
+      "status": "ready",
+      "highlights": {
+        "primary_issue": "PLANNING_ISSUE"
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_08_student_views.json"
+    },
+    {
+      "station_id": "station_09_run_validation",
+      "title": "Run validation",
+      "order": 9,
+      "status": "ready",
+      "highlights": {
+        "student_has_feedback": true,
+        "student_has_prediction": true,
+        "student_has_group_assignment": true
+      },
+      "detail_path": "students/9260_elmoukeffes_hanene/stations/station_09_run_validation.json"
+    }
+  ],
+  "routes": {
+    "profile_path": "students/9260_elmoukeffes_hanene/profile.json",
+    "stations_base_path": "students/9260_elmoukeffes_hanene/stations/"
+  }
+}

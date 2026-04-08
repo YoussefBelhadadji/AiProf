@@ -1,0 +1,150 @@
+{
+  "station_01_data_intake": {
+    "students_total": 65,
+    "columns_total": 119,
+    "input_signal_coverage": {
+      "assignment_views": 65,
+      "resource_access_count": 65,
+      "help_seeking_messages": 65
+    }
+  },
+  "station_02_thresholds_rules": {
+    "quality_profile_distribution": {
+      "good": 45,
+      "poor": 9,
+      "excellent": 9,
+      "satisfactory": 2
+    },
+    "word_count_level_distribution": {
+      "strong": 53,
+      "low": 9,
+      "moderate": 3
+    },
+    "rule_counts": {
+      "R1": 27,
+      "R2": 11,
+      "R4": 8,
+      "R6": 8,
+      "R7": 65,
+      "A2": 8,
+      "B1": 27,
+      "B2": 11,
+      "B4": 8,
+      "C1": 8,
+      "C2": 8,
+      "D1": 65,
+      "CR2": 56,
+      "C3": 4
+    }
+  },
+  "station_03_clustering_profiles": {
+    "learner_profile_distribution": {
+      "Strategic Learners - High engagement + good writing": 27,
+      "Efficient Learners - Low effort, acceptable results": 21,
+      "Engaged but Weak Writers - Good effort, needs support": 9,
+      "Disengaged Students - Low participation": 8
+    },
+    "top_primary_issues": [
+      {
+        "label": "RUSHED_WRITING",
+        "count": 28
+      },
+      {
+        "label": "PLANNING_ISSUE",
+        "count": 20
+      },
+      {
+        "label": "NO_ISSUES",
+        "count": 13
+      },
+      {
+        "label": "DISCOURSE_ORGANIZATION",
+        "count": 4
+      }
+    ]
+  },
+  "station_04_prediction_engine": {
+    "model_metrics": {
+      "target_used": "score_gain_proxy",
+      "target_is_proxy": true,
+      "r2": 0.9421037027346761,
+      "mae": 0.2422235014985042,
+      "rmse": 0.30306127738641375
+    },
+    "performance_level_distribution": {
+      "Strong": 48,
+      "Needs Improvement": 9,
+      "Good": 7,
+      "Developing": 1
+    },
+    "predicted_improvement_distribution": {
+      "strong": 54,
+      "high_risk": 9,
+      "developing": 2
+    }
+  },
+  "station_05_competence_inference": {
+    "competence_level_distribution": {
+      "Developing": 51,
+      "Beginning": 7,
+      "Advanced": 7
+    },
+    "competence_state_distribution": {
+      "developing": 51,
+      "high_risk": 7,
+      "strong": 7
+    }
+  },
+  "station_06_instructional_groups": {
+    "risk_group_distribution": {
+      "Low Risk - Maintain and enrich": 32,
+      "Moderate Risk - Targeted support needed": 15,
+      "High Risk - Urgent support needed": 12,
+      "Lower Risk - Monitor and coach": 6
+    },
+    "instructional_group_distribution": {
+      "Low Risk - Maintain and enrich | Time management and drafting pace": 22,
+      "High Risk - Urgent support needed | Planning and self-regulation": 12,
+      "Low Risk - Maintain and enrich | Enrichment and extension": 9,
+      "Moderate Risk - Targeted support needed | Planning and self-regulation": 8,
+      "Lower Risk - Monitor and coach | Time management and drafting pace": 4,
+      "Moderate Risk - Targeted support needed | Enrichment and extension": 3,
+      "Moderate Risk - Targeted support needed | Time management and drafting pace": 2,
+      "Moderate Risk - Targeted support needed | Organization and cohesion": 2,
+      "Lower Risk - Monitor and coach | Enrichment and extension": 1,
+      "Lower Risk - Monitor and coach | Organization and cohesion": 1,
+      "Low Risk - Maintain and enrich | Organization and cohesion": 1
+    },
+    "problem_group_distribution": {
+      "Time management and drafting pace": 28,
+      "Planning and self-regulation": 20,
+      "Enrichment and extension": 13,
+      "Organization and cohesion": 4
+    }
+  },
+  "station_07_teacher_actions": {
+    "highest_priority_distribution": {
+      "LOW": 38,
+      "critical": 27
+    },
+    "students_with_adaptive_feedback": 65
+  },
+  "station_08_student_views": {
+    "primary_issue_distribution": {
+      "RUSHED_WRITING": 28,
+      "PLANNING_ISSUE": 20,
+      "NO_ISSUES": 13,
+      "DISCOURSE_ORGANIZATION": 4
+    },
+    "feedback_coverage": 65
+  },
+  "station_09_run_validation": {
+    "students_total": 65,
+    "adaptive_feedback_coverage": 65,
+    "adaptive_feedback_full_coverage": true,
+    "rule_stats_present": true,
+    "rf_metrics_present": true,
+    "instructional_group_summary_present": true,
+    "requirements_compliance_report_present": true
+  }
+}

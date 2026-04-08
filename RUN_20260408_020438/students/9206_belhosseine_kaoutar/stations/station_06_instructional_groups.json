@@ -1,0 +1,20 @@
+{
+  "station": {
+    "id": "station_06_instructional_groups",
+    "title": "Risk and instructional groups",
+    "description": "Risk grouping and intervention-focused grouping.",
+    "order": 6
+  },
+  "student": {
+    "student_id": "9206",
+    "student_name": "belhosseine kaoutar"
+  },
+  "metrics": {
+    "risk_group": "Low Risk - Maintain and enrich",
+    "risk_score": 1,
+    "problem_group": "Time management and drafting pace",
+    "instructional_group": "Low Risk - Maintain and enrich | Time management and drafting pace",
+    "group_intervention_focus": "Distributed drafting plan, deadline scaffolds, pacing reminders",
+    "risk_group_order": 3
+  }
+}
